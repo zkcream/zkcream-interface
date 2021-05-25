@@ -1,9 +1,9 @@
-import * as React from 'react'
+import React from 'react'
 
-const App = () => {
-  return (
-    <h1>zkCREAM app</h1>
-  )
+import Header from '../components/Header'
+
+function App() {
+  return <Header />
 }
 
 export default App
