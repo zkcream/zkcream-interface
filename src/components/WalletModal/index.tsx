@@ -16,7 +16,6 @@ export default function WalletModal() {
 
   const tryActivation = async (connector: AbstractConnector | undefined) => {
     /* TODO: add pending action */
-
     connector &&
       activate(connector, undefined, true).catch((error) => {
         if (error instanceof UnsupportedChainIdError) {

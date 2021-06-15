@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { HashRouter } from 'react-router-dom'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 
 import { NetworkContextName } from './constants/misc'
@@ -19,11 +20,13 @@ if (!!window.ethereum) {
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <Web3ProviderNetwork getLibrary={getLibrary}>
-          <App />
-        </Web3ProviderNetwork>
-      </Web3ReactProvider>
+      <HashRouter>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <Web3ProviderNetwork getLibrary={getLibrary}>
+            <App />
+          </Web3ProviderNetwork>
+        </Web3ReactProvider>
+      </HashRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
