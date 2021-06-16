@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@typechain/ethers-v5": "^7.0.1",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
@@ -21,6 +22,8 @@
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "axios": "^0.21.1",
+    "maci-crypto": "^0.8.4",
+    "maci-domainobjs": "^0.8.4",
     "prettier": "^2.3.1",
     "react": "^17.0.2",
     "react-device-detect": "^1.17.0",
@@ -30,15 +33,15 @@
     "react-scripts": "4.0.3",
     "rebass": "^4.0.7",
     "styled-components": "^5.3.0",
-    "typescript": "^4.1.2",
+    "typescript": "^4.3.4",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "format": "npx prettier './src/**/*.{js,ts,tsx}' --write",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "npx prettier './src/**/*.{js,ts,tsx}' --write"
   },
   "eslintConfig": {
     "extends": [

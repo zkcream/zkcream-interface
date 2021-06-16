@@ -16,5 +16,9 @@ describe('application reducer', () => {
       store.dispatch(setOpenModal(ApplicationModal.WALLET))
       expect(store.getState().openModal).toEqual(ApplicationModal.WALLET)
     })
+    it('set deploy modal', () => {
+      store.dispatch(setOpenModal(ApplicationModal.DEPLOY))
+      expect(store.getState().openModal).toEqual(ApplicationModal.DEPLOY)
+    })
   })
 })

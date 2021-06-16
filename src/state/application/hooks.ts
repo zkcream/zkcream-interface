@@ -19,3 +19,7 @@ export function useToggleModal(modal: ApplicationModal): () => void {
 export function useWalletModalToggle(): () => void {
   return useToggleModal(ApplicationModal.WALLET)
 }
+
+export function useDeployModalToggle(): () => void {
+  return useToggleModal(ApplicationModal.DEPLOY)
+}

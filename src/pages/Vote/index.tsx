@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button } from 'rebass/styled-components'
 
+import DeployModal from '../../components/vote/DeployModal'
+import { ApplicationModal } from '../../state/application/actions'
+import { useModalOpen, useDeployModalToggle } from '../../state/application/hooks'
 import { ElectionData, useAllElectionData } from '../../state/election/hooks'
 
 const Election = styled(Button)`
@@ -35,8 +38,17 @@ export default function Vote() {
   // should return (empty or non empty) array
   const allElections: ElectionData[] = useAllElectionData()
 
+  // toggle deploy modal
+  const deployModalOpen = useModalOpen(ApplicationModal.DEPLOY)
+  const toggleModal = useDeployModalToggle()
+
   return (
     <>
+      <DeployModal isOpen={deployModalOpen} />
+      <div>
+        <h2>Elections</h2>
+        <button onClick={toggleModal}>Create new Election</button>
+      </div>
       {allElections?.length === 0 && <EmptyElections>No elections found</EmptyElections>}
       {allElections?.map((e: ElectionData, i) => {
         return (

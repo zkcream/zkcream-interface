@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { TransactionResponse } from '@ethersproject/providers'
 
-import { get } from '../../utils/api'
+import { useFactoryContract } from '../../hooks/useContract'
+import { useActiveWeb3React } from '../../hooks/web3'
+import { get, post } from '../../utils/api'
 
 export interface ElectionData {
   title: string
   recipients: string[]
-  for: string | null
-  against: string | null
+  electionType: string
   owner: string
   coordinator: string
   zkCreamAddress: string
@@ -18,7 +20,7 @@ export function useDataFromEventLogs() {
   const [electionData, setElectionData] = useState<any>()
 
   useEffect(() => {
-    async function fetch() {
+    async function fetchFromFactory() {
       /* TODO: need to reverse */
       const logs = (await get('factory/logs')).data
       const elections: ElectionData[] = await Promise.all(
@@ -28,8 +30,7 @@ export function useDataFromEventLogs() {
           return {
             title: decodedLog.title,
             recipients: decodedLog.recipients,
-            for: decodedLog.agree,
-            against: decodedLog.disagree,
+            electionType: decodedLog.electionType,
             owner: decodedLog.owner,
             coordinator: decodedLog.coordinator,
             zkCreamAddress: log[0],
@@ -38,11 +39,11 @@ export function useDataFromEventLogs() {
           }
         })
       )
-      setElectionData(elections)
+      setElectionData(elections.reverse())
     }
 
     if (!electionData) {
-      fetch()
+      fetchFromFactory()
     }
   })
 
@@ -52,16 +53,43 @@ export function useDataFromEventLogs() {
 // get event logs for all deployed zkcream contract
 export function useAllElectionData(): ElectionData[] | [] {
   const formattedEvents = useDataFromEventLogs()
-
-  if (formattedEvents) {
-    return formattedEvents
-  } else {
-    return []
-  }
+  return formattedEvents ? formattedEvents : []
 }
 
 // get election data of passed zkcream contract address
 export function useElectionData(address: string): ElectionData | undefined {
   const allElectionData = useAllElectionData()
   return allElectionData?.find((e) => e.zkCreamAddress === address)
+}
+
+// deploy new zkcream contract
+export function useDeployCallback(): {
+  deployCallback: (data: any) => Promise<string> | undefined
+} {
+  const { account } = useActiveWeb3React()
+  const factoryContract = useFactoryContract()
+  const deployCallback = useCallback(
+    async (data: any) => {
+      if (!account) return
+
+      return (await post('factory/deploy', data)).data
+
+      /* TODO: do not use API and use follows */
+      // const args = [
+      //   data.initial_voice_credit_balance,
+      //   data.merkle_tree_height,
+      //   data.recipients,
+      //   data.ipfsHash,
+      //   data.coordinator_pubkey,
+      //   data.coordinator_address
+      // ]
+      // return factoryContract.estimateGas.createCream(...args, {}).then(() => {
+      //   return factoryContract
+      //     .createCream(...args, { value: null })
+      //     .then((response: TransactionResponse) => { return response.hash })
+      // })
+    },
+    [account]
+  )
+  return { deployCallback }
 }
