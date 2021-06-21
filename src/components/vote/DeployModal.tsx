@@ -7,7 +7,7 @@ import Modal from '../Modal'
 import { useInput } from '../../hooks/inputs'
 import { post } from '../../utils/api'
 
-import { useDeployCallback } from '../../state/election/hooks'
+//import { useDeployCallback } from '../../state/election/hooks'
 
 interface DeployModalProps {
   isOpen: boolean
@@ -74,7 +74,7 @@ function DeployForm() {
         <input type="text" {...bindTitle} />
       </label>
       <label>
-        Coordinator:
+        Coordinator Ethereum Address:
         <input type="text" {...bindCoordinatorAddress} />
       </label>
       <label>

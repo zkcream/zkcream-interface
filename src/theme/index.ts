@@ -1,5 +1,4 @@
-import { Text } from 'rebass'
-import styled, { createGlobalStyle, css, DefaultTheme } from 'styled-components'
+import { createGlobalStyle, css, DefaultTheme } from 'styled-components'
 
 import { Colors } from './styled'
 

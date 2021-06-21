@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
@@ -19,7 +19,7 @@ if (!!window.ethereum) {
 }
 
 ReactDOM.render(
-  <React.StrictMode>
+  <StrictMode>
     <GlobalStyle />
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
@@ -33,7 +33,7 @@ ReactDOM.render(
         </Provider>
       </Web3ProviderNetwork>
     </Web3ReactProvider>
-  </React.StrictMode>,
+  </StrictMode>,
   document.getElementById('root')
 )
 

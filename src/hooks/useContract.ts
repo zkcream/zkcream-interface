@@ -5,9 +5,13 @@ import { useActiveWeb3React } from '../hooks/web3'
 import { getContract } from '../utils'
 
 import FACTORY from '../abis/CreamFactory.json'
+import ZKCREAM from '../abis/Cream.json'
+import VOTING_TOKEN from '../abis/VotingToken.json'
 
 const FACTORY_ADDRESS = process.env.REACT_APP_ZKCREAM_FACTORY_ADDRESS
 const FACTORY_ABI = FACTORY.abi
+const ZKCREAM_ABI = ZKCREAM.abi
+const VOTING_TOKEN_ABI = VOTING_TOKEN.abi
 
 // use contract passed by arg
 export function useContract<T extends Contract = Contract>(
@@ -38,4 +42,12 @@ export function useContract<T extends Contract = Contract>(
 export function useFactoryContract() {
   /* TODO: Typechain impl */
   return useContract<any>(FACTORY_ADDRESS, FACTORY_ABI, true)
+}
+
+export function useZkCreamContract(address: string) {
+  return useContract<any>(address, ZKCREAM_ABI, true)
+}
+
+export function useVotingTokenContract(address: string) {
+  return useContract<any>(address, VOTING_TOKEN_ABI, true)
 }
