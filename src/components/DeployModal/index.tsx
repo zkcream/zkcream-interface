@@ -4,10 +4,10 @@ import { Keypair, PrivKey } from 'maci-domainobjs'
 
 import Candidates from './Candidates'
 import Modal from '../Modal'
-import { useInput } from '../../hooks/inputs'
+import { useInput } from '../../utils/inputs'
 import { post } from '../../utils/api'
 
-//import { useDeployCallback } from '../../state/election/hooks'
+import { useDeployCallback } from '../../state/election/hooks'
 
 interface DeployModalProps {
   isOpen: boolean
@@ -32,9 +32,10 @@ function DeployForm() {
   const { privKey } = genKeypair()
   const coordinator = new Keypair(new PrivKey(privKey))
 
-  //const { deployCallback } = useDeployCallback()
+  const { deployCallback } = useDeployCallback()
 
-  async function onDeploy() {
+  async function onDeploy(e: any) {
+    e.preventDefault()
     setTxState('Creating...')
 
     const election = {
@@ -54,9 +55,9 @@ function DeployForm() {
       ipfsHash: hash.data.path,
     }
 
-    //const r = await deployCallback(data)
-    //console.log(r)
-    await post('factory/deploy', data)
+    const r = await deployCallback(data)
+    console.log(r)
+    ///await post('factory/deploy', data)
 
     resetTitle()
     resetCoordinatorAddress()

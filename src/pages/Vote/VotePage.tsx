@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { useActiveWeb3React } from '../../hooks/web3'
+import { useZkCreamContract, useVotingTokenContract } from '../../hooks/useContract'
 import { ElectionData, useElectionData } from '../../state/election/hooks'
 import { UserToken, useUserTokenStatus } from '../../state/user/hooks'
 import { StyledInternalLink } from '../../theme'
@@ -22,10 +23,44 @@ export default function VotePage({
     params: { address },
   },
 }: RouteComponentProps<{ address: string }>) {
+  const [approveState, setApproveState] = useState<string | undefined>('Approve token')
+  const [votingTokenAddress, setVotingTokenAddress] = useState<string | undefined>(undefined)
+
   const { account } = useActiveWeb3React()
 
+  /* get election details */
   const electionData: ElectionData | undefined = useElectionData(address)
-  const userData: UserToken | undefined = useUserTokenStatus(address, account)
+
+  /* get user details */
+  const userData: UserToken | undefined = useUserTokenStatus(
+    address,
+    account,
+    electionData?.votingTokenAddress,
+    electionData?.signUpTokenAddress
+  )
+
+  /* Set contract instance */
+  const zkCreamContract = useZkCreamContract(address)
+  const votingTokenContract = useVotingTokenContract(electionData?.votingTokenAddress as string)
+
+  async function approveToken(e: any) {
+    e.preventDefault()
+    setApproveState('Approving...')
+
+    if (votingTokenContract) {
+      const r = await votingTokenContract.setApprovalForAll(address, true)
+      if (r.status) {
+        await r.wait()
+        setApproveState('Approved')
+      }
+    } else {
+      throw new Error('error')
+    }
+  }
+
+  function signUpMaci() {
+    console.log('foo')
+  }
 
   return (
     <ElectionInfo>
@@ -34,12 +69,19 @@ export default function VotePage({
           <div>
             <div>
               <ArrowWrapper to={'/'}>Back</ArrowWrapper>
-              <div>STATUS goes here</div>
               {userData.votingToken ? (
-                <div>
-                  <button>Approve Voting token</button>
-                  <button>Register</button>
-                </div>
+                <>
+                  <div>
+                    <button disabled={userData.isApproved} onClick={approveToken}>
+                      {approveState}
+                    </button>
+                  </div>
+                  <div>
+                    <button disabled={!userData.isApproved} onClick={signUpMaci}>
+                      Register
+                    </button>
+                  </div>
+                </>
               ) : null}
               {userData.maciToken ? (
                 <div>

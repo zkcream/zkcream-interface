@@ -1,6 +1,7 @@
 import { getAddress } from '@ethersproject/address'
+import { BytesLike } from '@ethersproject/bytes'
 import { AddressZero } from '@ethersproject/constants'
-import { Contract } from '@ethersproject/contracts'
+import { Contract, ContractFactory } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 
 export function isAddress(value: any): string | false {
@@ -32,4 +33,13 @@ export function getContract(address: string, ABI: any, library: Web3Provider, ac
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
   return new Contract(address, ABI, getProviderOrSigner(library, account as any))
+}
+
+export function getContractFactory(
+  ABI: any,
+  bytecode: BytesLike,
+  library: Web3Provider,
+  account?: string
+): ContractFactory {
+  return new ContractFactory(ABI, bytecode, library.getSigner(account))
 }

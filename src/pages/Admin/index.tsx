@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-import { useInput } from '../../hooks/inputs'
-import { useVotingTokenContract, useZkCreamContract } from '../../hooks/useContract'
+import { useInput } from '../../utils/inputs'
+import { useFactoryContract, useVotingTokenContract, useZkCreamContract } from '../../hooks/useContract'
 import { useActiveWeb3React } from '../../hooks/web3'
-import { useFactoryContract } from '../../hooks/useContract'
 import { ElectionData, useAllElectionData } from '../../state/election/hooks'
 
 export default function Admin() {
@@ -30,21 +29,19 @@ export default function Admin() {
   }, [factoryContract])
 
   useEffect(() => {
-    async function getVotingTokenContract() {
+    async function getVotingTokenContractAddress() {
       /* VotingToken address */
       if (electionAddress) {
         const address = await zkCreamContract.votingToken()
         setVotingTokenAddress(address)
       }
     }
-    getVotingTokenContract()
+    getVotingTokenContractAddress()
   }, [electionAddress, votingTokenAddress, zkCreamContract])
 
   async function onTransfer(e: any) {
     e.preventDefault()
     setTxState('Transfering...')
-
-    console.log(voterAddress)
 
     if (votingTokenContract && votingTokenContract.address === votingTokenAddress) {
       /* Transfer Token */

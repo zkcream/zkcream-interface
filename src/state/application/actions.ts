@@ -6,3 +6,5 @@ export enum ApplicationModal {
 }
 
 export const setOpenModal = createAction<ApplicationModal | null>('application/setOpenModal')
+export const updateCurrentPage = createAction<number>('application/updateCurrentPage')
+export const setTotalElectionsCount = createAction<number>('application/setTotalElectionsCount')

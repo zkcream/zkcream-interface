@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button } from 'rebass/styled-components'
 
-import DeployModal from '../../components/vote/DeployModal'
+import DeployModal from '../../components/DeployModal'
 import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen, useDeployModalToggle } from '../../state/application/hooks'
-import { ElectionData, useAllElectionData } from '../../state/election/hooks'
+import { useModalOpen, useDeployModalToggle, useUpdateCurrentPage, useTotalElectionsCount } from '../../state/application/hooks'
+import { ElectionData, useLimitedElectionData } from '../../state/election/hooks'
 
 const Election = styled(Button)`
   padding: 0.75rem 1rem;
@@ -36,11 +36,19 @@ const EmptyElections = styled.div`
 
 export default function Vote() {
   // should return (empty or non empty) array
-  const allElections: ElectionData[] = useAllElectionData()
+  const electionsData: ElectionData[] = useLimitedElectionData()
 
   // toggle deploy modal
   const deployModalOpen = useModalOpen(ApplicationModal.DEPLOY)
   const toggleModal = useDeployModalToggle()
+  const updateCurrentPage = useUpdateCurrentPage()
+  const total = useTotalElectionsCount()
+
+  console.log(total)
+
+  function loadNext() {
+    updateCurrentPage()
+  }
 
   return (
     <>
@@ -49,14 +57,19 @@ export default function Vote() {
         <h2>Elections</h2>
         <button onClick={toggleModal}>Create new Election</button>
       </div>
-      {allElections?.length === 0 && <EmptyElections>No elections found</EmptyElections>}
-      {allElections?.map((e: ElectionData, i) => {
+      {electionsData?.length === 0 && <EmptyElections>No elections found</EmptyElections>}
+      {electionsData?.map((e: ElectionData, i) => {
         return (
           <Election as={Link} to={'/vote/' + e.zkCreamAddress} key={i}>
             <ElectionTitle>{e.title}</ElectionTitle>
           </Election>
         )
       })}
+      {electionsData?.length > 5 && (
+        <div>
+          <button onClick={loadNext}>next Page</button>
+        </div>
+      )}
     </>
   )
 }

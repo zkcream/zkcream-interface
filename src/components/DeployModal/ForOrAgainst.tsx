@@ -1,4 +1,4 @@
-import { useAddressInput } from '../../hooks/inputs'
+import { useAddressInput } from '../../utils/inputs'
 
 export default function ForOrAgainst({ setRecipients }: { setRecipients: any }) {
   // since we cannot use `for` variable, use `forValue` instead
