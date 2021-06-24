@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { useActiveWeb3React } from '../../hooks/web3'
-import { useZkCreamContract, useVotingTokenContract } from '../../hooks/useContract'
+import { useVotingTokenContract } from '../../hooks/useContract'
 import { ElectionData, useElectionData } from '../../state/election/hooks'
 import { UserToken, useUserTokenStatus } from '../../state/user/hooks'
 import { StyledInternalLink } from '../../theme'
@@ -24,7 +24,6 @@ export default function VotePage({
   },
 }: RouteComponentProps<{ address: string }>) {
   const [approveState, setApproveState] = useState<string | undefined>('Approve token')
-  const [votingTokenAddress, setVotingTokenAddress] = useState<string | undefined>(undefined)
 
   const { account } = useActiveWeb3React()
 
@@ -40,7 +39,6 @@ export default function VotePage({
   )
 
   /* Set contract instance */
-  const zkCreamContract = useZkCreamContract(address)
   const votingTokenContract = useVotingTokenContract(electionData?.votingTokenAddress as string)
 
   async function approveToken(e: any) {

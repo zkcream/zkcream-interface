@@ -5,7 +5,7 @@ import { Button } from 'rebass/styled-components'
 
 import DeployModal from '../../components/DeployModal'
 import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen, useDeployModalToggle, useUpdateCurrentPage, useTotalElectionsCount } from '../../state/application/hooks'
+import { useModalOpen, useDeployModalToggle, useUpdateNextPage, useUpdatePrevPage } from '../../state/application/hooks'
 import { ElectionData, useLimitedElectionData } from '../../state/election/hooks'
 
 const Election = styled(Button)`
@@ -41,14 +41,8 @@ export default function Vote() {
   // toggle deploy modal
   const deployModalOpen = useModalOpen(ApplicationModal.DEPLOY)
   const toggleModal = useDeployModalToggle()
-  const updateCurrentPage = useUpdateCurrentPage()
-  const total = useTotalElectionsCount()
-
-  console.log(total)
-
-  function loadNext() {
-    updateCurrentPage()
-  }
+  const loadPrevPage = useUpdatePrevPage()
+  const loadNextPage = useUpdateNextPage()
 
   return (
     <>
@@ -65,11 +59,13 @@ export default function Vote() {
           </Election>
         )
       })}
-      {electionsData?.length > 5 && (
-        <div>
-          <button onClick={loadNext}>next Page</button>
-        </div>
-      )}
+      {/* temp */}
+      <div>
+        <button onClick={loadPrevPage}>Prev</button>
+      </div>
+      <div>
+        <button onClick={loadNextPage}>Next</button>
+      </div>
     </>
   )
 }

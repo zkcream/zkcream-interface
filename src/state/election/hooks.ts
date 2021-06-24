@@ -9,7 +9,7 @@ import {
   useZkCreamVerifierContractFactory,
 } from '../../hooks/useContract'
 import { useActiveWeb3React } from '../../hooks/web3'
-import { useCurrentPage, useSetTotalElectionsCount} from '../application/hooks'
+import { useCurrentPage } from '../application/hooks'
 import { get } from '../../utils/api'
 
 export interface ElectionData {
@@ -28,7 +28,6 @@ export interface ElectionData {
 export function useDataFromEventLogs() {
   const { library, chainId } = useActiveWeb3React()
   const [electionData, setElectionData] = useState<ElectionData[]>()
-  const setTotalElectionsCount = useSetTotalElectionsCount(electionData?.length as number)
 
   useEffect(() => {
     return () => {
@@ -62,13 +61,12 @@ export function useDataFromEventLogs() {
         })
       )
       setElectionData(elections.reverse())
-      setTotalElectionsCount()
     }
 
     if (!electionData) {
       fetchFromFactory()
     }
-  }, [electionData, library, chainId, setTotalElectionsCount])
+  }, [electionData, library, chainId])
 
   return electionData
 }

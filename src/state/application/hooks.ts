@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useAppSelector } from '../hooks'
 import { AppState } from '../index'
 
-import { ApplicationModal, setOpenModal, updateCurrentPage, setTotalElectionsCount } from './actions'
+import { ApplicationModal, PagingAction, setOpenModal, updateCurrentPage } from './actions'
 
 /*
  * modals
@@ -34,20 +34,16 @@ export function useCurrentPage(): number {
   return useAppSelector((state: AppState) => state.application.currentPage)
 }
 
-export function useUpdateCurrentPage(): () => void {
+export function useUpdateCurrentPage(next: PagingAction): () => void {
   const current = useCurrentPage()
   const dispatch = useDispatch()
-  return useCallback(() => dispatch(updateCurrentPage(current + 1)), [dispatch, current])
+  return useCallback(() => dispatch(updateCurrentPage(next ? current + 1 : current - 1)), [dispatch, next, current])
 }
 
-/*
- * total elections count
- */
-export function useTotalElectionsCount(): number | null {
-  return useAppSelector((state: AppState) => state.application.totalElectionsCount)
+export function useUpdatePrevPage(): () => void {
+  return useUpdateCurrentPage(PagingAction.PREV)
 }
 
-export function useSetTotalElectionsCount(count: number): () => void {
-  const dispatch = useDispatch()
-  return useCallback(() => dispatch(setTotalElectionsCount(count)), [dispatch, count])
+export function useUpdateNextPage(): () => void {
+  return useUpdateCurrentPage(PagingAction.NEXT)
 }

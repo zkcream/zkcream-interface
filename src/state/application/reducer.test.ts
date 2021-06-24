@@ -1,5 +1,5 @@
 import { createStore, Store } from 'redux'
-import { ApplicationModal, setOpenModal, updateCurrentPage, setTotalElectionsCount } from './actions'
+import { ApplicationModal, setOpenModal, updateCurrentPage } from './actions'
 import reducer, { ApplicationState } from './reducer'
 
 describe('application reducer', () => {
@@ -23,10 +23,6 @@ describe('application reducer', () => {
     it('set current page number', () => {
       store.dispatch(updateCurrentPage(1))
       expect(store.getState().currentPage).toEqual(1)
-    })
-    it('set total election count', () => {
-      store.dispatch(setTotalElectionsCount(12345))
-      expect(store.getState().totalElectionsCount).toEqual(12345)
     })
   })
 })
