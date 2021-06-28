@@ -55,9 +55,8 @@ function DeployForm() {
       ipfsHash: hash.data.path,
     }
 
-    const r = await deployCallback(data)
-    console.log(r)
-    ///await post('factory/deploy', data)
+    await deployCallback(data)
+    // await post('factory/deploy', data)
 
     resetTitle()
     resetCoordinatorAddress()

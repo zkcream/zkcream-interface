@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
@@ -23,6 +23,7 @@ export default function VotePage({
     params: { address },
   },
 }: RouteComponentProps<{ address: string }>) {
+  const [isApproved, setApproved] = useState<boolean | undefined>()
   const [approveState, setApproveState] = useState<string | undefined>('Approve token')
 
   const { account } = useActiveWeb3React()
@@ -31,15 +32,21 @@ export default function VotePage({
   const electionData: ElectionData | undefined = useElectionData(address)
 
   /* get user details */
-  const userData: UserToken | undefined = useUserTokenStatus(
-    address,
-    account,
-    electionData?.votingTokenAddress,
-    electionData?.signUpTokenAddress
-  )
+  const userData: UserToken | undefined = useUserTokenStatus(address, account)
 
   /* Set contract instance */
   const votingTokenContract = useVotingTokenContract(electionData?.votingTokenAddress as string)
+
+  useEffect(() => {
+    async function getTokenStatus(votingTokenContract: any) {
+      const r = await votingTokenContract.isApprovedForAll(account, address)
+      setApproved(r)
+    }
+
+    if (votingTokenContract && isApproved === undefined) {
+      getTokenStatus(votingTokenContract)
+    }
+  }, [account, address, isApproved, votingTokenContract])
 
   async function approveToken(e: any) {
     e.preventDefault()
@@ -70,14 +77,12 @@ export default function VotePage({
               {userData.votingToken ? (
                 <>
                   <div>
-                    <button disabled={userData.isApproved} onClick={approveToken}>
+                    <button disabled={isApproved} onClick={approveToken}>
                       {approveState}
                     </button>
                   </div>
                   <div>
-                    <button disabled={!userData.isApproved} onClick={signUpMaci}>
-                      Register
-                    </button>
+                    <button onClick={signUpMaci}>Register</button>
                   </div>
                 </>
               ) : null}

@@ -1,0 +1,8 @@
+version: "3"
+services:
+  zkcream-ipfs:
+    container_name: zkcream-ipfs
+    build: ./ipfs
+    ports:
+      - "5001:5001" # api
+    restart: always
