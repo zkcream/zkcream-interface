@@ -1,10 +1,12 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import application from './application/reducer'
+import election from './election/reducer'
 import { updateVersion } from './global/actions'
 
 const store = configureStore({
   reducer: {
     application,
+    election,
   },
   middleware: [...getDefaultMiddleware({ thunk: false })],
 })

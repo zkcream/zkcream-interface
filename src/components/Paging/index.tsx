@@ -1,14 +1,17 @@
 import React from 'react'
-import { useLoadPrevPage, useLoadNextPage } from '../../state/application/hooks'
+import { useCurrentPage, useLoadPrevPage, useLoadNextPage } from '../../state/election/hooks'
 
-export default function Paging() {
+export default function Paging({ total }: { total: number }) {
+  const currentPage = useCurrentPage()
+  const isDisableNext = total - (currentPage * 5) < 5
+
   const loadPrevPage = useLoadPrevPage()
   const loadNextPage = useLoadNextPage()
 
   return (
     <>
-      <button onClick={loadPrevPage}>Prev</button>
-      <button onClick={loadNextPage}>Next</button>
+      <button disabled={!currentPage} onClick={loadPrevPage}>Prev</button>
+      <button disabled={isDisableNext} onClick={loadNextPage}>Next</button>
     </>
   )
 }

@@ -2,6 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { ContractFactory } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 
+import { PagingAction, setTotalElections, updateCurrentPage } from './actions'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { AppState } from '../index'
+
 import {
   useFactoryContract,
   useSignUpTokenContractFactory,
@@ -9,7 +13,6 @@ import {
   useZkCreamVerifierContractFactory,
 } from '../../hooks/useContract'
 import { useActiveWeb3React } from '../../hooks/web3'
-import { useCurrentPage } from '../application/hooks'
 import { get } from '../../utils/api'
 
 export interface ElectionData {
@@ -74,13 +77,13 @@ export function useDataFromEventLogs() {
 // get event logs for all deployed zkcream contract
 export function useAllElectionData(): ElectionData[] | [] {
   const formattedEvents = useDataFromEventLogs()
-
   return formattedEvents ? formattedEvents : []
 }
 
 export function useLimitedElectionData(limit: number = 5): ElectionData[] | [] {
   const current = useCurrentPage()
   const allElectionData = useAllElectionData()
+  useSetTotalElections(allElectionData.length)
   return allElectionData.slice(current * limit, current * limit + 5)
 }
 
@@ -150,4 +153,37 @@ export function useDeployCallback(): {
     [account, factoryContract, signUpTokenContract, votingTokenContract, zkCreamVerifierContract]
   )
   return { deployCallback }
+}
+
+/*
+ * total elections
+ */
+export function useTotalElections(): number {
+  return useAppSelector((state: AppState) => state.election.total)
+}
+
+export function useSetTotalElections(count: number) {
+  const dispatch = useAppDispatch()
+  dispatch(setTotalElections(count))
+}
+
+/*
+ * paging for election lists
+ */
+export function useCurrentPage(): number {
+  return useAppSelector((state: AppState) => state.election.currentPage)
+}
+
+export function useUpdateCurrentPage(action: PagingAction): () => void {
+  const current = useCurrentPage()
+  const dispatch = useAppDispatch()
+  return useCallback(() => dispatch(updateCurrentPage(action ? current + 1 : current - 1)), [dispatch, action, current])
+}
+
+export function useLoadPrevPage(): () => void {
+  return useUpdateCurrentPage(PagingAction.PREV)
+}
+
+export function useLoadNextPage(): () => void {
+  return useUpdateCurrentPage(PagingAction.NEXT)
 }

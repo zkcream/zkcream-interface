@@ -7,7 +7,7 @@ import DeployModal from '../../components/DeployModal'
 import Paging from '../../components/Paging'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useDeployModalToggle } from '../../state/application/hooks'
-import { ElectionData, useLimitedElectionData } from '../../state/election/hooks'
+import { ElectionData, useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
 
 const Election = styled(Button)`
   padding: 0.75rem 1rem;
@@ -38,6 +38,7 @@ const EmptyElections = styled.div`
 export default function Vote() {
   // should return (empty or non empty) array
   const electionsData: ElectionData[] = useLimitedElectionData()
+  const totalElectionNum = useTotalElections()
 
   // toggle deploy modal
   const deployModalOpen = useModalOpen(ApplicationModal.DEPLOY)
@@ -58,7 +59,7 @@ export default function Vote() {
           </Election>
         )
       })}
-      <Paging />
+      {totalElectionNum > 5 ? <Paging total={totalElectionNum} /> : null}
     </>
   )
 }
