@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
-import { useAppSelector } from '../hooks'
+import { useAppDispatch, useAppSelector } from '../hooks'
 import { AppState } from '../index'
 
 import { ApplicationModal, PagingAction, setOpenModal, updateCurrentPage } from './actions'
@@ -15,7 +14,7 @@ export function useModalOpen(modal: ApplicationModal): boolean {
 
 export function useToggleModal(modal: ApplicationModal): () => void {
   const open = useModalOpen(modal)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   return useCallback(() => dispatch(setOpenModal(open ? null : modal)), [dispatch, modal, open])
 }
 
@@ -34,16 +33,16 @@ export function useCurrentPage(): number {
   return useAppSelector((state: AppState) => state.application.currentPage)
 }
 
-export function useUpdateCurrentPage(next: PagingAction): () => void {
+export function useUpdateCurrentPage(action: PagingAction): () => void {
   const current = useCurrentPage()
-  const dispatch = useDispatch()
-  return useCallback(() => dispatch(updateCurrentPage(next ? current + 1 : current - 1)), [dispatch, next, current])
+  const dispatch = useAppDispatch()
+  return useCallback(() => dispatch(updateCurrentPage(action ? current + 1 : current - 1)), [dispatch, action, current])
 }
 
-export function useUpdatePrevPage(): () => void {
+export function useLoadPrevPage(): () => void {
   return useUpdateCurrentPage(PagingAction.PREV)
 }
 
-export function useUpdateNextPage(): () => void {
+export function useLoadNextPage(): () => void {
   return useUpdateCurrentPage(PagingAction.NEXT)
 }
