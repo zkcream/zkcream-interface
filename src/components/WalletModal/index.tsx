@@ -41,7 +41,9 @@ export default function WalletModal() {
 
   return (
     <>
-      <Modal isOpen={walletModalOpen}>{getModalContent()}</Modal>
+      <Modal isOpen={walletModalOpen} onDismiss={toggleModal}>
+        {getModalContent()}
+      </Modal>
     </>
   )
 }

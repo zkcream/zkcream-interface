@@ -2,6 +2,7 @@ import React, { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
+import '@reach/dialog/styles.css'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 
 import { NetworkContextName } from './constants/misc'

@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 import { genKeypair } from 'maci-crypto'
 import { Keypair, PrivKey } from 'maci-domainobjs'
+import { Box } from 'rebass/styled-components'
+import { Label, Input, Select } from '@rebass/forms'
 
+import { AutoColumn } from '../Column'
 import Candidates from './Candidates'
 import Modal from '../Modal'
 import { useInput } from '../../utils/inputs'
@@ -9,8 +13,14 @@ import { post } from '../../utils/api'
 
 import { useDeployCallback } from '../../state/election/hooks'
 
+const ContentWrapper = styled(AutoColumn)`
+  width: 100%;
+  padding: 24px;
+`
+
 interface DeployModalProps {
   isOpen: boolean
+  onDismiss: () => void
 }
 
 // define type of selection (election type)
@@ -68,36 +78,38 @@ function DeployForm() {
   }
 
   return (
-    <form onSubmit={onDeploy}>
-      <label>
+    <Box as="form" onSubmit={onDeploy}>
+      <Label>
         Title:
-        <input type="text" {...bindTitle} />
-      </label>
-      <label>
+        <Input type="text" {...bindTitle} />
+      </Label>
+      <Label>
         Coordinator Ethereum Address:
-        <input type="text" {...bindCoordinatorAddress} />
-      </label>
-      <label>
+        <Input type="text" {...bindCoordinatorAddress} />
+      </Label>
+      <Label>
         Type:
-        <select value={electionType} onChange={(e) => handleOnChange(e.target.value)}>
+        <Select value={electionType} onChange={(e) => handleOnChange(e.target.value)}>
           <option></option>
           {selections.map((selection, i) => (
             <option key={i} value={i}>
               {selection}
             </option>
           ))}
-        </select>
-      </label>
+        </Select>
+      </Label>
       <Candidates electionType={electionType as string} setRecipients={setRecipients} />
       <input type="submit" value={txState} disabled={txState !== 'Deploy' || !electionType} />
-    </form>
+    </Box>
   )
 }
 
-export default function DeployModal({ isOpen }: DeployModalProps) {
+export default function DeployModal({ isOpen, onDismiss }: DeployModalProps) {
   return (
-    <Modal isOpen={isOpen}>
-      <DeployForm />
+    <Modal isOpen={isOpen} onDismiss={onDismiss}>
+      <ContentWrapper gap="lg">
+        <DeployForm />
+      </ContentWrapper>
     </Modal>
   )
 }
