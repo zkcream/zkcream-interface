@@ -49,7 +49,7 @@ const Base = styled(Button)<
 export const ButtonPrimary = styled(Base)``
 
 export const ButtonIcon = styled(Base)`
-  border-radius: 50%;
+  border-radius: 10px;
   color: ${({ theme }) => theme.blackText};
   border: 1px solid;
   margin: 0.25rem;

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { genKeypair } from 'maci-crypto'
 import { Keypair, PrivKey } from 'maci-domainobjs'
-import { Box } from 'rebass/styled-components'
+import { Box, Flex } from 'rebass/styled-components'
 import { Label, Input, Select } from '@rebass/forms'
 
 import { AutoColumn } from '../Column'
@@ -16,6 +16,15 @@ import { useDeployCallback } from '../../state/election/hooks'
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 24px;
+`
+
+const SubmitButton = styled.input`
+  background-color: grey;
+  border: none;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
 `
 
 interface DeployModalProps {
@@ -79,27 +88,25 @@ function DeployForm() {
 
   return (
     <Box as="form" onSubmit={onDeploy}>
-      <Label>
-        Title:
+      <Box>
+        <Label fontWeight="bold">Title</Label>
         <Input type="text" {...bindTitle} />
-      </Label>
-      <Label>
-        Coordinator Ethereum Address:
+      </Box>
+      <Box>
+        <Label fontWeight="bold">Coordinator Ethereum Address</Label>
         <Input type="text" {...bindCoordinatorAddress} />
-      </Label>
-      <Label>
-        Type:
-        <Select value={electionType} onChange={(e) => handleOnChange(e.target.value)}>
-          <option></option>
-          {selections.map((selection, i) => (
-            <option key={i} value={i}>
-              {selection}
-            </option>
-          ))}
-        </Select>
-      </Label>
+      </Box>
+      <Label fontWeight="bold">Type</Label>
+      <Select value={electionType} onChange={(e) => handleOnChange(e.target.value)}>
+        <option></option>
+        {selections.map((selection, i) => (
+          <option key={i} value={i}>
+            {selection}
+          </option>
+        ))}
+      </Select>
       <Candidates electionType={electionType as string} setRecipients={setRecipients} />
-      <input type="submit" value={txState} disabled={txState !== 'Deploy' || !electionType} />
+      <SubmitButton type="submit" value={txState} disabled={txState !== 'Deploy' || !electionType} />
     </Box>
   )
 }
@@ -107,7 +114,7 @@ function DeployForm() {
 export default function DeployModal({ isOpen, onDismiss }: DeployModalProps) {
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss}>
-      <ContentWrapper gap="lg">
+      <ContentWrapper gap="sm">
         <DeployForm />
       </ContentWrapper>
     </Modal>

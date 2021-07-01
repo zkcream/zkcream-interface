@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { Box, Flex, Text } from 'rebass'
+import { Input, Label, Select } from '@rebass/forms'
 
 import { useInput } from '../../utils/inputs'
 import { useFactoryContract, useVotingTokenContract, useZkCreamContract } from '../../hooks/useContract'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { ElectionData, useAllElectionData } from '../../state/election/hooks'
+
+const SubmitButton = styled.input`
+  background-color: grey;
+  border: none;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+`
 
 export default function Admin() {
   const [owner, setOwner] = useState(null)
@@ -66,22 +78,34 @@ export default function Admin() {
   return (
     <>
       {owner && owner === account ? (
-        <>
-          <form onSubmit={onTransfer}>
-            <select value={electionAddress} onChange={(e) => handleOnChange(e.target.value)}>
-              <option></option>
-              {allElections.map((election, i) => (
-                <option key={i} value={election.zkCreamAddress}>
-                  {election.title}
-                </option>
-              ))}
-            </select>
-            <input type="text" {...bindVoterAddress} />
-            <input type="submit" value={txState} disabled={txState !== 'Submit'} />
-          </form>
-        </>
+        <Box as="form" onSubmit={onTransfer}>
+          <Flex mb={20}>
+            <Box width={1}>
+              <Label fontWeight="bold">Election</Label>
+              <Select value={electionAddress} onChange={(e) => handleOnChange(e.target.value)}>
+                <option></option>
+                {allElections.map((election, i) => (
+                  <option key={i} value={election.zkCreamAddress}>
+                    {election.title}
+                  </option>
+                ))}
+              </Select>
+            </Box>
+          </Flex>
+          <Flex mb={20}>
+            <Box>
+              <Label fontWeight="bold">Ethereum Address</Label>
+              <Input type="text" {...bindVoterAddress} />
+            </Box>
+          </Flex>
+          <Flex>
+            <SubmitButton type="submit" value={txState} disabled={txState !== 'Submit'} />
+          </Flex>
+        </Box>
       ) : (
-        <>You are not admin</>
+        <Text fontSize={3} fontWeight="bold" color="red">
+          You are not admin
+        </Text>
       )}
     </>
   )

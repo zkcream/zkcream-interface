@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import Web3Status from '../Web3Status'
@@ -16,10 +17,12 @@ const HeaderFrame = styled.div`
   z-index: 21;
   position: relative;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  grid-template-columns: auto 1fr;
+
+  /* ${({ theme }) => theme.mediaWidth.upToMedium`
     padding:  1rem;
     grid-template-columns: auto 1fr;
-  `};
+  `}; */
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     padding: 1rem;
@@ -28,21 +31,18 @@ const HeaderFrame = styled.div`
 
 const HeaderElement = styled.div`
   display: flex;
-  align-items: center;
-
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    flex-direction: row-reverse;
-    align-items: center;
-  `};
+  flex-direction: row-reverse;
 `
 
 const Title = styled.a`
-  display: flex;
   align-items: center;
-  pointer-events: auto;
+  color: inherit;
+  display: flex;
+  font-weight: bold;
   justify-self: flex-start;
   margin-right: 12px;
-  font-weight: bold;
+  pointer-events: auto;
+  text-decoration: none;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     justify-self: center;
@@ -55,7 +55,9 @@ const Title = styled.a`
 export default function Header() {
   return (
     <HeaderFrame>
-      <Title>zkCREAM</Title>
+      <Title as={Link} to={'/'}>
+        zkCREAM
+      </Title>
       <HeaderElement>
         <Web3Status />
       </HeaderElement>

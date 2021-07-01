@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button } from 'rebass/styled-components'
 
+import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import DeployModal from '../../components/DeployModal'
 import Paging from '../../components/Paging'
@@ -58,7 +59,7 @@ export default function Vote() {
       <DeployModal isOpen={deployModalOpen} onDismiss={toggleModal} />
       <TopSection>
         <h2>Elections</h2>
-        <button onClick={toggleModal}>Create new Election</button>
+        <ButtonPrimary onClick={toggleModal}>Create new Election</ButtonPrimary>
         {electionsData?.length === 0 && <EmptyElections>No elections found</EmptyElections>}
         {electionsData?.map((e: ElectionData, i) => {
           return (

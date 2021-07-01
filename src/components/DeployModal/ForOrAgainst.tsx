@@ -1,3 +1,7 @@
+import { Box, Text } from 'rebass'
+import { Input, Label } from '@rebass/forms'
+
+import { ButtonPrimary } from '../Button'
 import { useAddressInput } from '../../utils/inputs'
 
 export default function ForOrAgainst({ setRecipients }: { setRecipients: any }) {
@@ -21,16 +25,20 @@ export default function ForOrAgainst({ setRecipients }: { setRecipients: any }) 
 
   return (
     <div>
-      <div>
-        <span>Set candidates address</span>
-      </div>
-      <label>For</label>
-      <input type="text" {...bindFor} />
-      <label>Against</label>
-      <input type="text" {...bindAgainst} />
-      <button onClick={onConfirm} disabled={disabled}>
+      <Box my={10}>
+        <Text fontWeight="bold">Set candidates address:</Text>
+      </Box>
+      <Box>
+        <Label fontWeight="bold">For</Label>
+        <Input type="text" {...bindFor} />
+      </Box>
+      <Box>
+        <Label fontWeight="bold">Against</Label>
+        <Input type="text" {...bindAgainst} />
+      </Box>
+      <ButtonPrimary onClick={onConfirm} disabled={disabled}>
         Confirm
-      </button>
+      </ButtonPrimary>
     </div>
   )
 }

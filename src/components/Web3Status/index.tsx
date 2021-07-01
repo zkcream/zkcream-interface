@@ -1,6 +1,7 @@
 import React from 'react'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 
+import { ButtonPrimary } from '../Button'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { shortenAddress } from '../../utils'
 import WalletModal from '../WalletModal'
@@ -16,7 +17,9 @@ export default function Web3Status() {
   } else {
     return (
       <>
-        <button onClick={toggleModal}>Connect to a Wallet</button>
+        <ButtonPrimary width="180px" padding="8px" onClick={toggleModal}>
+          Connect to a Wallet
+        </ButtonPrimary>
         <WalletModal />
       </>
     )
