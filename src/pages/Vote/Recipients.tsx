@@ -47,7 +47,7 @@ function ForOrAgainst({ recipients }: { recipients: string[] }) {
           console.log('new key')
         }}
       >
-        New Key
+        Create New Key
       </ButtonPrimary>
       <CardWrapper>
         {recipients.map((recipient, i) => (

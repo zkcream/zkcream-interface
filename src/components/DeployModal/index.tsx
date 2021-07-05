@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { genKeypair } from 'maci-crypto'
 import { Keypair, PrivKey } from 'maci-domainobjs'
-import { Box, Flex } from 'rebass/styled-components'
+import { Box } from 'rebass/styled-components'
 import { Label, Input, Select } from '@rebass/forms'
 
 import { AutoColumn } from '../Column'
@@ -74,8 +74,8 @@ function DeployForm() {
       ipfsHash: hash.data.path,
     }
 
-    await deployCallback(data)
-    // await post('factory/deploy', data)
+    //await deployCallback(data)
+    await post('factory/deploy', data)
 
     resetTitle()
     resetCoordinatorAddress()

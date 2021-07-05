@@ -20,5 +20,9 @@ describe('application reducer', () => {
       store.dispatch(setOpenModal(ApplicationModal.DEPLOY))
       expect(store.getState().openModal).toEqual(ApplicationModal.DEPLOY)
     })
+    it('set note modal', () => {
+      store.dispatch(setOpenModal(ApplicationModal.NOTE))
+      expect(store.getState().openModal).toEqual(ApplicationModal.NOTE)
+    })
   })
 })
