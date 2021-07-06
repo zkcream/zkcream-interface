@@ -11,7 +11,7 @@ import Modal from '../Modal'
 import { useInput } from '../../utils/inputs'
 import { post } from '../../utils/api'
 
-import { useDeployCallback } from '../../state/election/hooks'
+// import { useDeployCallback } from '../../state/election/hooks'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -51,7 +51,7 @@ function DeployForm() {
   const { privKey } = genKeypair()
   const coordinator = new Keypair(new PrivKey(privKey))
 
-  const { deployCallback } = useDeployCallback()
+  // const { deployCallback } = useDeployCallback()
 
   async function onDeploy(e: any) {
     e.preventDefault()

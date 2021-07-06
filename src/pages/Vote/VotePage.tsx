@@ -7,11 +7,12 @@ import { Text } from 'rebass'
 import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import { NoteModal } from '../../components/NoteModal'
+import { SignUpModal } from '../../components/SignUpModal'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { useVotingTokenContract } from '../../hooks/useContract'
 import { useDepositCallback } from '../../hooks/useDepositCallback'
 import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen, useNoteModalToggle } from '../../state/application/hooks'
+import { useModalOpen, useNoteModalToggle, useSignUpModalToggle } from '../../state/application/hooks'
 import { ElectionData, useElectionData } from '../../state/election/hooks'
 import { UserToken, useUserTokenStatus } from '../../state/user/hooks'
 import { StyledInternalLink } from '../../theme'
@@ -63,7 +64,11 @@ export default function VotePage({
 
   /* toggle note modal */
   const noteModalOpen = useModalOpen(ApplicationModal.NOTE)
-  const toggleModal = useNoteModalToggle()
+  const toggleNoteModal = useNoteModalToggle()
+
+  /* toggle sign up modal */
+  const signUpModalOpen = useModalOpen(ApplicationModal.SIGNUP)
+  const toggleSignUpModal = useSignUpModalToggle()
 
   useEffect(() => {
     async function getTokenStatus(votingTokenContract: any) {
@@ -91,9 +96,14 @@ export default function VotePage({
     }
   }
 
+  function signUp() {
+    toggleSignUpModal()
+  }
+
   return (
     <PageWrapper gap="lg" justify="center">
-      <NoteModal isOpen={noteModalOpen} onDismiss={toggleModal} note={note} />
+      <NoteModal isOpen={noteModalOpen} onDismiss={toggleNoteModal} note={note} />
+      <SignUpModal address={address} isOpen={signUpModalOpen} onDismiss={toggleSignUpModal} />
       <ElectionInfo gap="lg" justify="start">
         {electionData && (
           <>
@@ -113,7 +123,7 @@ export default function VotePage({
               {userData.maciToken ? (
                 <ButtonPrimary>Create Message</ButtonPrimary>
               ) : (
-                <ButtonPrimary>Sign up</ButtonPrimary>
+                <ButtonPrimary onClick={signUp}>Sign up</ButtonPrimary>
               )}
               <Text fontSize={[5]} fontWeight="bold" mt={4} mb={2}>
                 {electionData.title}

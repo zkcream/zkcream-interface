@@ -29,3 +29,7 @@ export function useDeployModalToggle(): () => void {
 export function useNoteModalToggle(): () => void {
   return useToggleModal(ApplicationModal.NOTE)
 }
+
+export function useSignUpModalToggle(): () => void {
+  return useToggleModal(ApplicationModal.SIGNUP)
+}
