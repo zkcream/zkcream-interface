@@ -27,16 +27,15 @@ export function useSignUpCallback(address: string) {
         path_index: merkleProof[1],
       }
 
-      const userPubKey = userKeypair.pubKey.asContractParam()
       const data = {
         input: JSON.stringify(input, (key, value) => (typeof value === 'bigint' ? value.toString() : value)),
       }
 
       const formattedProof = await post('zkcream/genproof', data)
 
+      const userPubKey = userKeypair.pubKey.asContractParam()
       const args = [toHex(input.root), toHex(input.nullifierHash)]
-
-      return await zkCreamContract.signUpMaci(userPubKey, formattedProof.data, ...args).then()
+      return await zkCreamContract.signUpMaci(userPubKey, formattedProof.data, ...args)
     },
     [address, zkCreamContract]
   )
