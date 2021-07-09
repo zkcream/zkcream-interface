@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 
+import { useAppSelector } from '../hooks'
+import { SupportedLocale } from '../../constants/locales'
+
 import { get } from '../../utils/api'
+import { AppState } from '../index'
 
 export interface UserToken {
   votingToken: number
@@ -34,4 +38,8 @@ export function useUserTokenStatus(address: string, account: string | null | und
   })
 
   return tokenState
+}
+
+export function useUserLocale(): SupportedLocale | null {
+  return useAppSelector((state: AppState) => state.user.userLocale)
 }

@@ -7,6 +7,7 @@ import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { injected } from '../../connectors'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/actions'
+import { Trans } from '@lingui/macro'
 
 import Modal from '../Modal'
 
@@ -91,7 +92,9 @@ export default function WalletModal() {
             <X size={20} />
           </CloseIcon>
           <HeaderRow>
-            <HoverText onClick={() => tryActivation(injected)}>Connecto to a Wallet</HoverText>
+            <HoverText onClick={() => tryActivation(injected)}>
+              <Trans>Connecto to a Wallet</Trans>
+            </HoverText>
           </HeaderRow>
         </UpperSection>
       )

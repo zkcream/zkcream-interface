@@ -5,6 +5,7 @@ import { HashRouter } from 'react-router-dom'
 import '@reach/dialog/styles.css'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 
+import { LanguageProvider } from './i18n'
 import { NetworkContextName } from './constants/misc'
 import App from './pages/App'
 import store from './state'
@@ -21,18 +22,20 @@ if (!!window.ethereum) {
 ReactDOM.render(
   <StrictMode>
     <GlobalStyle />
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <Web3ProviderNetwork getLibrary={getLibrary}>
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <ThemedGlobalStyle />
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </ThemeProvider>
-        </Provider>
-      </Web3ProviderNetwork>
-    </Web3ReactProvider>
+    <Provider store={store}>
+      <LanguageProvider>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <Web3ProviderNetwork getLibrary={getLibrary}>
+            <ThemeProvider theme={theme}>
+              <ThemedGlobalStyle />
+              <HashRouter>
+                <App />
+              </HashRouter>
+            </ThemeProvider>
+          </Web3ProviderNetwork>
+        </Web3ReactProvider>
+      </LanguageProvider>
+    </Provider>
   </StrictMode>,
   document.getElementById('root')
 )
