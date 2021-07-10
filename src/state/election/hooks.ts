@@ -4,7 +4,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { PagingAction, setTotalElections, updateCurrentPage } from './actions'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { AppState } from '../index'
+import { RootState } from '../index'
 
 import {
   useFactoryContract,
@@ -159,7 +159,7 @@ export function useDeployCallback(): {
  * total elections
  */
 export function useTotalElections(): number {
-  return useAppSelector((state: AppState) => state.election.total)
+  return useAppSelector((state: RootState) => state.election.total)
 }
 
 export function useSetTotalElections(count: number) {
@@ -171,7 +171,7 @@ export function useSetTotalElections(count: number) {
  * paging for election lists
  */
 export function useCurrentPage(): number {
-  return useAppSelector((state: AppState) => state.election.currentPage)
+  return useAppSelector((state: RootState) => state.election.currentPage)
 }
 
 export function useUpdateCurrentPage(action: PagingAction): () => void {

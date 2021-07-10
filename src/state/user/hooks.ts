@@ -4,7 +4,7 @@ import { useAppSelector } from '../hooks'
 import { SupportedLocale } from '../../constants/locales'
 
 import { get } from '../../utils/api'
-import { AppState } from '../index'
+import { RootState } from '../index'
 
 export interface UserToken {
   votingToken: number
@@ -41,5 +41,5 @@ export function useUserTokenStatus(address: string, account: string | null | und
 }
 
 export function useUserLocale(): SupportedLocale | null {
-  return useAppSelector((state: AppState) => state.user.userLocale)
+  return useAppSelector((state: RootState) => state.user.userLocale)
 }

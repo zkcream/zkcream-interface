@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { AppState } from '../index'
+import { RootState } from '../index'
 
 import { ApplicationModal, setOpenModal } from './actions'
 
@@ -8,7 +8,7 @@ import { ApplicationModal, setOpenModal } from './actions'
  * modals
  */
 export function useModalOpen(modal: ApplicationModal): boolean {
-  const openModal = useAppSelector((state: AppState) => state.application.openModal)
+  const openModal = useAppSelector((state: RootState) => state.application.openModal)
   return openModal === modal
 }
 
