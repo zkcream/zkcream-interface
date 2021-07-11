@@ -16,3 +16,8 @@ export async function post(path: string, data: any): Promise<AxiosResponse<any>>
   const url = API_HOST + '/' + path
   return await axios.post(url, data)
 }
+
+/* fetch holding token status */
+export async function fetchTokenStatus(address: string, account: string): Promise<any> {
+  return (await get('zkcream/' + address + '/' + account)).data
+}
