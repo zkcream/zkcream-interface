@@ -47,31 +47,18 @@ export default function VotePage({
   const { account } = useActiveWeb3React()
 
   /* get election details */
+  // TODO Refacotor rendering
   const electionData: ElectionData | undefined = useElectionData(address)
 
   /* fetch token status */
   const dispatch = useAppDispatch()
   const tokenState: TokenType = useTokenType()
 
+  // TODO Refacotor rendering
   useEffect(() => {
     const arg: any = { address, account }
     dispatch(fetchTokenState(arg))
   }, [account, address, dispatch])
-
-  // async function approveToken(e: any) {
-  //   e.preventDefault()
-  //   setApproveState('Approving...')
-
-  //   if (votingTokenContract) {
-  //     const r = await votingTokenContract.setApprovalForAll(address, true)
-  //     if (r.status) {
-  //       await r.wait()
-  //       setApproveState('Approved')
-  //     }
-  //   } else {
-  //     throw new Error('error')
-  //   }
-  // }
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -86,12 +73,15 @@ export default function VotePage({
               <Text fontSize={[5]} fontWeight="bold" mt={4} mb={2}>
                 {electionData.title}
               </Text>
-              <TokenButtons
-                tokenState={tokenState}
-                zkCreamAddress={address}
-                votingTokenAddress={electionData.votingTokenAddress}
-              />
-              <Recipients recipients={electionData.recipients} electionType={electionData.electionType} />
+              {tokenState & TokenType.SIGNUP ? (
+                <Recipients recipients={electionData.recipients} electionType={electionData.electionType} />
+              ) : (
+                <TokenButtons
+                  tokenState={tokenState}
+                  zkCreamAddress={address}
+                  votingTokenAddress={electionData.votingTokenAddress}
+                />
+              )}
             </AutoColumn>
             <AutoColumn gap="sm">
               <Text fontSize={[3]} fontWeight="bold">
@@ -101,7 +91,6 @@ export default function VotePage({
                 <Trans>Group owner</Trans>
               </Text>
               {electionData.owner}
-
               <Text fontSize={[2]} fontWeight="bold">
                 <Trans>Coordinator</Trans>
               </Text>

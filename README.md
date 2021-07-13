@@ -1,5 +1,7 @@
 # zkCREAM Interface
 
+[![Reducer Tests](https://github.com/zkcream/zkcream-interface/actions/workflows/reducer.yml/badge.svg)](https://github.com/zkcream/zkcream-interface/actions/workflows/reducer.yml)
+
 ## start app
 
 ```bash

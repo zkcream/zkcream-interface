@@ -2,9 +2,8 @@ import React from 'react'
 import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../Button'
-
-import { SignUpModal } from '../SignUpModal'
 import { NoteModal } from '../NoteModal'
+import { SignUpModal } from '../SignUpModal'
 
 import { useDepositCallback } from '../../hooks/useDepositCallback'
 import { useApproveTokenCallback } from '../../hooks/useApproveTokenCallback'
@@ -56,11 +55,7 @@ export function TokenButtons({ tokenState, zkCreamAddress, votingTokenAddress }:
           </ButtonPrimary>
         </>
       ) : null}
-      {tokenState & TokenType.SIGNUP ? (
-        <ButtonPrimary>
-          <Trans>Create Message</Trans>
-        </ButtonPrimary>
-      ) : (
+      {tokenState & TokenType.SIGNUP ? null : (
         <ButtonPrimary onClick={signUp}>
           <Trans>Sign Up</Trans>
         </ButtonPrimary>

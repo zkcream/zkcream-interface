@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { X } from 'react-feather'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+import { Trans } from '@lingui/macro'
 
 import { injected } from '../../connectors'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/actions'
-import { Trans } from '@lingui/macro'
 
 import Modal from '../Modal'
 
@@ -22,7 +22,7 @@ const CloseIcon = styled.div`
 `
 
 const Wrapper = styled.div`
-  ${({ theme }) => theme.flexColumnNoWrap}
+  ${({ theme }) => theme.flexColumnNoWrap};
   margin: 0;
   padding: 0;
   width: 100%;
@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  padding: 1rem 1rem;
+  padding: 1rem;
   font-weight: 500;
   color: ${(props) => (props.color === 'blue' ? ({ theme }) => theme.primary1 : 'inherit')};
   ${({ theme }) => theme.mediaWidth.upToMedium`

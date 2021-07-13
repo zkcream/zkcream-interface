@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../../components/Button'
 import { RowFixed } from '../../components/Row'
+import { ActionNames, MessageAction, VoteNav } from '../../components/VoteNav'
 import { shortenAddress } from '../../utils'
+
+interface RecipientsProps {
+  recipients: string[]
+  electionType: string
+}
 
 const CardWrapper = styled.div`
   display: grid;
@@ -40,15 +47,6 @@ function ForOrAgainst({ recipients }: { recipients: string[] }) {
           ))}
         </RowFixed>
       ) : null}
-      <hr />
-      or
-      <ButtonPrimary
-        onClick={() => {
-          console.log('new key')
-        }}
-      >
-        Create New Key
-      </ButtonPrimary>
       <CardWrapper>
         {recipients.map((recipient, i) => (
           <p key={i}>{shortenAddress(recipient)}</p>
@@ -58,7 +56,7 @@ function ForOrAgainst({ recipients }: { recipients: string[] }) {
   )
 }
 
-export default function Recipients({ recipients, electionType }: { recipients: string[]; electionType: string }) {
+function ActionPatterns({ recipients, electionType }: RecipientsProps) {
   return (
     <>
       {
@@ -68,6 +66,27 @@ export default function Recipients({ recipients, electionType }: { recipients: s
           2: <ForOrAgainst recipients={recipients} />,
         }[electionType]
       }
+    </>
+  )
+}
+
+export default function Recipients({ recipients, electionType }: RecipientsProps) {
+  const [radioState, setRadioState] = useState<MessageAction>(MessageAction.SELECT)
+
+  function toggleRadio(e: any) {
+    setRadioState(ActionNames[e.target.value][0] as MessageAction)
+  }
+
+  return (
+    <>
+      <VoteNav radioState={radioState} handleChange={toggleRadio} />
+      {radioState === 0 ? (
+        <ActionPatterns recipients={recipients} electionType={electionType} />
+      ) : (
+        <ButtonPrimary>
+          <Trans>New Key</Trans>
+        </ButtonPrimary>
+      )}
     </>
   )
 }
