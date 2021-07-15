@@ -47,14 +47,12 @@ export default function VotePage({
   const { account } = useActiveWeb3React()
 
   /* get election details */
-  // TODO Refacotor rendering
   const electionData: ElectionData | undefined = useElectionData(address)
 
   /* fetch token status */
   const dispatch = useAppDispatch()
   const tokenState: TokenType = useTokenType()
 
-  // TODO Refacotor rendering
   useEffect(() => {
     const arg: any = { address, account }
     dispatch(fetchTokenState(arg))

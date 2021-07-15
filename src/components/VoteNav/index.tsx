@@ -47,15 +47,15 @@ const RadioInput = styled.input`
 
   &:checked {
     + label {
-      background: black;
-      color: white;
+      background: ${({ theme }) => theme.blackText};
+      color: ${({ theme }) => theme.white};
     }
   }
 `
 
 const RadioButtonLabel = styled.label`
   cursor: pointer;
-  border: 1px solid black;
+  border: 1px solid ${({ theme }) => theme.black};
   display: block;
   margin-right: -2px;
   padding: 1rem;

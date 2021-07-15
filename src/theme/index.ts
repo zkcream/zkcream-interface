@@ -24,13 +24,15 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
 ) as any
 
 const white = '#ffffff'
+const black = '#333333'
 
 export function colors(): Colors {
   return {
     // base
     white,
+    black,
     greyText: '#6c7284',
-    blackText: '#333333',
+    blackText: black,
 
     // backgrounds
     modalBackground: 'rgba(0,0,0,0.3)',

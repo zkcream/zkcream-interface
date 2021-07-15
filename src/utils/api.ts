@@ -11,6 +11,14 @@ export async function get(path?: string): Promise<AxiosResponse<any>> {
   return await axios.get(url)
 }
 
+// export function get(param: any) {
+//   console.log(param)
+//   const r = {
+//     data: []
+//   }
+//   return r
+// }
+
 /* post request to API server */
 export async function post(path: string, data: any): Promise<AxiosResponse<any>> {
   const url = API_HOST + '/' + path

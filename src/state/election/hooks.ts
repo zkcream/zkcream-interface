@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ContractFactory } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 
@@ -29,22 +29,20 @@ export interface ElectionData {
 }
 
 export function useDataFromEventLogs() {
-  const { library, chainId } = useActiveWeb3React()
+  const { library } = useActiveWeb3React()
   const [electionData, setElectionData] = useState<ElectionData[]>()
-
-  useEffect(() => {
-    return () => {
-      setElectionData(undefined)
-    }
-  }, [chainId])
 
   useEffect(() => {
     /* early return for no library */
     if (!library) return
 
-    async function fetchFromFactory() {
-      const logs = (await get('factory/logs')).data
+    if (!electionData) {
+      fetchFromFactory()
+    }
 
+    async function fetchFromFactory() {
+      setElectionData(undefined)
+      const logs = (await get('factory/logs')).data
       const elections: ElectionData[] = await Promise.all(
         logs.map(async (log: any) => {
           const decodedLog = (await get('zkcream/' + log[0])).data
@@ -65,11 +63,7 @@ export function useDataFromEventLogs() {
       )
       setElectionData(elections.reverse())
     }
-
-    if (!electionData) {
-      fetchFromFactory()
-    }
-  }, [electionData, library, chainId])
+  }, [electionData, library])
 
   return electionData
 }
@@ -80,7 +74,7 @@ export function useAllElectionData(): ElectionData[] | [] {
   return formattedEvents ? formattedEvents : []
 }
 
-export function useLimitedElectionData(limit: number = 5): ElectionData[] | [] {
+export function useLimitedElectionData(limit: number = 5) {
   const current = useCurrentPage()
   const allElectionData = useAllElectionData()
   useSetTotalElections(allElectionData.length)
@@ -90,7 +84,9 @@ export function useLimitedElectionData(limit: number = 5): ElectionData[] | [] {
 // get election data of passed zkcream contract address
 export function useElectionData(address: string): ElectionData | undefined {
   const allElectionData = useAllElectionData()
-  return allElectionData?.find((e) => e.zkCreamAddress === address)
+  return useMemo(() => {
+    return allElectionData?.find((e) => e.zkCreamAddress === address)
+  }, [address, allElectionData])
 }
 
 // deploy all modules for `useDeployCallback()` function
