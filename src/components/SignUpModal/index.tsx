@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import QrReader from 'react-qr-reader'
 import { Box, Text } from 'rebass/styled-components'
 import { Input } from '@rebass/forms'
+import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../Button'
 import { AutoColumn } from '../Column'
@@ -17,19 +18,20 @@ const ContentWrapper = styled(AutoColumn)`
 `
 
 interface SignUpModalProps {
-  address: string
+  zkCreamAddress: string
+  maciAddress: string
   isOpen: boolean
   onDismiss: () => void
 }
 
-export const SignUpModal = memo(({ address, isOpen, onDismiss }: SignUpModalProps) => {
+export const SignUpModal = memo(({ zkCreamAddress, maciAddress, isOpen, onDismiss }: SignUpModalProps) => {
   const patterns = ['Text', 'QR Code']
   const [nav, setNav] = useState<string>(patterns[0])
   const [noteReceived, setNoteReceived] = useState<boolean>(false)
 
   const { value: note, bind: bindNote, reset: resetNote } = useInput('')
 
-  const signUp = useSignUpCallback(address)
+  const [signUpIndex, signUp] = useSignUpCallback(zkCreamAddress, maciAddress)
 
   function toggleNav() {
     const op: number = nav === patterns[0] ? 1 : 0
@@ -42,12 +44,7 @@ export const SignUpModal = memo(({ address, isOpen, onDismiss }: SignUpModalProp
 
   function submitNote() {
     setNoteReceived(true)
-    try {
-      signUp(note)
-    } catch (e) {
-      throw new Error(e.message)
-    }
-    resetNote()
+    signUp(note).then(() => resetNote())
     setNoteReceived(false)
   }
 
@@ -62,39 +59,64 @@ export const SignUpModal = memo(({ address, isOpen, onDismiss }: SignUpModalProp
   function getModalContent() {
     return (
       <Box>
-        <Box mb={20}>
-          <Text fontWeight="bold">Deposit Note</Text>
-        </Box>
-        <RowFixed style={{ width: '100%' }}>
-          {patterns.map((pattern, i) => (
-            <ButtonPrimary disabled={nav === pattern} onClick={toggleNav} key={i}>
-              {pattern}
-            </ButtonPrimary>
-          ))}
-        </RowFixed>
-        <Box my={20}>
-          {nav === patterns[0] ? (
-            <>
-              {noteReceived ? <Text>Submitting....</Text> : <Input {...bindNote} />}
-              <Box my={20}>
-                <ButtonPrimary onClick={submitNote}>Submit note</ButtonPrimary>
-              </Box>
-            </>
-          ) : (
-            <>
-              <Box my={20}>
-                <Text textAlign={'center'} my={20}>
-                  Please scan your barcode
-                </Text>
-                {noteReceived ? (
-                  <Text>Reading....</Text>
-                ) : (
-                  <QrReader delay={300} onError={handleError} onScan={handleScan} />
-                )}
-              </Box>
-            </>
-          )}
-        </Box>
+        {!signUpIndex ? (
+          <>
+            <Box>
+              {/* TODO: Add warning text */}
+              <Text fontWeight="bold">
+                <Trans>Your Index</Trans> : {signUpIndex}
+              </Text>
+            </Box>
+          </>
+        ) : (
+          <>
+            <Box mb={20}>
+              <Text fontWeight="bold">
+                <Trans>Deposit Note</Trans>
+              </Text>
+            </Box>
+            <RowFixed style={{ width: '100%' }}>
+              {patterns.map((pattern, i) => (
+                <ButtonPrimary disabled={nav === pattern} onClick={toggleNav} key={i}>
+                  {pattern}
+                </ButtonPrimary>
+              ))}
+            </RowFixed>
+            <Box my={20}>
+              {nav === patterns[0] ? (
+                <>
+                  {noteReceived ? (
+                    <Text>
+                      <Trans>Submitting....</Trans>
+                    </Text>
+                  ) : (
+                    <Input {...bindNote} />
+                  )}
+                  <Box my={20}>
+                    <ButtonPrimary onClick={submitNote}>
+                      <Trans>Submit note</Trans>
+                    </ButtonPrimary>
+                  </Box>
+                </>
+              ) : (
+                <>
+                  <Box my={20}>
+                    <Text textAlign={'center'} my={20}>
+                      <Trans>Please scan your barcode</Trans>
+                    </Text>
+                    {noteReceived ? (
+                      <Text>
+                        <Trans>Reading....</Trans>
+                      </Text>
+                    ) : (
+                      <QrReader delay={300} onError={handleError} onScan={handleScan} />
+                    )}
+                  </Box>
+                </>
+              )}
+            </Box>
+          </>
+        )}
       </Box>
     )
   }

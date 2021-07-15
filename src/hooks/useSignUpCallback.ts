@@ -1,8 +1,8 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { generateDeposit, generateMerkleProof, pedersenHash, toHex } from 'libcream'
 import { Keypair } from 'maci-domainobjs'
 
-import { useZkCreamContract } from './useContract'
+import { useMaciContract, useZkCreamContract } from './useContract'
 import { post } from '../utils/api'
 
 const PARAMS = {
@@ -10,13 +10,21 @@ const PARAMS = {
   zero_value: process.env.REACT_APP_ZERO_VALUE,
 }
 
-export function useSignUpCallback(address: string) {
-  const zkCreamContract = useZkCreamContract(address)
-  return useCallback(
+type StateIndex = string | undefined
+
+export function useSignUpCallback(
+  zkCreamAddress: string,
+  maciAddress: string
+): [StateIndex, (note: string) => Promise<void>] {
+  const [index, setIndex] = useState<string>()
+  const zkCreamContract = useZkCreamContract(zkCreamAddress)
+  const maciContract = useMaciContract(maciAddress)
+
+  const signUp = useCallback(
     async (note): Promise<void> => {
       const userKeypair = new Keypair()
       const deposit = generateDeposit(note)
-      const { root, merkleProof } = await generateMerkleProof(deposit, address, PARAMS)
+      const { root, merkleProof } = await generateMerkleProof(deposit, zkCreamAddress, PARAMS)
 
       const input = {
         root,
@@ -35,8 +43,27 @@ export function useSignUpCallback(address: string) {
 
       const userPubKey = userKeypair.pubKey.asContractParam()
       const args = [toHex(input.root), toHex(input.nullifierHash)]
-      return await zkCreamContract.signUpMaci(userPubKey, formattedProof.data, ...args)
+      return await zkCreamContract
+        .signUpMaci(userPubKey, formattedProof.data, ...args)
+        .then(async (r: any) => {
+          if (r.status) {
+            await r.wait()
+          }
+        })
+        .then(async () => {
+          await maciContract.on('SignUp', (_: any, _stateIndex: any) => {
+            setIndex(_stateIndex.toString())
+          })
+        })
+        .catch((e: Error) => {
+          console.log('signup error: ', e.message)
+          throw e
+        })
     },
-    [address, zkCreamContract]
+    [maciContract, zkCreamAddress, zkCreamContract]
   )
+
+  const stateIndex: StateIndex = useMemo(() => index, [index])
+
+  return [stateIndex, signUp]
 }

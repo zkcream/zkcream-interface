@@ -3,6 +3,7 @@ import { ContractFactory } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 
 import { PagingAction, setTotalElections, updateCurrentPage } from './actions'
+import { ElectionData } from './reducer'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { RootState } from '../index'
 
@@ -14,19 +15,6 @@ import {
 } from '../../hooks/useContract'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { get } from '../../utils/api'
-
-export interface ElectionData {
-  title: string
-  recipients: string[]
-  electionType: string
-  owner: string
-  coordinator: string
-  zkCreamAddress: string
-  maciAddress: string
-  votingTokenAddress: string
-  signUpTokenAddress: string
-  hash: string
-}
 
 export function useDataFromEventLogs() {
   const { library } = useActiveWeb3React()
@@ -46,6 +34,7 @@ export function useDataFromEventLogs() {
       const elections: ElectionData[] = await Promise.all(
         logs.map(async (log: any) => {
           const decodedLog = (await get('zkcream/' + log[0])).data
+          const maciParams = (await get('maci/params/' + decodedLog.maciAddress)).data
           /* TODO implement differetn election patterns */
           return {
             title: decodedLog.title,
@@ -58,6 +47,7 @@ export function useDataFromEventLogs() {
             votingTokenAddress: decodedLog.votingTokenAddress,
             signUpTokenAddress: decodedLog.signUpTokenAddress,
             hash: log[1],
+            maciParams,
           }
         })
       )

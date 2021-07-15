@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Text } from 'rebass'
 import { Input, Label, Select } from '@rebass/forms'
+import { Trans } from '@lingui/macro'
 
 import { useInput } from '../../utils/inputs'
 import { useFactoryContract, useVotingTokenContract, useZkCreamContract } from '../../hooks/useContract'
 import { useActiveWeb3React } from '../../hooks/web3'
-import { ElectionData, useAllElectionData } from '../../state/election/hooks'
+import { useAllElectionData } from '../../state/election/hooks'
+import { ElectionData } from '../../state/election/reducer'
 
 const SubmitButton = styled.input`
   background-color: grey;
@@ -94,7 +96,9 @@ export default function Admin() {
           </Flex>
           <Flex mb={20}>
             <Box>
-              <Label fontWeight="bold">Ethereum Address</Label>
+              <Label fontWeight="bold">
+                <Trans>Ethereum Address</Trans>
+              </Label>
               <Input type="text" {...bindVoterAddress} />
             </Box>
           </Flex>
@@ -104,7 +108,7 @@ export default function Admin() {
         </Box>
       ) : (
         <Text fontSize={3} fontWeight="bold" color="red">
-          You are not admin
+          <Trans>You are not admin</Trans>
         </Text>
       )}
     </>

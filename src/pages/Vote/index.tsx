@@ -9,7 +9,8 @@ import DeployModal from '../../components/DeployModal'
 import Paging from '../../components/Paging'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useDeployModalToggle } from '../../state/application/hooks'
-import { ElectionData, useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
+import { useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
+import { ElectionData } from '../../state/election/reducer'
 
 const PageWrapper = styled(AutoColumn)``
 

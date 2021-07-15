@@ -1,17 +1,10 @@
 import React, { memo } from 'react'
-import styled from 'styled-components'
+import { Trans } from '@lingui/macro'
 
-import { RecipientsProps } from '../../pages/Vote/Recipients'
+import { VoteActionsProps } from '../../pages/Vote/VoteActions'
 import { ButtonPrimary } from '../../components/Button'
 import { RowFixed } from '../../components/Row'
-import { shortenAddress } from '../../utils'
-
-const CardWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  width: 100%;
-`
+import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback'
 
 function PickOne() {
   return <>Unimplemented</>
@@ -21,9 +14,11 @@ function PickMany() {
   return <>Unimplemented</>
 }
 
-function ForOrAgainst({ recipients }: { recipients: string[] }) {
+function ForOrAgainst({ recipients, maciAddress }: { recipients: string[]; maciAddress: string }) {
   /* TEMP flags */
   const isBeforeVotingDeadline = true
+
+  const publishMessage = usePublishMessageCallback(maciAddress)
 
   return (
     <>
@@ -32,32 +27,27 @@ function ForOrAgainst({ recipients }: { recipients: string[] }) {
           {recipients.map((recipient, i) => (
             <ButtonPrimary
               onClick={() => {
-                console.log({ recipient })
+                publishMessage(i, 1, 1)
               }}
               key={i}
             >
-              Vote {i === 0 ? 'For' : 'Against'}
+              <Trans>Vote {i === 0 ? 'For' : 'Against'}</Trans>
             </ButtonPrimary>
           ))}
         </RowFixed>
       ) : null}
-      <CardWrapper>
-        {recipients.map((recipient, i) => (
-          <p key={i}>{shortenAddress(recipient)}</p>
-        ))}
-      </CardWrapper>
     </>
   )
 }
 
-export const VotePatterns = memo(({ recipients, electionType }: RecipientsProps) => {
+export const VotePatterns = memo(({ recipients, electionType, maciAddress }: VoteActionsProps) => {
   return (
     <>
       {
         {
           0: <PickOne />,
           1: <PickMany />,
-          2: <ForOrAgainst recipients={recipients} />,
+          2: <ForOrAgainst recipients={recipients} maciAddress={maciAddress} />,
         }[electionType]
       }
     </>

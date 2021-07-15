@@ -15,10 +15,11 @@ import { TokenType } from '../../state/token/reducer'
 interface TokenButtonsProps {
   tokenState: TokenType
   zkCreamAddress: string
+  maciAddress: string
   votingTokenAddress: string
 }
 
-export function TokenButtons({ tokenState, zkCreamAddress, votingTokenAddress }: TokenButtonsProps) {
+export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTokenAddress }: TokenButtonsProps) {
   /* modals */
   const noteModalOpen = useModalOpen(ApplicationModal.NOTE)
   const signUpModalOpen = useModalOpen(ApplicationModal.SIGNUP)
@@ -44,7 +45,12 @@ export function TokenButtons({ tokenState, zkCreamAddress, votingTokenAddress }:
   return (
     <>
       <NoteModal isOpen={noteModalOpen} onDismiss={toggleNoteModal} note={note} />
-      <SignUpModal address={zkCreamAddress} isOpen={signUpModalOpen} onDismiss={toggleSignUpModal} />
+      <SignUpModal
+        zkCreamAddress={zkCreamAddress}
+        maciAddress={maciAddress}
+        isOpen={signUpModalOpen}
+        onDismiss={toggleSignUpModal}
+      />
       {tokenState & TokenType.VOTING ? (
         <>
           <ButtonPrimary onClick={approveToken} disabled={isApproved ? true : false}>

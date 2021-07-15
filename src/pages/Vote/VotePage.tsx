@@ -8,7 +8,8 @@ import { Trans } from '@lingui/macro'
 import { AutoColumn } from '../../components/Column'
 import { TokenButtons } from '../../components/TokenButtons'
 import { useActiveWeb3React } from '../../hooks/web3'
-import { ElectionData, useElectionData } from '../../state/election/hooks'
+import { useElectionData } from '../../state/election/hooks'
+import { ElectionData } from '../../state/election/reducer'
 
 import { StyledInternalLink } from '../../theme'
 
@@ -16,7 +17,7 @@ import { TokenType, fetchTokenState } from '../../state/token/reducer'
 import { useTokenType } from '../../state/token/hooks'
 import { useAppDispatch } from '../../state/hooks'
 
-import Recipients from './Recipients'
+import VoteActions from './VoteActions'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -72,11 +73,16 @@ export default function VotePage({
                 {electionData.title}
               </Text>
               {tokenState & TokenType.SIGNUP ? (
-                <Recipients recipients={electionData.recipients} electionType={electionData.electionType} />
+                <VoteActions
+                  recipients={electionData.recipients}
+                  electionType={electionData.electionType}
+                  maciAddress={electionData.maciAddress}
+                />
               ) : (
                 <TokenButtons
                   tokenState={tokenState}
                   zkCreamAddress={address}
+                  maciAddress={electionData.maciAddress}
                   votingTokenAddress={electionData.votingTokenAddress}
                 />
               )}
