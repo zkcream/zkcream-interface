@@ -8,7 +8,7 @@ import { Trans } from '@lingui/macro'
 import { AutoColumn } from '../../components/Column'
 import { TokenButtons } from '../../components/TokenButtons'
 import { useActiveWeb3React } from '../../hooks/web3'
-import { useElectionData } from '../../state/election/hooks'
+import { useElectionState, useSetElectionData } from '../../state/election/hooks'
 import { ElectionData } from '../../state/election/reducer'
 
 import { StyledInternalLink } from '../../theme'
@@ -48,7 +48,12 @@ export default function VotePage({
   const { account } = useActiveWeb3React()
 
   /* get election details */
-  const electionData: ElectionData | undefined = useElectionData(address)
+  const setElectionData = useSetElectionData(address)
+  const electionData: ElectionData | undefined = useElectionState()
+
+  useEffect(() => {
+    setElectionData()
+  }, [setElectionData])
 
   /* fetch token status */
   const dispatch = useAppDispatch()

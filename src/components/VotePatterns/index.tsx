@@ -4,7 +4,14 @@ import { Trans } from '@lingui/macro'
 import { VoteActionsProps } from '../../pages/Vote/VoteActions'
 import { ButtonPrimary } from '../../components/Button'
 import { RowFixed } from '../../components/Row'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback'
+
+interface VotePatternsProps extends VoteActionsProps {
+  recipients: string[]
+  electionType: string
+  maciAddress: string
+}
 
 function PickOne() {
   return <>Unimplemented</>
@@ -17,9 +24,9 @@ function PickMany() {
 function ForOrAgainst({ recipients, maciAddress }: { recipients: string[]; maciAddress: string }) {
   /* TEMP flags */
   const isBeforeVotingDeadline = true
-
+  const [stateIndex] = useLocalStorage('stateIndex', '0')
+  const [nonce, setNonce] = useLocalStorage('nonce', '1')
   const publishMessage = usePublishMessageCallback(maciAddress)
-
   return (
     <>
       {isBeforeVotingDeadline ? (
@@ -27,7 +34,7 @@ function ForOrAgainst({ recipients, maciAddress }: { recipients: string[]; maciA
           {recipients.map((recipient, i) => (
             <ButtonPrimary
               onClick={() => {
-                publishMessage(i, 1, 1)
+                publishMessage(i, stateIndex, nonce).then(() => setNonce(parseInt(nonce) + 1))
               }}
               key={i}
             >
@@ -40,7 +47,7 @@ function ForOrAgainst({ recipients, maciAddress }: { recipients: string[]; maciA
   )
 }
 
-export const VotePatterns = memo(({ recipients, electionType, maciAddress }: VoteActionsProps) => {
+export const VotePatterns = memo(({ recipients, electionType, maciAddress }: VotePatternsProps) => {
   return (
     <>
       {

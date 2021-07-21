@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ContractFactory } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 
-import { PagingAction, setTotalElections, updateCurrentPage } from './actions'
+import { PagingAction, setElectionData, setTotalElections, updateCurrentPage } from './actions'
 import { ElectionData } from './reducer'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { RootState } from '../index'
@@ -71,12 +71,19 @@ export function useLimitedElectionData(limit: number = 5) {
   return allElectionData.slice(current * limit, current * limit + 5)
 }
 
-// get election data of passed zkcream contract address
-export function useElectionData(address: string): ElectionData | undefined {
+// set election data of passed zkcream contract address
+export function useSetElectionData(address: string): () => void {
   const allElectionData = useAllElectionData()
-  return useMemo(() => {
+  const dispatch = useAppDispatch()
+  const electionData = useMemo(() => {
     return allElectionData?.find((e) => e.zkCreamAddress === address)
   }, [address, allElectionData])
+
+  return () => dispatch(setElectionData(electionData))
+}
+
+export function useElectionState(): ElectionData | undefined {
+  return useAppSelector((state: RootState) => state.election.electionData)
 }
 
 // deploy all modules for `useDeployCallback()` function

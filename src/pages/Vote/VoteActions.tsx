@@ -5,6 +5,7 @@ import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import { ActionNames, MessageAction, VoteNav } from '../../components/VoteNav'
 import { VotePatterns } from '../../components/VotePatterns'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback'
 
 export interface VoteActionsProps {
@@ -15,7 +16,8 @@ export interface VoteActionsProps {
 
 export default function VoteActions({ recipients, electionType, maciAddress }: VoteActionsProps) {
   const [radioState, setRadioState] = useState<MessageAction>(MessageAction.SELECT)
-
+  const [stateIndex] = useLocalStorage('stateIndex', '0')
+  const [nonce, setNonce] = useLocalStorage('nonce', '1')
   const publishMessage = usePublishMessageCallback(maciAddress)
 
   function toggleRadio(e: any) {
@@ -29,7 +31,10 @@ export default function VoteActions({ recipients, electionType, maciAddress }: V
         <VotePatterns recipients={recipients} electionType={electionType} maciAddress={maciAddress} />
       ) : (
         <AutoColumn justify="center">
-          <ButtonPrimary width="50%" onClick={() => publishMessage(null, 1, 1)}>
+          <ButtonPrimary
+            width="50%"
+            onClick={() => publishMessage(null, stateIndex, nonce).then(() => setNonce(parseInt(nonce) + 1))}
+          >
             <Trans>New Key</Trans>
           </ButtonPrimary>
         </AutoColumn>

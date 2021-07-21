@@ -3,14 +3,13 @@ import { generateDeposit, generateMerkleProof, pedersenHash, toHex } from 'libcr
 import { Keypair } from 'maci-domainobjs'
 
 import { useMaciContract, useZkCreamContract } from './useContract'
+import { StateIndex } from '../state/election/reducer'
 import { post } from '../utils/api'
 
 const PARAMS = {
   depth: process.env.REACT_APP_MERKLETREE_HEIGHT,
   zero_value: process.env.REACT_APP_ZERO_VALUE,
 }
-
-type StateIndex = string | undefined
 
 export function useSignUpCallback(
   zkCreamAddress: string,
@@ -42,6 +41,10 @@ export function useSignUpCallback(
       const formattedProof = await post('zkcream/genproof', data)
 
       const userPubKey = userKeypair.pubKey.asContractParam()
+
+      // store userPubKey to local storage
+      localStorage.setItem('userPubKey', JSON.stringify(userPubKey))
+
       const args = [toHex(input.root), toHex(input.nullifierHash)]
       return await zkCreamContract
         .signUpMaci(userPubKey, formattedProof.data, ...args)
@@ -53,6 +56,8 @@ export function useSignUpCallback(
         .then(async () => {
           await maciContract.on('SignUp', (_: any, _stateIndex: any) => {
             setIndex(_stateIndex.toString())
+            // store _stateIndex to local storage as string type
+            localStorage.setItem('stateIndex', _stateIndex.toString())
           })
         })
         .catch((e: Error) => {
@@ -63,7 +68,8 @@ export function useSignUpCallback(
     [maciContract, zkCreamAddress, zkCreamContract]
   )
 
-  const stateIndex: StateIndex = useMemo(() => index, [index])
+  const localStateIndex = localStorage.getItem('stateIndex')
+  const stateIndex: StateIndex = useMemo(() => (localStateIndex ? localStateIndex : index), [index, localStateIndex])
 
   return [stateIndex, signUp]
 }

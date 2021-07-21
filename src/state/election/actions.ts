@@ -9,4 +9,4 @@ export enum PagingAction {
 
 export const setTotalElections = createAction<number>('election/setTotalElections')
 export const updateCurrentPage = createAction<number>('election/updateCurrentPage')
-export const setElectionInfo = createAction<ElectionData | null>('election/setElectionInfo')
+export const setElectionData = createAction<ElectionData | undefined>('election/setElectionData')
