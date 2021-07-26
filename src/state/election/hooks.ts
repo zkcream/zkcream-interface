@@ -18,18 +18,18 @@ import { get } from '../../utils/api'
 
 export function useDataFromEventLogs() {
   const { library } = useActiveWeb3React()
-  const [electionData, setElectionData] = useState<ElectionData[]>()
+  const [electionDataState, setElectionDataState] = useState<ElectionData[]>()
 
   useEffect(() => {
     /* early return for no library */
     if (!library) return
 
-    if (!electionData) {
+    if (!electionDataState) {
       fetchFromFactory()
     }
 
     async function fetchFromFactory() {
-      setElectionData(undefined)
+      setElectionDataState(undefined)
       const logs = (await get('factory/logs')).data
       const elections: ElectionData[] = await Promise.all(
         logs.map(async (log: any) => {
@@ -51,11 +51,11 @@ export function useDataFromEventLogs() {
           }
         })
       )
-      setElectionData(elections.reverse())
+      setElectionDataState(elections.reverse())
     }
-  }, [electionData, library])
+  }, [electionDataState, library])
 
-  return electionData
+  return electionDataState
 }
 
 // get event logs for all deployed zkcream contract

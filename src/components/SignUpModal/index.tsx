@@ -59,7 +59,7 @@ export const SignUpModal = memo(({ zkCreamAddress, maciAddress, isOpen, onDismis
   function getModalContent() {
     return (
       <Box>
-        {signUpIndex ? (
+        {signUpIndex !== '0' ? (
           <>
             <Box>
               {/* TODO: Add warning text */}

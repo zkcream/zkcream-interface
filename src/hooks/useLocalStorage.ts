@@ -1,13 +1,33 @@
 import { useState } from 'react'
 
+import { ElectionData } from '../state/election/reducer'
+import { useElectionState } from '../state/election/hooks'
+
 export function useLocalStorage(key: string, initialValue: string) {
-  // get the maciAddress state
-  // then query from localStorage
+  const electionData: ElectionData | undefined = useElectionState()
+  let maciAddress: string
+  if (electionData) {
+    maciAddress = electionData.maciAddress
+  } else {
+    throw Error('ERROR getting maciAddress from state.')
+  }
+
+  // let localMaciObj: any = window.localStorage.getItem(maciAddress)
+  // localMaciObj = JSON.parse(localMaciObj)
+  // if (!localMaciObj) {
+  //   localMaciObj = {}
+  //   localMaciObj[key] = initialValue
+  //   window.localStorage.setItem(maciAddress, JSON.stringify(localMaciObj))
+  // }
+  // localMaciObj[key] = initialValue
+  // console.log(localMaciObj)
 
   const [storedValue, setStoredValue] = useState(() => {
     try {
-      const item = window.localStorage.getItem(key)
-      return item ? JSON.parse(item) : initialValue
+      let localMaciObj: any = window.localStorage.getItem(maciAddress)
+      localMaciObj = JSON.parse(localMaciObj)
+      const item = localMaciObj ? localMaciObj[key] : initialValue
+      return item ? item : initialValue
     } catch (e) {
       console.error(e)
       return initialValue
@@ -15,13 +35,21 @@ export function useLocalStorage(key: string, initialValue: string) {
   })
 
   const setValue = (value: any) => {
+    let localMaciObj: any = window.localStorage.getItem(maciAddress)
+    localMaciObj = JSON.parse(localMaciObj)
     try {
+      // reset
+      if (localMaciObj) {
+        localMaciObj[key] = undefined
+      }
       const valueToStore = value instanceof Function ? value(storedValue) : value
       setStoredValue(valueToStore)
-      window.localStorage.setItem(key, JSON.stringify(valueToStore))
+      localMaciObj[key] = valueToStore
+      window.localStorage.setItem(maciAddress, JSON.stringify(localMaciObj))
     } catch (e) {
       console.error(e)
     }
   }
+
   return [storedValue, setValue]
 }

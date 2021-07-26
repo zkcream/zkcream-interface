@@ -1,8 +1,9 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback } from 'react'
 import { generateDeposit, generateMerkleProof, pedersenHash, toHex } from 'libcream'
 import { Keypair } from 'maci-domainobjs'
 
 import { useMaciContract, useZkCreamContract } from './useContract'
+import { useLocalStorage } from './useLocalStorage'
 import { StateIndex } from '../state/election/reducer'
 import { post } from '../utils/api'
 
@@ -15,13 +16,17 @@ export function useSignUpCallback(
   zkCreamAddress: string,
   maciAddress: string
 ): [StateIndex, (note: string) => Promise<void>] {
-  const [index, setIndex] = useState<string>()
+  const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
+
+  const userKeypair = new Keypair()
+  const initialUserPubKey = userKeypair.pubKey.asContractParam()
+  const [userPubKey, setUserPubKey] = useLocalStorage('userPubKey', JSON.stringify(initialUserPubKey))
+
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const maciContract = useMaciContract(maciAddress)
 
   const signUp = useCallback(
     async (note): Promise<void> => {
-      const userKeypair = new Keypair()
       const deposit = generateDeposit(note)
       const { root, merkleProof } = await generateMerkleProof(deposit, zkCreamAddress, PARAMS)
 
@@ -40,14 +45,12 @@ export function useSignUpCallback(
 
       const formattedProof = await post('zkcream/genproof', data)
 
-      const userPubKey = userKeypair.pubKey.asContractParam()
-
       // store userPubKey to local storage
-      localStorage.setItem('userPubKey', JSON.stringify(userPubKey))
+      setUserPubKey(userPubKey)
 
       const args = [toHex(input.root), toHex(input.nullifierHash)]
       return await zkCreamContract
-        .signUpMaci(userPubKey, formattedProof.data, ...args)
+        .signUpMaci(initialUserPubKey, formattedProof.data, ...args)
         .then(async (r: any) => {
           if (r.status) {
             await r.wait()
@@ -55,9 +58,8 @@ export function useSignUpCallback(
         })
         .then(async () => {
           await maciContract.on('SignUp', (_: any, _stateIndex: any) => {
-            setIndex(_stateIndex.toString())
             // store _stateIndex to local storage as string type
-            localStorage.setItem('stateIndex', _stateIndex.toString())
+            setStateIndex(_stateIndex.toString())
           })
         })
         .catch((e: Error) => {
@@ -65,11 +67,8 @@ export function useSignUpCallback(
           throw e
         })
     },
-    [maciContract, zkCreamAddress, zkCreamContract]
+    [maciContract, zkCreamAddress, zkCreamContract, initialUserPubKey, setStateIndex, setUserPubKey, userPubKey]
   )
-
-  const localStateIndex = localStorage.getItem('stateIndex')
-  const stateIndex: StateIndex = useMemo(() => (localStateIndex ? localStateIndex : index), [index, localStateIndex])
 
   return [stateIndex, signUp]
 }

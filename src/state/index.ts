@@ -17,7 +17,5 @@ const store = configureStore({
 store.dispatch(updateVersion())
 export default store
 
-console.log(store.getState().election)
-
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
