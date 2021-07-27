@@ -19,8 +19,8 @@ export function useSignUpCallback(
   const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
 
   const userKeypair = new Keypair()
-  const initialUserPubKey = userKeypair.pubKey.asContractParam()
-  const [userPubKey, setUserPubKey] = useLocalStorage('userPubKey', JSON.stringify(initialUserPubKey))
+  const userPubKey = userKeypair.pubKey.asContractParam()
+  const [macisk, setMaciSk] = useLocalStorage('macisk', userKeypair.privKey.serialize())
 
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const maciContract = useMaciContract(maciAddress)
@@ -46,11 +46,11 @@ export function useSignUpCallback(
       const formattedProof = await post('zkcream/genproof', data)
 
       // store userPubKey to local storage
-      setUserPubKey(userPubKey)
+      setMaciSk(macisk)
 
       const args = [toHex(input.root), toHex(input.nullifierHash)]
       return await zkCreamContract
-        .signUpMaci(initialUserPubKey, formattedProof.data, ...args)
+        .signUpMaci(userPubKey, formattedProof.data, ...args)
         .then(async (r: any) => {
           if (r.status) {
             await r.wait()
@@ -67,7 +67,7 @@ export function useSignUpCallback(
           throw e
         })
     },
-    [maciContract, zkCreamAddress, zkCreamContract, initialUserPubKey, setStateIndex, setUserPubKey, userPubKey]
+    [maciContract, macisk, setMaciSk, zkCreamAddress, zkCreamContract, setStateIndex, userPubKey]
   )
 
   return [stateIndex, signUp]

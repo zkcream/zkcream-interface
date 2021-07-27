@@ -12,16 +12,6 @@ export function useLocalStorage(key: string, initialValue: string) {
     throw Error('ERROR getting maciAddress from state.')
   }
 
-  // let localMaciObj: any = window.localStorage.getItem(maciAddress)
-  // localMaciObj = JSON.parse(localMaciObj)
-  // if (!localMaciObj) {
-  //   localMaciObj = {}
-  //   localMaciObj[key] = initialValue
-  //   window.localStorage.setItem(maciAddress, JSON.stringify(localMaciObj))
-  // }
-  // localMaciObj[key] = initialValue
-  // console.log(localMaciObj)
-
   const [storedValue, setStoredValue] = useState(() => {
     try {
       let localMaciObj: any = window.localStorage.getItem(maciAddress)
@@ -41,6 +31,10 @@ export function useLocalStorage(key: string, initialValue: string) {
       // reset
       if (localMaciObj) {
         localMaciObj[key] = undefined
+      } else {
+        localMaciObj = {
+          [key]: initialValue,
+        }
       }
       const valueToStore = value instanceof Function ? value(storedValue) : value
       setStoredValue(valueToStore)
