@@ -5,6 +5,7 @@ export enum ApplicationModal {
   DEPLOY,
   NOTE,
   SIGNUP,
+  VOTERSTATE,
 }
 
 export const setOpenModal = createAction<ApplicationModal | null>('application/setOpenModal')

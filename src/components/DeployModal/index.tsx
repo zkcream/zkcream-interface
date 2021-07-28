@@ -4,6 +4,7 @@ import { genKeypair } from 'maci-crypto'
 import { Keypair, PrivKey } from 'maci-domainobjs'
 import { Box } from 'rebass/styled-components'
 import { Label, Input, Select } from '@rebass/forms'
+import { Trans } from '@lingui/macro'
 
 import { AutoColumn } from '../Column'
 import Candidates from './Candidates'
@@ -89,14 +90,20 @@ function DeployForm() {
   return (
     <Box as="form" onSubmit={onDeploy}>
       <Box>
-        <Label fontWeight="bold">Title</Label>
+        <Label fontWeight="bold">
+          <Trans>Title</Trans>
+        </Label>
         <Input type="text" {...bindTitle} />
       </Box>
       <Box>
-        <Label fontWeight="bold">Coordinator Ethereum Address</Label>
+        <Label fontWeight="bold">
+          <Trans>Coordinator Ethereum Address</Trans>
+        </Label>
         <Input type="text" {...bindCoordinatorAddress} />
       </Box>
-      <Label fontWeight="bold">Type</Label>
+      <Label fontWeight="bold">
+        <Trans>Type</Trans>
+      </Label>
       <Select value={electionType} onChange={(e) => handleOnChange(e.target.value)}>
         <option></option>
         {selections.map((selection, i) => (

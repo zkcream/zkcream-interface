@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { ElectionData } from '../state/election/reducer'
 import { useElectionState } from '../state/election/hooks'
@@ -24,7 +24,7 @@ export function useLocalStorage(key: string, initialValue: string) {
     }
   })
 
-  const setValue = (value: any) => {
+  useEffect(() => {
     let localMaciObj: any = window.localStorage.getItem(maciAddress)
     localMaciObj = JSON.parse(localMaciObj)
     try {
@@ -36,14 +36,13 @@ export function useLocalStorage(key: string, initialValue: string) {
           [key]: initialValue,
         }
       }
-      const valueToStore = value instanceof Function ? value(storedValue) : value
-      setStoredValue(valueToStore)
-      localMaciObj[key] = valueToStore
+
+      localMaciObj[key] = storedValue
       window.localStorage.setItem(maciAddress, JSON.stringify(localMaciObj))
     } catch (e) {
       console.error(e)
     }
-  }
+  }, [initialValue, key, maciAddress, storedValue])
 
-  return [storedValue, setValue]
+  return [storedValue, setStoredValue] as const
 }
