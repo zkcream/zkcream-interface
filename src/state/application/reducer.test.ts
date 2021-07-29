@@ -24,5 +24,17 @@ describe('application reducer', () => {
       store.dispatch(setOpenModal(ApplicationModal.NOTE))
       expect(store.getState().openModal).toEqual(ApplicationModal.NOTE)
     })
+    it('set note modal', () => {
+      store.dispatch(setOpenModal(ApplicationModal.SIGNUP))
+      expect(store.getState().openModal).toEqual(ApplicationModal.SIGNUP)
+    })
+    it('set note modal', () => {
+      store.dispatch(setOpenModal(ApplicationModal.VOTERSTATE))
+      expect(store.getState().openModal).toEqual(ApplicationModal.VOTERSTATE)
+    })
+    it('set note modal', () => {
+      store.dispatch(setOpenModal(ApplicationModal.RANDOM_STATELEAF))
+      expect(store.getState().openModal).toEqual(ApplicationModal.RANDOM_STATELEAF)
+    })
   })
 })

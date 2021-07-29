@@ -10,7 +10,6 @@ import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback
 interface VotePatternsProps extends VoteActionsProps {
   recipients: string[]
   electionType: string
-  maciAddress: string
 }
 
 function PickOne() {
@@ -21,12 +20,12 @@ function PickMany() {
   return <>Unimplemented</>
 }
 
-function ForOrAgainst({ recipients, maciAddress }: { recipients: string[]; maciAddress: string }) {
+function ForOrAgainst({ recipients }: { recipients: string[] }) {
   /* TEMP flags */
   const isBeforeVotingDeadline = true
   const [stateIndex] = useLocalStorage('stateIndex', '0')
   const [nonce, setNonce] = useLocalStorage('nonce', '1')
-  const publishMessage = usePublishMessageCallback(maciAddress)
+  const publishMessage = usePublishMessageCallback()
   return (
     <>
       {isBeforeVotingDeadline ? (
@@ -47,14 +46,14 @@ function ForOrAgainst({ recipients, maciAddress }: { recipients: string[]; maciA
   )
 }
 
-export const VotePatterns = memo(({ recipients, electionType, maciAddress }: VotePatternsProps) => {
+export const VotePatterns = memo(({ recipients, electionType }: VotePatternsProps) => {
   return (
     <>
       {
         {
           0: <PickOne />,
           1: <PickMany />,
-          2: <ForOrAgainst recipients={recipients} maciAddress={maciAddress} />,
+          2: <ForOrAgainst recipients={recipients} />,
         }[electionType]
       }
     </>

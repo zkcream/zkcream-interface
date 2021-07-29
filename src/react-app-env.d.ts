@@ -11,3 +11,4 @@ interface Window {
 }
 
 declare module 'libcream'
+declare module 'maci-core'

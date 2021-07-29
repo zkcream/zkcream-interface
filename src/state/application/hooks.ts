@@ -37,3 +37,7 @@ export function useSignUpModalToggle(): () => void {
 export function useVoterStateModalToggle(): () => void {
   return useToggleModal(ApplicationModal.VOTERSTATE)
 }
+
+export function useRandomStateLeafModalToggle(): () => void {
+  return useToggleModal(ApplicationModal.VOTERSTATE)
+}

@@ -65,7 +65,6 @@ export const VoterStateModal = memo(({ isOpen, onDismiss }: VoterStateModalProps
       resetMaciSk()
 
       // TODO watch localStorage event and re-render
-
     } else {
       console.error('Type doesnot match')
     }

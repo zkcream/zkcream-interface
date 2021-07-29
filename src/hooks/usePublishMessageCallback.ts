@@ -1,32 +1,37 @@
 import { useCallback, useMemo } from 'react'
 import { createMessage } from 'libcream'
 import { genRandomSalt } from 'maci-crypto'
-import { Keypair, PrivKey } from 'maci-domainobjs'
+import { Keypair, PrivKey, PubKey } from 'maci-domainobjs'
 
 import { useMaciContract } from './useContract'
 import { useLocalStorage } from './useLocalStorage'
+import { useElectionState } from '../state/election/hooks'
 
 // TODO
 const voiceCredits = 2 // bnSqrt(BigNumber.from(2)) = 0x01, BigNumber
-const coordinatorPrivKey: string = process.env.REACT_APP_COORDINATOR_PRIVKEY!
-const coordinator = new Keypair(new PrivKey(BigInt(coordinatorPrivKey)))
 
-export function usePublishMessageCallback(
-  maciAddress: string
-): (recipientIndex: number | null, stateIndex: number, nonce: number) => Promise<void> {
+export function usePublishMessageCallback(): (
+  recipientIndex: number | null,
+  stateIndex: number,
+  nonce: number
+) => Promise<void> {
+  const { maciAddress, maciParams }: any = useElectionState()
   const maciContract = useMaciContract(maciAddress)
+  const { coordinatorPubKey } = maciParams
   const [macisk, setMaciSk] = useLocalStorage('macisk', '')
   const privKey: PrivKey | undefined = macisk ? PrivKey.unserialize(macisk) : undefined
   const userKeyPair: Keypair | undefined = useMemo(() => (privKey ? new Keypair(privKey) : undefined), [privKey])
 
   return useCallback(
     async (recipientIndex, stateIndex, nonce): Promise<void> => {
+      const rawPubKey = [BigInt(coordinatorPubKey[0].hex), BigInt(coordinatorPubKey[1].hex)]
+      const retrievedPubKey = new PubKey(rawPubKey)
       if (recipientIndex) {
         const [message, encPubKey] = createMessage(
           stateIndex,
           userKeyPair,
           null,
-          coordinator.pubKey,
+          retrievedPubKey,
           recipientIndex,
           voiceCredits,
           nonce,
@@ -39,7 +44,7 @@ export function usePublishMessageCallback(
           stateIndex,
           userKeyPair,
           newUserKeyPair,
-          coordinator.pubKey,
+          retrievedPubKey,
           null,
           null,
           nonce
@@ -48,6 +53,6 @@ export function usePublishMessageCallback(
         return await maciContract.publishMessage(message.asContractParam(), encPubKey.asContractParam())
       }
     },
-    [maciContract, setMaciSk, userKeyPair]
+    [coordinatorPubKey, maciContract, setMaciSk, userKeyPair]
   )
 }

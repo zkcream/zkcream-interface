@@ -5,6 +5,7 @@ import styled from 'styled-components/macro'
 import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
+import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import { TokenButtons } from '../../components/TokenButtons'
 import { useActiveWeb3React } from '../../hooks/web3'
@@ -17,6 +18,7 @@ import { TokenType, fetchTokenState } from '../../state/token/reducer'
 import { useTokenType } from '../../state/token/hooks'
 import { useAppDispatch } from '../../state/hooks'
 
+import CoordinatorActions from './CoordinatorActions'
 import VoteActions from './VoteActions'
 
 const PageWrapper = styled(AutoColumn)`
@@ -50,6 +52,8 @@ export default function VotePage({
   /* get election details */
   const setElectionData = useSetElectionData(address)
   const electionData: ElectionData | undefined = useElectionState()
+  const isOwner: boolean = account === electionData?.owner
+  const isCoordinator: boolean = account === electionData?.coordinator
 
   useEffect(() => {
     setElectionData()
@@ -60,9 +64,11 @@ export default function VotePage({
   const tokenState: TokenType = useTokenType()
 
   useEffect(() => {
-    const arg: any = { address, account }
-    dispatch(fetchTokenState(arg))
-  }, [account, address, dispatch])
+    if (!isOwner && !isCoordinator) {
+      const arg: any = { address, account }
+      dispatch(fetchTokenState(arg))
+    }
+  }, [account, address, dispatch, isCoordinator, isOwner])
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -77,19 +83,34 @@ export default function VotePage({
               <Text fontSize={[5]} fontWeight="bold" mt={4} mb={2}>
                 {electionData.title}
               </Text>
-              {tokenState & TokenType.SIGNUP ? (
-                <VoteActions
-                  recipients={electionData.recipients}
-                  electionType={electionData.electionType}
-                  maciAddress={electionData.maciAddress}
-                />
+              {isOwner || isCoordinator ? (
+                <>
+                  {isOwner ? (
+                    <>
+                      <Text>
+                        <Trans>You are Owner</Trans>
+                      </Text>
+                      <ButtonPrimary>
+                        <Trans>Approve Tally</Trans>
+                      </ButtonPrimary>
+                    </>
+                  ) : (
+                    <CoordinatorActions />
+                  )}
+                </>
               ) : (
-                <TokenButtons
-                  tokenState={tokenState}
-                  zkCreamAddress={address}
-                  maciAddress={electionData.maciAddress}
-                  votingTokenAddress={electionData.votingTokenAddress}
-                />
+                <>
+                  {tokenState & TokenType.SIGNUP ? (
+                    <VoteActions recipients={electionData.recipients} electionType={electionData.electionType} />
+                  ) : (
+                    <TokenButtons
+                      tokenState={tokenState}
+                      zkCreamAddress={address}
+                      maciAddress={electionData.maciAddress}
+                      votingTokenAddress={electionData.votingTokenAddress}
+                    />
+                  )}
+                </>
               )}
             </AutoColumn>
             <AutoColumn gap="sm">

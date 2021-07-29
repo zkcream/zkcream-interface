@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { genKeypair } from 'maci-crypto'
+// import { genKeypair } from 'maci-crypto'
 import { Keypair, PrivKey } from 'maci-domainobjs'
 import { Box } from 'rebass/styled-components'
 import { Label, Input, Select } from '@rebass/forms'
@@ -49,8 +49,9 @@ function DeployForm() {
   const { value: coordinatorAddress, bind: bindCoordinatorAddress, reset: resetCoordinatorAddress } = useInput('')
 
   /* TODO: download privKey OR show QR code */
-  const { privKey } = genKeypair()
-  const coordinator = new Keypair(new PrivKey(privKey))
+  //const { privKey } = genKeypair()
+  const coordinatorPrivKey: string = process.env.REACT_APP_COORDINATOR_PRIVKEY!
+  const coordinator = new Keypair(new PrivKey(BigInt(coordinatorPrivKey)))
 
   // const { deployCallback } = useDeployCallback()
 

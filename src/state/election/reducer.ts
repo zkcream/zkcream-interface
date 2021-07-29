@@ -3,6 +3,17 @@ import { setElectionData, setTotalElections, updateCurrentPage } from './actions
 
 export type StateIndex = string | undefined | null
 
+// SignUpLog {
+//   pubkey: BigInt[] // PubKey
+//   signUpIndex: BigInt
+//   voiceCreditBalance: BigInt
+// }
+
+// PublishMessageLog {
+//   message: BigInt[iv, BigInt[]] // Message
+//   encPubKey:  BigInt[] // PubKey
+// }
+
 export interface MaciParams {
   maxVoteOptionIndex: number
   messageTreeDepth: number

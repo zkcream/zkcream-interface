@@ -14,14 +14,13 @@ import { useVoterStateModalToggle, useModalOpen } from '../../state/application/
 export interface VoteActionsProps {
   recipients: string[]
   electionType: string
-  maciAddress: string
 }
 
-export default function VoteActions({ recipients, electionType, maciAddress }: VoteActionsProps) {
+export default function VoteActions({ recipients, electionType }: VoteActionsProps) {
   const [radioState, setRadioState] = useState<MessageAction>(MessageAction.SELECT)
   const [stateIndex] = useLocalStorage('stateIndex', '0')
   const [nonce, setNonce] = useLocalStorage('nonce', '1')
-  const publishMessage = usePublishMessageCallback(maciAddress)
+  const publishMessage = usePublishMessageCallback()
 
   // toggle voter state modal
   const voterStateModalOpen = useModalOpen(ApplicationModal.VOTERSTATE)
@@ -36,7 +35,7 @@ export default function VoteActions({ recipients, electionType, maciAddress }: V
       <VoterStateModal isOpen={!parseInt(stateIndex) || voterStateModalOpen} onDismiss={toggleModal} />
       <VoteNav radioState={radioState} handleChange={toggleRadio} />
       {radioState === 0 ? (
-        <VotePatterns recipients={recipients} electionType={electionType} maciAddress={maciAddress} />
+        <VotePatterns recipients={recipients} electionType={electionType} />
       ) : (
         <AutoColumn justify="center">
           <ButtonPrimary
