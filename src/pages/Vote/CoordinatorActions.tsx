@@ -7,6 +7,7 @@ import { RandomStateLeafModal } from '../../components/RandomStateLeafModal'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useRandomStateLeafModalToggle } from '../../state/application/hooks'
 import { useProcessMessageCallback } from '../../hooks/useProcessMessageCallback'
+import { usePublishTallyCallback } from '../../hooks/usePublishTallyCallback'
 
 export default function CoordinatorActions() {
   /* modals */
@@ -14,6 +15,7 @@ export default function CoordinatorActions() {
   const toggleRandomStateLeafModal = useRandomStateLeafModalToggle()
 
   const [randomStateLeaf, processMessage] = useProcessMessageCallback()
+  const publishTally = usePublishTallyCallback()
 
   return (
     <>
@@ -28,7 +30,7 @@ export default function CoordinatorActions() {
       <ButtonPrimary onClick={processMessage}>
         <Trans>Process Message</Trans>
       </ButtonPrimary>
-      <ButtonPrimary>
+      <ButtonPrimary onClick={() => publishTally(randomStateLeaf)}>
         <Trans>Publish Tally</Trans>
       </ButtonPrimary>
     </>

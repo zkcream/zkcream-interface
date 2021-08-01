@@ -63,7 +63,7 @@ export function useSignUpCallback(
           })
         })
         .catch((e: Error) => {
-          console.log('signup error: ', e.message)
+          console.error('Error: signupMaci error: ', e.message)
           throw e
         })
     },

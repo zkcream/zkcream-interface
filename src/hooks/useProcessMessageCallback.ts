@@ -1,4 +1,4 @@
-// most of the `useProcesMessageCallback` method contains maci-cli@0.4.11 version
+// ported from https://github.com/appliedzkp/maci/blob/v0.4.11/cli/ts/process.ts
 import { useCallback, useMemo, useState } from 'react'
 import { Keypair, PrivKey, PubKey, StateLeaf } from 'maci-domainobjs'
 
@@ -11,7 +11,7 @@ import { post } from '../utils/api'
 const coordinatorPrivKey: string = process.env.REACT_APP_COORDINATOR_PRIVKEY!
 const coordinatorKeypair = new Keypair(new PrivKey(BigInt(coordinatorPrivKey)))
 
-type RandomStateLeaf = string | undefined
+export type RandomStateLeaf = string | undefined
 
 export function useProcessMessageCallback(): [RandomStateLeaf, () => Promise<void>] {
   const [randomStateLeaf, setRandomStateLeaf] = useState<string | undefined>('')
@@ -68,9 +68,9 @@ export function useProcessMessageCallback(): [RandomStateLeaf, () => Promise<voi
 
       const stateRootAfter = maciState.genStateRoot()
 
-      let formattedProof
-
       const configType = maciState.stateTreeDepth === 8 ? 'prod-small' : 'test'
+
+      let formattedProof
 
       const data = {
         circuitInputs: JSON.stringify(circuitInputs, (key, value) =>

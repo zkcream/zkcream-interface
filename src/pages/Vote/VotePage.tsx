@@ -54,6 +54,7 @@ export default function VotePage({
   const electionData: ElectionData | undefined = useElectionState()
   const isOwner: boolean = account === electionData?.owner
   const isCoordinator: boolean = account === electionData?.coordinator
+  const isPublished: boolean = electionData?.hash !== undefined
 
   useEffect(() => {
     setElectionData()
@@ -90,7 +91,8 @@ export default function VotePage({
                       <Text>
                         <Trans>You are Owner</Trans>
                       </Text>
-                      <ButtonPrimary>
+                      {!isPublished ? <Trans>Wait coordinator to publish tally hash</Trans> : null}
+                      <ButtonPrimary disabled={isPublished ? false : true}>
                         <Trans>Approve Tally</Trans>
                       </ButtonPrimary>
                     </>
@@ -125,6 +127,10 @@ export default function VotePage({
                 <Trans>Coordinator</Trans>
               </Text>
               {electionData.coordinator}
+              <Text fontSize={[2]} fontWeight="bold">
+                <Trans>Tally Hash</Trans>
+              </Text>
+              {electionData.hash}
             </AutoColumn>
           </>
         )}
