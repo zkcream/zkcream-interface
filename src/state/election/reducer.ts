@@ -38,6 +38,7 @@ export interface ElectionData {
   votingTokenAddress: string
   signUpTokenAddress: string
   hash: string
+  approved: boolean | undefined
   maciParams: MaciParams
 }
 

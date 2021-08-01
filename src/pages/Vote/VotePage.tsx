@@ -5,7 +5,6 @@ import styled from 'styled-components/macro'
 import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
-import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import { TokenButtons } from '../../components/TokenButtons'
 import { useActiveWeb3React } from '../../hooks/web3'
@@ -19,6 +18,7 @@ import { useTokenType } from '../../state/token/hooks'
 import { useAppDispatch } from '../../state/hooks'
 
 import CoordinatorActions from './CoordinatorActions'
+import OwnerActions from './OwnerActions'
 import VoteActions from './VoteActions'
 
 const PageWrapper = styled(AutoColumn)`
@@ -55,6 +55,7 @@ export default function VotePage({
   const isOwner: boolean = account === electionData?.owner
   const isCoordinator: boolean = account === electionData?.coordinator
   const isPublished: boolean = electionData?.hash !== undefined
+  const isApproved: boolean = electionData?.approved !== false
 
   useEffect(() => {
     setElectionData()
@@ -87,15 +88,7 @@ export default function VotePage({
               {isOwner || isCoordinator ? (
                 <>
                   {isOwner ? (
-                    <>
-                      <Text>
-                        <Trans>You are Owner</Trans>
-                      </Text>
-                      {!isPublished ? <Trans>Wait coordinator to publish tally hash</Trans> : null}
-                      <ButtonPrimary disabled={isPublished ? false : true}>
-                        <Trans>Approve Tally</Trans>
-                      </ButtonPrimary>
-                    </>
+                    <OwnerActions isPublished={isPublished} isApproved={isApproved} />
                   ) : (
                     <CoordinatorActions />
                   )}

@@ -47,6 +47,7 @@ export function useDataFromEventLogs() {
             votingTokenAddress: decodedLog.votingTokenAddress,
             signUpTokenAddress: decodedLog.signUpTokenAddress,
             hash: log[1],
+            approved: decodedLog.approved,
             maciParams,
           }
         })
