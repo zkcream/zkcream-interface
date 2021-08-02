@@ -8,14 +8,16 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useRandomStateLeafModalToggle } from '../../state/application/hooks'
 import { useProcessMessageCallback } from '../../hooks/useProcessMessageCallback'
 import { usePublishTallyCallback } from '../../hooks/usePublishTallyCallback'
+import { useWithdrawCallback } from '../../hooks/useWithdrawCallback'
 
-export default function CoordinatorActions() {
+export default function CoordinatorActions({ isPublished, isApproved }: { isPublished: boolean; isApproved: boolean }) {
   /* modals */
   const randomStateLeafModalOpen = useModalOpen(ApplicationModal.RANDOM_STATELEAF)
   const toggleRandomStateLeafModal = useRandomStateLeafModalToggle()
 
   const [randomStateLeaf, processMessage] = useProcessMessageCallback()
   const publishTally = usePublishTallyCallback()
+  const withdraw = useWithdrawCallback()
 
   return (
     <>
@@ -27,11 +29,14 @@ export default function CoordinatorActions() {
       <Text>
         <Trans>You are Coordinator</Trans>
       </Text>
-      <ButtonPrimary onClick={processMessage}>
+      <ButtonPrimary disabled={isPublished ? true : false} onClick={processMessage}>
         <Trans>Process Message</Trans>
       </ButtonPrimary>
-      <ButtonPrimary onClick={() => publishTally(randomStateLeaf)}>
+      <ButtonPrimary disabled={isPublished ? true : false} onClick={() => publishTally(randomStateLeaf)}>
         <Trans>Publish Tally</Trans>
+      </ButtonPrimary>
+      <ButtonPrimary disabled={isApproved ? false : true} onClick={withdraw}>
+        <Trans>Withdraw</Trans>
       </ButtonPrimary>
     </>
   )

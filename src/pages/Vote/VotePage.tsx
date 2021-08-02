@@ -54,7 +54,7 @@ export default function VotePage({
   const electionData: ElectionData | undefined = useElectionState()
   const isOwner: boolean = account === electionData?.owner
   const isCoordinator: boolean = account === electionData?.coordinator
-  const isPublished: boolean = electionData?.hash !== undefined
+  const isPublished: boolean = electionData?.tallyHash !== undefined
   const isApproved: boolean = electionData?.approved !== false
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function VotePage({
                   {isOwner ? (
                     <OwnerActions isPublished={isPublished} isApproved={isApproved} />
                   ) : (
-                    <CoordinatorActions />
+                    <CoordinatorActions isPublished={isPublished} isApproved={isApproved} />
                   )}
                 </>
               ) : (
@@ -123,7 +123,7 @@ export default function VotePage({
               <Text fontSize={[2]} fontWeight="bold">
                 <Trans>Tally Hash</Trans>
               </Text>
-              {electionData.hash}
+              {electionData.tallyHash}
             </AutoColumn>
           </>
         )}

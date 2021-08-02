@@ -1,6 +1,7 @@
 import React, { memo, useState } from 'react'
 import styled from 'styled-components'
 import { Box, Text } from 'rebass/styled-components'
+import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../Button'
 import { AutoColumn } from '../Column'
@@ -19,6 +20,11 @@ const HeaderRow = styled.div`
   ${({ theme }) => theme.mediaWidth.upToMedium`
     padding: 1rem;
   `};
+`
+
+const NoteText = styled(Text)`
+  font-weight: bold;
+  word-break: break-all;
 `
 
 interface NoteModalProps {
@@ -49,7 +55,9 @@ export const NoteModal = memo(({ note, isOpen, onDismiss }: NoteModalProps) => {
       return (
         <Box>
           <Box mb={20}>
-            <Text fontWeight="bold">Depoist Note</Text>
+            <Text fontWeight="bold">
+              <Trans>Depoist Note</Trans>
+            </Text>
           </Box>
           <RowFixed style={{ width: '100%' }}>
             {patterns.map((pattern, i) => (
@@ -58,7 +66,20 @@ export const NoteModal = memo(({ note, isOpen, onDismiss }: NoteModalProps) => {
               </ButtonPrimary>
             ))}
           </RowFixed>
-          <Box>{nav === patterns[0] ? <Text fontWeight="bold">{note}</Text> : <Text>show qr code</Text>}</Box>
+          <Box m={10}>
+            {nav === patterns[0] ? (
+              <>
+                <Box mb={10}>
+                  <Text>
+                    <Trans>Your Note:</Trans>
+                  </Text>
+                </Box>
+                <NoteText>{note}</NoteText>
+              </>
+            ) : (
+              <Text>show qr code</Text>
+            )}
+          </Box>
         </Box>
       )
     }

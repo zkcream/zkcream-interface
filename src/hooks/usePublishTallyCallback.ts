@@ -199,7 +199,6 @@ export function usePublishTallyCallback(): (leaf_zero: RandomStateLeaf) => Promi
           console.error(e)
           return
         }
-        //const { circuit, witness, proof, publicSignals } = result
 
         let tx
         const txErr = 'Error: proveVoteTallyBatch() failed'
@@ -270,13 +269,12 @@ export function usePublishTallyCallback(): (leaf_zero: RandomStateLeaf) => Promi
         }
       }
 
+      console.log(tallyFileData)
+
       // receive ipfs hash
       let tallyHash: any
       try {
-        tallyHash = await post(
-          'ipfs/',
-          JSON.stringify(tallyFileData, (key, value) => (typeof value === 'bigint' ? value.toString() : value))
-        )
+        tallyHash = await post('ipfs/', tallyFileData)
       } catch (e) {
         console.error('Error: unable to receive tallyHash from ipfs')
         console.error(e)
