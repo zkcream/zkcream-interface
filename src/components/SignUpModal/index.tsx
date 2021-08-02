@@ -48,12 +48,19 @@ export const SignUpModal = memo(({ zkCreamAddress, maciAddress, isOpen, onDismis
     setNoteReceived(false)
   }
 
-  /* TODO */
   function handleScan(data: string | null) {
+    const prefix = 'note:'
     if (data) {
       setNoteReceived(true)
+      if (data.startsWith(prefix)) {
+        const note = data.replace(prefix, '')
+        signUp(note).then(() => setNoteReceived(false))
+      } else {
+        console.log('Wrong format')
+        setNoteReceived(false)
+        return
+      }
     }
-    console.log(data)
   }
 
   function getModalContent() {

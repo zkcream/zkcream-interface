@@ -29,6 +29,7 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
       <Text>
         <Trans>You are Coordinator</Trans>
       </Text>
+      {isPublished && !isApproved ? <Trans>Wait owner to approve tally</Trans> : null}
       <ButtonPrimary disabled={isPublished ? true : false} onClick={processMessage}>
         <Trans>Process Message</Trans>
       </ButtonPrimary>

@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react'
 import styled from 'styled-components'
+import { QRCode } from 'react-qr-svg'
 import { Box, Text } from 'rebass/styled-components'
 import { Trans } from '@lingui/macro'
 
@@ -27,6 +28,10 @@ const NoteText = styled(Text)`
   word-break: break-all;
 `
 
+const QRContaier = styled.div`
+  padding-top: 1rem;
+`
+
 interface NoteModalProps {
   note: string | undefined
   isOpen: boolean
@@ -40,6 +45,17 @@ export const NoteModal = memo(({ note, isOpen, onDismiss }: NoteModalProps) => {
   function toggleNav() {
     const op: number = nav === patterns[0] ? 1 : 0
     setNav(patterns[op])
+  }
+
+  function generateQR(note: string) {
+    const qr: string = 'note:' + note
+    return (
+      <>
+        <QRContaier>
+          <QRCode bgColor="#FFFFFF" fgColor="#000000" level="Q" style={{ width: 256, marginBottom: 20 }} value={qr} />
+        </QRContaier>
+      </>
+    )
   }
 
   function getModalContent() {
@@ -77,7 +93,7 @@ export const NoteModal = memo(({ note, isOpen, onDismiss }: NoteModalProps) => {
                 <NoteText>{note}</NoteText>
               </>
             ) : (
-              <Text>show qr code</Text>
+              <Text>{generateQR(note)}</Text>
             )}
           </Box>
         </Box>

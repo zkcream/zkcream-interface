@@ -6,6 +6,7 @@ import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
 import { AutoColumn } from '../../components/Column'
+import { VotePatterns } from '../../components/VotePatterns'
 import { TokenButtons } from '../../components/TokenButtons'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { useElectionState, useSetElectionData } from '../../state/election/hooks'
@@ -85,6 +86,11 @@ export default function VotePage({
               <Text fontSize={[5]} fontWeight="bold" mt={4} mb={2}>
                 {electionData.title}
               </Text>
+              {isApproved ? (
+                <>
+                  <VotePatterns recipients={electionData.recipients} electionType={electionData.electionType} />
+                </>
+              ) : null}
               {isOwner || isCoordinator ? (
                 <>
                   {isOwner ? (

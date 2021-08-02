@@ -11222,7 +11222,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.8, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -11317,6 +11317,11 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.npmjs.org/q/-/q-1.5.1.tgz"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qr.js@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/qr.js/-/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
+  integrity sha1-ys6GOG9ZoNuAUPqQ2baw6IoeNk8=
 
 qs@6.7.0:
   version "6.7.0"
@@ -11553,6 +11558,14 @@ react-qr-reader@^2.2.1:
     jsqr "^1.2.0"
     prop-types "^15.7.2"
     webrtc-adapter "^7.2.1"
+
+react-qr-svg@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-qr-svg/-/react-qr-svg-2.4.0.tgz#c703d95907b9713192730a5bbeffb57e4aa782bd"
+  integrity sha512-3Q/LyjBi+eWjJ0WyZvBzyY3rCMlUBZyRnbTcKbXQ39J1bd0/vgqYhXoYai7XlDTS42Ro50BBY4TmeUVyIZh+nA==
+  dependencies:
+    prop-types "^15.5.8"
+    qr.js "0.0.0"
 
 react-redux@^7.2.4:
   version "7.2.4"
