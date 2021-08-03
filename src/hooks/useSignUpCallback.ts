@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { generateDeposit, generateMerkleProof, pedersenHash, toHex } from 'libcream'
-import { Keypair } from 'maci-domainobjs'
+import { Keypair, PrivKey } from 'maci-domainobjs'
 
 import { useMaciContract, useZkCreamContract } from './useContract'
 import { useLocalStorage } from './useLocalStorage'
@@ -18,9 +18,7 @@ export function useSignUpCallback(
 ): [StateIndex, (note: string) => Promise<void>] {
   const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
 
-  const userKeypair = new Keypair()
-  const userPubKey = userKeypair.pubKey.asContractParam()
-  const [macisk, setMaciSk] = useLocalStorage('macisk', userKeypair.privKey.serialize())
+  const [macisk, setMaciSk] = useLocalStorage('macisk', new Keypair().privKey.serialize())
 
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const maciContract = useMaciContract(maciAddress)
@@ -47,10 +45,12 @@ export function useSignUpCallback(
 
       // store userPubKey to local storage
       setMaciSk(macisk)
+      const privKey: PrivKey | undefined = macisk ? PrivKey.unserialize(macisk) : undefined
+      const userKeyPair: Keypair | undefined = privKey ? new Keypair(privKey) : undefined
 
       const args = [toHex(input.root), toHex(input.nullifierHash)]
       return await zkCreamContract
-        .signUpMaci(userPubKey, formattedProof.data, ...args)
+        .signUpMaci(userKeyPair?.pubKey.asContractParam(), formattedProof.data, ...args)
         .then(async (r: any) => {
           if (r.status) {
             await r.wait()
@@ -67,7 +67,7 @@ export function useSignUpCallback(
           throw e
         })
     },
-    [maciContract, macisk, setMaciSk, zkCreamAddress, zkCreamContract, setStateIndex, userPubKey]
+    [maciContract, macisk, setMaciSk, zkCreamAddress, zkCreamContract, setStateIndex]
   )
 
   return [stateIndex, signUp]
