@@ -1,5 +1,6 @@
 import { Box, Text } from 'rebass'
 import { Input, Label } from '@rebass/forms'
+import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../Button'
 import { useAddressInput } from '../../utils/inputs'
@@ -25,15 +26,21 @@ export default function ForOrAgainst({ setRecipients }: { setRecipients: any }) 
 
   return (
     <div>
-      <Box my={10}>
-        <Text fontWeight="bold">Set candidates address:</Text>
-      </Box>
       <Box>
-        <Label fontWeight="bold">For</Label>
+        <Text fontWeight="bold">
+          <Trans>Set candidates address</Trans>
+        </Text>
+      </Box>
+      <Box pb={3}>
+        <Label fontWeight="bold">
+          <Trans>For</Trans>
+        </Label>
         <Input type="text" {...bindFor} />
       </Box>
-      <Box>
-        <Label fontWeight="bold">Against</Label>
+      <Box pb={3}>
+        <Label fontWeight="bold">
+          <Trans>Against</Trans>
+        </Label>
         <Input type="text" {...bindAgainst} />
       </Box>
       <ButtonPrimary onClick={onConfirm} disabled={disabled}>

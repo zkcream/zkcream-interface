@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button } from 'rebass/styled-components'
+import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
@@ -59,9 +60,17 @@ export default function Vote() {
     <PageWrapper gap="lg" justify="center">
       <DeployModal isOpen={deployModalOpen} onDismiss={toggleModal} />
       <TopSection>
-        <h2>Elections</h2>
-        <ButtonPrimary onClick={toggleModal}>Create new Election</ButtonPrimary>
-        {electionsData?.length === 0 && <EmptyElections>No elections found</EmptyElections>}
+        <h2>
+          <Trans>Elections</Trans>
+        </h2>
+        <ButtonPrimary onClick={toggleModal}>
+          <Trans>Create new Election</Trans>
+        </ButtonPrimary>
+        {electionsData?.length === 0 && (
+          <EmptyElections>
+            <Trans>No elections found</Trans>
+          </EmptyElections>
+        )}
         {electionsData?.map((e: ElectionData, i) => {
           return (
             <Election as={Link} to={'/vote/' + e.zkCreamAddress} key={i}>

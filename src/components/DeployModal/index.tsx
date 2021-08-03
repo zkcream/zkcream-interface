@@ -20,12 +20,17 @@ const ContentWrapper = styled(AutoColumn)`
 `
 
 const SubmitButton = styled.input`
-  background-color: grey;
   border: none;
+  color: ${({ theme }) => theme.greyText};
   width: 100%;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 16px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 500;
   cursor: pointer;
+  :disabled {
+    opacity: 0.5;
+  }
 `
 
 interface DeployModalProps {
@@ -67,6 +72,7 @@ function DeployForm() {
 
     const hash = await post('ipfs', election)
 
+    // TODO
     const data = {
       initial_voice_credit_balance: 100,
       merkle_tree_height: 4,
@@ -89,32 +95,36 @@ function DeployForm() {
   }
 
   return (
-    <Box as="form" onSubmit={onDeploy}>
-      <Box>
+    <Box as="form" onSubmit={onDeploy} py={3}>
+      <Box pb={3}>
         <Label fontWeight="bold">
-          <Trans>Title</Trans>
+          <Trans>Election Title</Trans>
         </Label>
         <Input type="text" {...bindTitle} />
       </Box>
-      <Box>
+      <Box pb={3}>
         <Label fontWeight="bold">
           <Trans>Coordinator Ethereum Address</Trans>
         </Label>
         <Input type="text" {...bindCoordinatorAddress} />
       </Box>
-      <Label fontWeight="bold">
-        <Trans>Type</Trans>
-      </Label>
-      <Select value={electionType} onChange={(e) => handleOnChange(e.target.value)}>
-        <option></option>
-        {selections.map((selection, i) => (
-          <option key={i} value={i}>
-            {selection}
-          </option>
-        ))}
-      </Select>
+      <Box pb={3}>
+        <Label fontWeight="bold">
+          <Trans>Election Type</Trans>
+        </Label>
+        <Select value={electionType} onChange={(e) => handleOnChange(e.target.value)}>
+          <option></option>
+          {selections.map((selection, i) => (
+            <option key={i} value={i}>
+              {selection}
+            </option>
+          ))}
+        </Select>
+      </Box>
       <Candidates electionType={electionType as string} setRecipients={setRecipients} />
-      <SubmitButton type="submit" value={txState} disabled={txState !== 'Deploy' || !electionType} />
+      <Box pt={3}>
+        <SubmitButton type="submit" value={txState} disabled={txState !== 'Deploy' || !electionType} />
+      </Box>
     </Box>
   )
 }
@@ -122,7 +132,7 @@ function DeployForm() {
 export default function DeployModal({ isOpen, onDismiss }: DeployModalProps) {
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss}>
-      <ContentWrapper gap="sm">
+      <ContentWrapper gap="lg">
         <DeployForm />
       </ContentWrapper>
     </Modal>

@@ -6,10 +6,12 @@ import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { Trans } from '@lingui/macro'
 
 import { injected } from '../../connectors'
+import { SUPPORTED_WALLETS } from '../../constants/wallet'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/actions'
 
 import Modal from '../Modal'
+import Option from './Option'
 
 const CloseIcon = styled.div`
   position: absolute;
@@ -64,6 +66,14 @@ const HoverText = styled.div`
   }
 `
 
+const ContentWrapper = styled.div`
+  background-color: ${({ theme }) => theme.white};
+  padding: 0 1rem 1rem 1rem;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  ${({ theme }) => theme.mediaWidth.upToMedium`padding: 0 1rem 1rem 1rem`};
+`
+
 export default function WalletModal() {
   const { account, activate } = useWeb3React()
 
@@ -82,6 +92,36 @@ export default function WalletModal() {
       })
   }
 
+  function getOptions() {
+    const isMetamask = window.ethereum && window.ethereum.isMetaMask
+    return Object.keys(SUPPORTED_WALLETS).map((key) => {
+      const option = SUPPORTED_WALLETS[key]
+      if (option.connector === injected) {
+        if (!(window.web3 || window.ethereum)) {
+          if (option.name === 'MetaMask') {
+            return (
+              <Option
+                key={key}
+                header={<Trans>Install Metamask</Trans>}
+                link={'https://metamask.io'}
+                icon={option.iconURL}
+              />
+            )
+          } else {
+            return null
+          }
+        } else if (option.name === 'MetaMask' && !isMetamask) {
+          return null
+        } else if (option.name === 'Injected' && isMetamask) {
+          return null
+        }
+      }
+      return (
+        <Option key={key} onClick={() => tryActivation(option.connector)} header={option.name} icon={option.iconURL} />
+      )
+    })
+  }
+
   function getModalContent() {
     if (account) {
       return <>show account info</>
@@ -92,10 +132,9 @@ export default function WalletModal() {
             <X size={20} />
           </CloseIcon>
           <HeaderRow>
-            <HoverText onClick={() => tryActivation(injected)}>
-              <Trans>Connecto to a Wallet</Trans>
-            </HoverText>
+            <Trans>Connecto to a Wallet</Trans>
           </HeaderRow>
+          <ContentWrapper>{getOptions()}</ContentWrapper>
         </UpperSection>
       )
     }
