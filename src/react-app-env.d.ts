@@ -10,5 +10,6 @@ interface Window {
   web3?: Record<string, unknown>
 }
 
+declare module '@metamask/jazzicon'
 declare module 'libcream'
 declare module 'maci-core'

@@ -14,6 +14,7 @@
     "@lingui/loader": "^3.10.2",
     "@lingui/macro": "^3.10.2",
     "@lingui/react": "^3.10.2",
+    "@metamask/jazzicon": "^2.0.0",
     "@reach/dialog": "^0.15.2",
     "@rebass/forms": "^4.0.6",
     "@reduxjs/toolkit": "^1.6.0",
