@@ -2,14 +2,16 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 // import { genKeypair } from 'maci-crypto'
 import { Keypair, PrivKey } from 'maci-domainobjs'
-import { Box } from 'rebass/styled-components'
-import { Label, Input, Select } from '@rebass/forms'
+import { Box, Flex } from 'rebass/styled-components'
+import { Label, Radio } from '@rebass/forms'
 import { Trans } from '@lingui/macro'
 
+import { ButtonPrimary } from '../Button'
 import { AutoColumn } from '../Column'
 import Candidates from './Candidates'
 import Modal from '../Modal'
-import { useInput } from '../../utils/inputs'
+import { FormInput } from '../../theme'
+import { useInput, useAddressInput } from '../../utils/inputs'
 import { post } from '../../utils/api'
 
 // import { useDeployCallback } from '../../state/election/hooks'
@@ -19,10 +21,13 @@ const ContentWrapper = styled(AutoColumn)`
   padding: 24px;
 `
 
+const RadioRabel = styled(Label)`
+  line-height: 1.5rem;
+`
+
 const SubmitButton = styled.input`
   border: none;
   color: ${({ theme }) => theme.greyText};
-  width: 100%;
   padding: 16px;
   border-radius: 20px;
   font-size: 18px;
@@ -48,10 +53,18 @@ const selections: SelectionType = [
 
 function DeployForm() {
   const [txState, setTxState] = useState<any>('Deploy')
-  const [electionType, setElectionType] = useState<string | undefined>()
+  // set electionType 2 as default since type 0 ~ 1 are not implemented yet
+  const [electionType, setElectionType] = useState<string>('2')
   const [recipients, setRecipients] = useState<[]>()
   const { value: title, bind: bindTitle, reset: resetTitle } = useInput('')
-  const { value: coordinatorAddress, bind: bindCoordinatorAddress, reset: resetCoordinatorAddress } = useInput('')
+  const {
+    value: coordinatorAddress,
+    bind: bindCoordinatorAddress,
+    reset: resetCoordinatorAddress,
+    isEthAddress: isCoordinatorAddressCorrectFormat,
+  } = useAddressInput('')
+
+  const disabled = !isCoordinatorAddressCorrectFormat
 
   /* TODO: download privKey OR show QR code */
   //const { privKey } = genKeypair()
@@ -84,47 +97,52 @@ function DeployForm() {
 
     //await deployCallback(data)
     await post('factory/deploy', data)
-
-    resetTitle()
-    resetCoordinatorAddress()
     setTxState('Deploy')
   }
 
-  function handleOnChange(value: string) {
-    setElectionType(value)
-  }
-
   return (
-    <Box as="form" onSubmit={onDeploy} py={3}>
+    <Box py={3}>
       <Box pb={3}>
         <Label fontWeight="bold">
           <Trans>Election Title</Trans>
         </Label>
-        <Input type="text" {...bindTitle} />
+        <FormInput type="text" {...bindTitle} />
       </Box>
       <Box pb={3}>
         <Label fontWeight="bold">
           <Trans>Coordinator Ethereum Address</Trans>
         </Label>
-        <Input type="text" {...bindCoordinatorAddress} />
+        <FormInput type="text" {...bindCoordinatorAddress} />
       </Box>
       <Box pb={3}>
-        <Label fontWeight="bold">
+        <Label fontWeight="bold" pb={2}>
           <Trans>Election Type</Trans>
         </Label>
-        <Select value={electionType} onChange={(e) => handleOnChange(e.target.value)}>
-          <option></option>
-          {selections.map((selection, i) => (
-            <option key={i} value={i}>
-              {selection}
-            </option>
-          ))}
-        </Select>
+        {selections.map((selection, i) => (
+          <RadioRabel key={i}>
+            <Radio
+              name="electionType"
+              value={i}
+              onChange={(e) => setElectionType(e.target.value)}
+              checked={electionType === '2' ? true : false}
+              disabled={i.toString() !== electionType ? true : false}
+            />
+            <Trans>{selection}</Trans>
+          </RadioRabel>
+        ))}
       </Box>
       <Candidates electionType={electionType as string} setRecipients={setRecipients} />
-      <Box pt={3}>
-        <SubmitButton type="submit" value={txState} disabled={txState !== 'Deploy' || !electionType} />
-      </Box>
+      <Flex>
+        <Box>
+          <ButtonPrimary
+            value={txState}
+            disabled={txState !== 'Deploy' || !electionType || disabled}
+            onClick={onDeploy}
+          >
+            <Trans>Deploy</Trans>
+          </ButtonPrimary>
+        </Box>
+      </Flex>
     </Box>
   )
 }

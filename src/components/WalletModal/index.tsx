@@ -57,15 +57,6 @@ const UpperSection = styled.div`
   }
 `
 
-const HoverText = styled.div`
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  :hover {
-    cursor: pointer;
-  }
-`
-
 const ContentWrapper = styled.div`
   background-color: ${({ theme }) => theme.white};
   padding: 0 1rem 1rem 1rem;
