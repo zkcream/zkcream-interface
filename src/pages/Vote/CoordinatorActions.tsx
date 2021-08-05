@@ -30,13 +30,17 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
         <Trans>You are Coordinator</Trans>
       </Text>
       {isPublished && !isApproved ? <Trans>Wait owner to approve tally</Trans> : null}
-      <ButtonPrimary disabled={isPublished ? true : false} onClick={processMessage}>
-        <Trans>Process Message</Trans>
-      </ButtonPrimary>
-      <ButtonPrimary disabled={isPublished ? true : false} onClick={() => publishTally(randomStateLeaf)}>
-        <Trans>Publish Tally</Trans>
-      </ButtonPrimary>
-      <ButtonPrimary disabled={isApproved ? false : true} onClick={withdraw}>
+      {!isPublished ? (
+        <>
+          <ButtonPrimary onClick={processMessage}>
+            <Trans>Process Message</Trans>
+          </ButtonPrimary>
+          <ButtonPrimary onClick={() => publishTally(randomStateLeaf)}>
+            <Trans>Publish Tally</Trans>
+          </ButtonPrimary>
+        </>
+      ) : null}
+      <ButtonPrimary disabled={!isApproved ? true : false} onClick={withdraw}>
         <Trans>Withdraw</Trans>
       </ButtonPrimary>
     </>

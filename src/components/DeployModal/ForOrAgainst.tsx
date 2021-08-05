@@ -1,5 +1,5 @@
 import { Box, Text } from 'rebass'
-import { Input, Label } from '@rebass/forms'
+import { Label } from '@rebass/forms'
 import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../Button'

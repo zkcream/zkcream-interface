@@ -36,14 +36,11 @@ export async function genMaciStateFromContract(
     maciState.signUp(pubKey, voiceCreditBalance)
   }
 
-  let msgData: BigInt[] = []
   for (const log of publishMessageLogs) {
     const event = iface.parseLog(log)
     const msgIv = BigInt(event.args._message[0].toString())
-    for (let i = 0; i < event.args._message[1].length; i++) {
-      msgData.push(BigInt(event.args._message[1][i].toString()))
-    }
-    // msgData = event.args._message[1].map((x: any) => BigInt(x.toString())) // to avoid eslint error
+    // eslint-disable-next-line no-loop-func
+    const msgData = event.args._message[1].map((x: any) => BigInt(x.toString())) // avoid eslint error
     const message = new Message(msgIv, msgData)
     const encPubKey = new PubKey([BigInt(event.args._encPubKey[0]), BigInt(event.args._encPubKey[1])])
 

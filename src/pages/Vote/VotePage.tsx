@@ -88,7 +88,11 @@ export default function VotePage({
               </Text>
               {isApproved ? (
                 <>
-                  <VotePatterns recipients={electionData.recipients} electionType={electionData.electionType} />
+                  <VotePatterns
+                    recipients={electionData.recipients}
+                    electionType={electionData.electionType}
+                    isApproved={isApproved}
+                  />
                 </>
               ) : null}
               {isOwner || isCoordinator ? (
@@ -102,7 +106,12 @@ export default function VotePage({
               ) : (
                 <>
                   {tokenState & TokenType.SIGNUP ? (
-                    <VoteActions recipients={electionData.recipients} electionType={electionData.electionType} />
+                    <VoteActions
+                      recipients={electionData.recipients}
+                      electionType={electionData.electionType}
+                      isPublished={isPublished}
+                      isApproved={isApproved}
+                    />
                   ) : (
                     <TokenButtons
                       tokenState={tokenState}

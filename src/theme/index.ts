@@ -84,6 +84,7 @@ body {
 }
 a {
   color: 'blue';
+  text-decoration: none;
 }
 * {
   box-sizing: border-box;
@@ -98,7 +99,6 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   font-feature-settings: 'ss01' on, 'ss02' on,  'cv01' on, 'cv03' on;
-
 }
 `
 

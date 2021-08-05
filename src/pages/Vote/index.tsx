@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { Box } from 'rebass'
 import { Button } from 'rebass/styled-components'
 import { Trans } from '@lingui/macro'
 
@@ -27,7 +28,7 @@ const Election = styled(Button)`
   border-radius: 12px;
   border: ${({ theme }) => theme.greyText} 1px solid;
   display: grid;
-  grid-template-columns: 48px 1fr 120px;
+  grid-template-columns: 240px 1fr 120px;
   align-items: center;
   text-align: left;
   outline: none;
@@ -45,6 +46,15 @@ const EmptyElections = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`
+
+const ApprovedWrapper = styled(Box)`
+  display: inline-block;
+  background: ${({ theme }) => theme.greyText};
+  color: white;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  padding: 0.25rem;
 `
 
 export default function Vote() {
@@ -75,6 +85,11 @@ export default function Vote() {
           return (
             <Election as={Link} to={'/vote/' + e.zkCreamAddress} key={i}>
               <ElectionTitle>{e.title}</ElectionTitle>
+              {e.approved ? (
+                <ApprovedWrapper>
+                  <Trans>Approved</Trans>
+                </ApprovedWrapper>
+              ) : null}
             </Election>
           )
         })}

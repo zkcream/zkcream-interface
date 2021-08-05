@@ -14,10 +14,13 @@ export default function OwnerActions({ isPublished, isApproved }: { isPublished:
         <Trans>You are Owner</Trans>
       </Text>
       {!isPublished ? <Trans>Wait coordinator to publish tally hash</Trans> : null}
-      {isApproved ? <Trans>Tally already approved</Trans> : null}
-      <ButtonPrimary disabled={isPublished && !isApproved ? false : true} onClick={approveTally}>
-        <Trans>Approve Tally</Trans>
-      </ButtonPrimary>
+      {isApproved ? (
+        <Trans>Tally already approved</Trans>
+      ) : (
+        <ButtonPrimary onClick={approveTally}>
+          <Trans>Approve Tally</Trans>
+        </ButtonPrimary>
+      )}
     </>
   )
 }

@@ -14,9 +14,11 @@ import { useVoterStateModalToggle, useModalOpen } from '../../state/application/
 export interface VoteActionsProps {
   recipients: string[]
   electionType: string
+  isPublished?: boolean | undefined
+  isApproved?: boolean | undefined
 }
 
-export default function VoteActions({ recipients, electionType }: VoteActionsProps) {
+export default function VoteActions({ recipients, electionType, isApproved }: VoteActionsProps) {
   const [radioState, setRadioState] = useState<MessageAction>(MessageAction.SELECT)
   const [stateIndex] = useLocalStorage('stateIndex', '0')
   const [nonce, setNonce] = useLocalStorage('nonce', '1')
@@ -32,20 +34,24 @@ export default function VoteActions({ recipients, electionType }: VoteActionsPro
 
   return (
     <>
-      <VoterStateModal isOpen={!parseInt(stateIndex) || voterStateModalOpen} onDismiss={toggleModal} />
-      <VoteNav radioState={radioState} handleChange={toggleRadio} />
-      {radioState === 0 ? (
-        <VotePatterns recipients={recipients} electionType={electionType} />
-      ) : (
-        <AutoColumn justify="center">
-          <ButtonPrimary
-            width="50%"
-            onClick={() => publishMessage(null, stateIndex, nonce).then(() => setNonce(parseInt(nonce) + 1))}
-          >
-            <Trans>New Key</Trans>
-          </ButtonPrimary>
-        </AutoColumn>
-      )}
+      {!isApproved ? (
+        <>
+          <VoterStateModal isOpen={!parseInt(stateIndex) || voterStateModalOpen} onDismiss={toggleModal} />
+          <VoteNav radioState={radioState} handleChange={toggleRadio} />
+          {radioState === 0 ? (
+            <VotePatterns recipients={recipients} electionType={electionType} />
+          ) : (
+            <AutoColumn justify="center">
+              <ButtonPrimary
+                width="50%"
+                onClick={() => publishMessage(null, stateIndex, nonce).then(() => setNonce(parseInt(nonce) + 1))}
+              >
+                <Trans>New Key</Trans>
+              </ButtonPrimary>
+            </AutoColumn>
+          )}
+        </>
+      ) : null}
     </>
   )
 }
