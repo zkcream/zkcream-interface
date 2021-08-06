@@ -8,14 +8,22 @@ function PickMany() {
   return <>Unimplemented</>
 }
 
-export default function Candidates({ electionType, setRecipients }: { electionType: string; setRecipients: any }) {
+export default function Candidates({
+  electionType,
+  values,
+  setValues,
+}: {
+  electionType: string
+  values: any
+  setValues: any
+}) {
   return (
     <>
       {
         {
           0: <PickOne />,
           1: <PickMany />,
-          2: <ForOrAgainst setRecipients={setRecipients} />,
+          2: <ForOrAgainst values={values} setValues={setValues} />,
         }[electionType]
       }
     </>

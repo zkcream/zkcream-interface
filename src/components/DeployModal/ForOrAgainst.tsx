@@ -2,22 +2,36 @@ import { Box, Text } from 'rebass'
 import { Label } from '@rebass/forms'
 import { Trans } from '@lingui/macro'
 
-import { ButtonPrimary } from '../Button'
-import { useAddressInput } from '../../utils/inputs'
 import { FormInput } from '../../theme'
 
-export default function ForOrAgainst({ setRecipients }: { setRecipients: any }) {
-  // since we cannot use `for` variable, use `forValue` instead
-  const { value: forValue, bind: bindFor, isEthAddress: isForCorrectFormat } = useAddressInput('')
-  const { value: againstValue, bind: bindAgainst, isEthAddress: isAgainstCorrectFormat } = useAddressInput('')
-
-  function onConfirm(e: any) {
-    e.preventDefault()
-    setRecipients([forValue, againstValue])
+const FieldEditor = ({ value, onChange, id }: { value: string; onChange: any; id: string }) => {
+  const handleChange = (e: any) => {
+    const address = e.target.value
+    onChange(id, address)
   }
 
-  const disabled = !isForCorrectFormat || !isAgainstCorrectFormat
+  return <FormInput onChange={handleChange} value={value} />
+}
 
+function FormEditor({ values, setValues }: { values: any; setValues: any }) {
+  const types = ['for', 'against']
+  const handleFieldChange = (fieldId: any, value: {}) => {
+    setValues({ ...values, [fieldId]: value })
+  }
+
+  const fields = types.map((type: string) => (
+    <Box pb={3} key={type}>
+      <Label fontWeight="bold">
+        <Trans>{type.charAt(0).toUpperCase() + type.slice(1)}</Trans>
+      </Label>
+      <FieldEditor id={type} onChange={handleFieldChange} value={values[type]} />
+    </Box>
+  ))
+
+  return <>{fields}</>
+}
+
+export default function ForOrAgainst({ values, setValues }: { values: any; setValues: any }) {
   return (
     <>
       <Box>
@@ -25,23 +39,7 @@ export default function ForOrAgainst({ setRecipients }: { setRecipients: any }) 
           <Trans>Set candidates address</Trans>
         </Text>
       </Box>
-      <Box pb={3}>
-        <Label fontWeight="bold">
-          <Trans>For</Trans>
-        </Label>
-        <FormInput type="text" {...bindFor} />
-      </Box>
-      <Box pb={3}>
-        <Label fontWeight="bold">
-          <Trans>Against</Trans>
-        </Label>
-        <FormInput type="text" {...bindAgainst} />
-      </Box>
-      <Box pb={3}>
-        <ButtonPrimary onClick={onConfirm} disabled={disabled}>
-          Confirm
-        </ButtonPrimary>
-      </Box>
+      <FormEditor values={values} setValues={setValues} />
     </>
   )
 }

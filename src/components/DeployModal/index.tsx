@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { isAddress } from '@ethersproject/address'
 import styled from 'styled-components'
+
 // import { genKeypair } from 'maci-crypto'
 import { Keypair, PrivKey } from 'maci-domainobjs'
-import { Box, Flex } from 'rebass/styled-components'
+import { Box } from 'rebass/styled-components'
 import { Label, Radio } from '@rebass/forms'
 import { Trans } from '@lingui/macro'
 
@@ -25,19 +27,6 @@ const RadioRabel = styled(Label)`
   line-height: 1.5rem;
 `
 
-const SubmitButton = styled.input`
-  border: none;
-  color: ${({ theme }) => theme.greyText};
-  padding: 16px;
-  border-radius: 20px;
-  font-size: 18px;
-  font-weight: 500;
-  cursor: pointer;
-  :disabled {
-    opacity: 0.5;
-  }
-`
-
 interface DeployModalProps {
   isOpen: boolean
   onDismiss: () => void
@@ -55,16 +44,16 @@ function DeployForm() {
   const [txState, setTxState] = useState<any>('Deploy')
   // set electionType 2 as default since type 0 ~ 1 are not implemented yet
   const [electionType, setElectionType] = useState<string>('2')
-  const [recipients, setRecipients] = useState<[]>()
-  const { value: title, bind: bindTitle, reset: resetTitle } = useInput('')
+
+  const [values, setValues] = useState({ for: '', against: '' })
+  const { value: title, bind: bindTitle } = useInput('')
   const {
     value: coordinatorAddress,
     bind: bindCoordinatorAddress,
-    reset: resetCoordinatorAddress,
     isEthAddress: isCoordinatorAddressCorrectFormat,
   } = useAddressInput('')
 
-  const disabled = !isCoordinatorAddressCorrectFormat
+  const disabled = !isCoordinatorAddressCorrectFormat || !isAddress(values['for']) || !isAddress(values['against'])
 
   /* TODO: download privKey OR show QR code */
   //const { privKey } = genKeypair()
@@ -80,8 +69,10 @@ function DeployForm() {
     const election = {
       title,
       electionType,
-      recipients,
+      recipients: [values['for'], values['against']],
     }
+
+    console.log(election)
 
     const hash = await post('ipfs', election)
 
@@ -119,30 +110,29 @@ function DeployForm() {
           <Trans>Election Type</Trans>
         </Label>
         {selections.map((selection, i) => (
-          <RadioRabel key={i}>
-            <Radio
-              name="electionType"
-              value={i}
-              onChange={(e) => setElectionType(e.target.value)}
-              checked={electionType === '2' ? true : false}
-              disabled={i.toString() !== electionType ? true : false}
-            />
-            <Trans>{selection}</Trans>
-          </RadioRabel>
+          <div key={i}>
+            {/* TEMP: set for or against only */}
+            {i === 2 ? (
+              <RadioRabel key={i}>
+                <Radio
+                  name="electionType"
+                  value={i}
+                  onChange={(e) => setElectionType(e.target.value)}
+                  checked={true}
+                  disabled={i.toString() !== electionType ? true : false}
+                />
+                <Trans>{selection}</Trans>
+              </RadioRabel>
+            ) : null}
+          </div>
         ))}
       </Box>
-      <Candidates electionType={electionType as string} setRecipients={setRecipients} />
-      <Flex>
-        <Box>
-          <ButtonPrimary
-            value={txState}
-            disabled={txState !== 'Deploy' || !electionType || disabled}
-            onClick={onDeploy}
-          >
-            <Trans>Deploy</Trans>
-          </ButtonPrimary>
-        </Box>
-      </Flex>
+      <Candidates electionType={electionType as string} values={values} setValues={setValues} />
+      <Box>
+        <ButtonPrimary value={txState} disabled={txState !== 'Deploy' || !electionType || disabled} onClick={onDeploy}>
+          <Trans>Deploy</Trans>
+        </ButtonPrimary>
+      </Box>
     </Box>
   )
 }
