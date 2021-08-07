@@ -3,13 +3,13 @@ export interface Colors {
   white: Color
   black: Color
   greyText: Color
-  blackText: Color
 
+  primary: Color
+
+  baseBackground: Color
+  darkBackgraound: Color
   modalBackground: Color
-  inputBackground: Color
   placeholderGray: Color
-
-  primary1: Color
 }
 
 export interface Grids {

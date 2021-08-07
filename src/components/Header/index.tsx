@@ -35,8 +35,8 @@ const HeaderElement = styled.div`
 `
 
 const Title = styled.a`
+  color: ${({ theme }) => theme.primary};
   align-items: center;
-  color: inherit;
   display: flex;
   font-weight: bold;
   justify-self: flex-start;

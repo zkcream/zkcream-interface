@@ -47,7 +47,7 @@ const RadioInput = styled.input`
 
   &:checked {
     + label {
-      background: ${({ theme }) => theme.blackText};
+      background: ${({ theme }) => theme.black};
       color: ${({ theme }) => theme.white};
     }
   }

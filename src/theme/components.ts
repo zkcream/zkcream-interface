@@ -11,10 +11,10 @@ export const FormInput = styled.input`
   font-size: 1rem;
   padding: 12px;
   border: 1px solid;
-  border-radius: 20px;
+  border-radius: 0.25rem;
   line-height: 1rem;
   :focus {
-    border: 1px solid rgb(33, 114, 229);
+    border: 1px solid ${({ theme }) => theme.primary};
     outline: none;
   }
 `

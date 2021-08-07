@@ -15,7 +15,7 @@ const Base = styled(Button)<
   width: ${({ width }) => (width ? width : '100%')};
   font-weight: 500;
   text-align: center;
-  border-radius: 20px;
+  border-radius: 0.25rem;
   border-radius: ${({ borderRadius }) => borderRadius && borderRadius};
   outline: none;
   border: 1px solid transparent;
@@ -46,11 +46,17 @@ const Base = styled(Button)<
   }
 `
 
-export const ButtonPrimary = styled(Base)``
+export const ButtonPrimary = styled(Base)`
+  color: ${({ theme }) => theme.black};
+  background: ${({ theme }) => theme.primary};
+  :disabled {
+    opacity: 0.25;
+  }
+`
 
 export const ButtonIcon = styled(Base)`
   border-radius: 10px;
-  color: ${({ theme }) => theme.blackText};
+  color: ${({ theme }) => theme.black};
   border: 1px solid;
   margin: 0.25rem;
 

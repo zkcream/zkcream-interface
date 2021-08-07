@@ -14,11 +14,17 @@ import { useModalOpen, useDeployModalToggle } from '../../state/application/hook
 import { useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
 import { ElectionData } from '../../state/election/reducer'
 
-const PageWrapper = styled(AutoColumn)``
+const PageWrapper = styled(AutoColumn)`
+  color: ${({ theme }) => theme.white};
+`
 
 const TopSection = styled(AutoColumn)`
   max-width: 640px;
   width: 100%;
+`
+
+const PageTitle = styled.h2`
+  text-align: center;
 `
 
 const Election = styled(Button)`
@@ -70,9 +76,9 @@ export default function Vote() {
     <PageWrapper gap="lg" justify="center">
       <DeployModal isOpen={deployModalOpen} onDismiss={toggleModal} />
       <TopSection>
-        <h2>
+        <PageTitle>
           <Trans>Elections</Trans>
-        </h2>
+        </PageTitle>
         <ButtonPrimary onClick={toggleModal}>
           <Trans>Create new Election</Trans>
         </ButtonPrimary>

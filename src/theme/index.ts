@@ -24,7 +24,8 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
 ) as any
 
 const white = '#ffffff'
-const black = '#333333'
+const black = '#000000'
+const wutang_yellow = '#fecc01'
 
 export function colors(): Colors {
   return {
@@ -32,15 +33,15 @@ export function colors(): Colors {
     white,
     black,
     greyText: '#6c7284',
-    blackText: black,
-
-    // backgrounds
-    modalBackground: 'rgba(0,0,0,0.3)',
-    inputBackground: white,
-    placeholderGray: '#e1e1e1',
 
     // primary colors
-    primary1: 'yellow',
+    primary: wutang_yellow,
+
+    // backgrounds
+    baseBackground: white,
+    darkBackgraound: '#181A20',
+    modalBackground: 'rgba(0,0,0,0.3)',
+    placeholderGray: '#e1e1e1',
   }
 }
 
@@ -104,8 +105,8 @@ html {
 
 export const ThemedGlobalStyle = createGlobalStyle`
   html {
-    color: ${({ theme }) => theme.blackText};
-    background-color: ${({ theme }) => theme.white};
+    color: ${({ theme }) => theme.black};
+    background-color: ${({ theme }) => theme.darkBackgraound};
   }
   body {
     min-height: 100vh;

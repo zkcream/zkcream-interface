@@ -25,7 +25,7 @@ const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
   margin-top: 0;
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
-    border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary1}` : ``)};
+    border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary}` : ``)};
   }
   opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `
@@ -38,7 +38,7 @@ const OptionCardLeft = styled.div`
 
 const HeaderText = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  color: ${(props) => (props.color === 'blue' ? ({ theme }) => theme.primary1 : ({ theme }) => theme.black)};
+  color: ${(props) => (props.color === 'blue' ? ({ theme }) => theme.primary : ({ theme }) => theme.black)};
   font-size: 1rem;
   font-weight: 500;
 `
