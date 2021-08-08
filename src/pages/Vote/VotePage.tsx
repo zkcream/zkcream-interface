@@ -24,10 +24,11 @@ import VoteActions from './VoteActions'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
+  color: ${({ theme }) => theme.white};
 `
 
 const ElectionInfo = styled(AutoColumn)`
-  border: ${({ theme }) => theme.greyText} 1px solid;
+  border: ${({ theme }) => theme.white} 1px solid;
   border-radius: 12px;
   padding: 1.5rem;
   position: relative;
@@ -36,11 +37,12 @@ const ElectionInfo = styled(AutoColumn)`
 `
 
 const ArrowWrapper = styled(StyledInternalLink)`
+  color: ${({ theme }) => theme.white};
   display: flex;
   align-items: center;
   gap: 8px;
   height: 24px;
-  color: ${({ theme }) => theme.greyText};
+  width: 120px;
 `
 
 export default function VotePage({
@@ -124,18 +126,18 @@ export default function VotePage({
               )}
             </AutoColumn>
             <AutoColumn gap="sm">
-              <Text fontSize={[3]} fontWeight="bold">
+              <Text fontSize={[3]}>
                 <Trans>Administration Committees</Trans>
               </Text>
-              <Text fontSize={[2]} fontWeight="bold">
+              <Text fontSize={[2]}>
                 <Trans>Group owner</Trans>
               </Text>
               {electionData.owner}
-              <Text fontSize={[2]} fontWeight="bold">
+              <Text fontSize={[2]}>
                 <Trans>Coordinator</Trans>
               </Text>
               {electionData.coordinator}
-              <Text fontSize={[2]} fontWeight="bold">
+              <Text fontSize={[2]}>
                 <Trans>Tally Hash</Trans>
               </Text>
               {electionData.tallyHash}

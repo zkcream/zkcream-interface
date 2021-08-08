@@ -16,6 +16,11 @@ import {
 import { useActiveWeb3React } from '../../hooks/web3'
 import { get } from '../../utils/api'
 
+export enum ElectionState {
+  ACTIVE,
+  FINISHED,
+}
+
 export function useDataFromEventLogs() {
   const { library } = useActiveWeb3React()
   const [electionDataState, setElectionDataState] = useState<ElectionData[]>()
@@ -23,7 +28,9 @@ export function useDataFromEventLogs() {
   useEffect(() => {
     /* early return for no library */
     if (!library) return
+  }, [library])
 
+  useEffect(() => {
     if (!electionDataState) {
       fetchFromFactory()
     }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Box } from 'rebass'
+import { darken } from 'polished'
 import { Button } from 'rebass/styled-components'
 import { Trans } from '@lingui/macro'
 
@@ -9,10 +9,12 @@ import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import DeployModal from '../../components/DeployModal'
 import Paging from '../../components/Paging'
+import { RowBetween } from '../../components/Row'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useDeployModalToggle } from '../../state/application/hooks'
-import { useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
+import { ElectionState, useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
 import { ElectionData } from '../../state/election/reducer'
+import { ElectionStatus } from './styled'
 
 const PageWrapper = styled(AutoColumn)`
   color: ${({ theme }) => theme.white};
@@ -23,8 +25,15 @@ const TopSection = styled(AutoColumn)`
   width: 100%;
 `
 
-const PageTitle = styled.h2`
-  text-align: center;
+const PageTitle = styled.span`
+  font-weight: 600;
+`
+
+const WrapSmall = styled(RowBetween)`
+  margin-bottom: 1rem;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    flex-wrap: wrap;
+  `};
 `
 
 const Election = styled(Button)`
@@ -32,17 +41,24 @@ const Election = styled(Button)`
   width: 100%;
   margin-top: 1rem;
   border-radius: 12px;
-  border: ${({ theme }) => theme.greyText} 1px solid;
   display: grid;
-  grid-template-columns: 240px 1fr 120px;
+  grid-template-columns: 480px 1fr 20px;
   align-items: center;
   text-align: left;
   outline: none;
   cursor: pointer;
+  color: ${({ theme }) => theme.white};
+  text-decoration: none;
+  background-color: ${({ theme }) => darken(0.03, theme.darkBackgraound)};
+  &:hover {
+    background-color: ${({ theme }) => darken(0.1, theme.darkBackgraound)};
+  }
 `
 
 const ElectionTitle = styled.span`
   font-weight: 600;
+  width: fit-content;
+  color: ${({ theme }) => theme.white};
 `
 
 const EmptyElections = styled.div`
@@ -52,15 +68,6 @@ const EmptyElections = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-
-const ApprovedWrapper = styled(Box)`
-  display: inline-block;
-  background: ${({ theme }) => theme.greyText};
-  color: white;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  padding: 0.25rem;
 `
 
 export default function Vote() {
@@ -75,13 +82,15 @@ export default function Vote() {
   return (
     <PageWrapper gap="lg" justify="center">
       <DeployModal isOpen={deployModalOpen} onDismiss={toggleModal} />
-      <TopSection>
-        <PageTitle>
-          <Trans>Elections</Trans>
-        </PageTitle>
-        <ButtonPrimary onClick={toggleModal}>
-          <Trans>Create new Election</Trans>
-        </ButtonPrimary>
+      <TopSection gap="2px">
+        <WrapSmall>
+          <PageTitle>
+            <Trans>Elections</Trans>
+          </PageTitle>
+          <ButtonPrimary onClick={toggleModal} style={{ width: 'fit-content', borderRadius: '8px' }} padding="8px">
+            <Trans>Create new Election</Trans>
+          </ButtonPrimary>
+        </WrapSmall>
         {electionsData?.length === 0 && (
           <EmptyElections>
             <Trans>No elections found</Trans>
@@ -91,11 +100,7 @@ export default function Vote() {
           return (
             <Election as={Link} to={'/vote/' + e.zkCreamAddress} key={i}>
               <ElectionTitle>{e.title}</ElectionTitle>
-              {e.approved ? (
-                <ApprovedWrapper>
-                  <Trans>Approved</Trans>
-                </ApprovedWrapper>
-              ) : null}
+              <ElectionStatus status={e.approved ? ElectionState.FINISHED : ElectionState.ACTIVE} />
             </Election>
           )
         })}

@@ -6,6 +6,9 @@ export interface Colors {
 
   primary: Color
 
+  blue: Color
+  green: Color
+
   baseBackground: Color
   darkBackgraound: Color
   modalBackground: Color

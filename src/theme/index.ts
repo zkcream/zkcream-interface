@@ -37,6 +37,10 @@ export function colors(): Colors {
     // primary colors
     primary: wutang_yellow,
 
+    // other
+    blue: '#0088ff',
+    green: '#00ff44',
+
     // backgrounds
     baseBackground: white,
     darkBackgraound: '#181A20',

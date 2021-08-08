@@ -1,5 +1,5 @@
-import React from 'react'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+import styled from 'styled-components'
 import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
@@ -10,6 +10,10 @@ import { useWalletModalToggle } from '../../state/application/hooks'
 import { shortenAddress } from '../../utils'
 import WalletModal from '../WalletModal'
 
+const AddressWrapper = styled.span`
+  color: ${({ theme }) => theme.white};
+`
+
 export default function Web3Status() {
   const { account, connector, error } = useWeb3React()
   const toggleModal = useWalletModalToggle()
@@ -18,7 +22,7 @@ export default function Web3Status() {
     return (
       <>
         {connector === injected ? <Identicon /> : null}
-        {shortenAddress(account)}
+        <AddressWrapper>{shortenAddress(account)}</AddressWrapper>
       </>
     )
   } else if (error) {
