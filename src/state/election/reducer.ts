@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { setElectionData, setTotalElections, updateCurrentPage } from './actions'
+import { setElections, setElectionData, setTotalElections, updateCurrentPage } from './actions'
 
 export type StateIndex = string | undefined | null
 
@@ -47,12 +47,14 @@ export interface ElectionState {
   readonly total: number
   readonly currentPage: number
   readonly electionData: ElectionData | undefined
+  readonly elections: ElectionData[]
 }
 
 const initialState: ElectionState = {
   total: 0,
   currentPage: 0,
   electionData: undefined,
+  elections: [],
 }
 
 export default createReducer(initialState, (builder) => {
@@ -64,5 +66,8 @@ export default createReducer(initialState, (builder) => {
   })
   builder.addCase(setElectionData, (state, action) => {
     state.electionData = action.payload
+  })
+  builder.addCase(setElections, (state, action) => {
+    state.elections = action.payload
   })
 })

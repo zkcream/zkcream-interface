@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ContractFactory } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 
-import { PagingAction, setElectionData, setTotalElections, updateCurrentPage } from './actions'
+import { PagingAction, setElectionData, setElections, setTotalElections, updateCurrentPage } from './actions'
 import { ElectionData } from './reducer'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { RootState } from '../index'
@@ -24,6 +24,8 @@ export enum ElectionState {
 export function useDataFromEventLogs() {
   const { library } = useActiveWeb3React()
   const [electionDataState, setElectionDataState] = useState<ElectionData[]>()
+  const elections = useElections()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     /* early return for no library */
@@ -31,14 +33,21 @@ export function useDataFromEventLogs() {
   }, [library])
 
   useEffect(() => {
-    if (!electionDataState) {
+    if (elections?.length) {
+      setElectionDataState(elections)
+      return
+    }
+  }, [elections])
+
+  useEffect(() => {
+    if (!electionDataState && !elections?.length) {
+      console.log('fetch called')
       fetchFromFactory()
     }
 
     async function fetchFromFactory() {
-      setElectionDataState(undefined)
       const logs = (await get('factory/logs')).data
-      const elections: ElectionData[] = await Promise.all(
+      const electionData: ElectionData[] = await Promise.all(
         logs.map(async (log: any) => {
           const decodedLog = (await get('zkcream/' + log[0])).data
           const maciParams = (await get('maci/params/' + decodedLog.maciAddress)).data
@@ -60,9 +69,13 @@ export function useDataFromEventLogs() {
           }
         })
       )
-      setElectionDataState(elections.reverse())
+      setElectionDataState(electionData.reverse())
     }
-  }, [electionDataState, library])
+  }, [elections, electionDataState])
+
+  useEffect(() => {
+    dispatch(setElections(electionDataState!))
+  }, [dispatch, electionDataState])
 
   return electionDataState
 }
@@ -82,17 +95,21 @@ export function useLimitedElectionData(limit: number = 5) {
 
 // set election data of passed zkcream contract address
 export function useSetElectionData(address: string): () => void {
-  const allElectionData = useAllElectionData()
+  const election = useElections()
   const dispatch = useAppDispatch()
   const electionData = useMemo(() => {
-    return allElectionData?.find((e) => e.zkCreamAddress === address)
-  }, [address, allElectionData])
+    return election?.find((e) => e.zkCreamAddress === address)
+  }, [address, election])
 
   return () => dispatch(setElectionData(electionData))
 }
 
 export function useElectionState(): ElectionData | undefined {
   return useAppSelector((state: RootState) => state.election.electionData)
+}
+
+export function useElections(): ElectionData[] {
+  return useAppSelector((state: RootState) => state.election.elections)
 }
 
 // deploy all modules for `useDeployCallback()` function

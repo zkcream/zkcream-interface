@@ -62,6 +62,7 @@ const ElectionTitle = styled.span`
 `
 
 const EmptyElections = styled.div`
+  width: 480px;
   padding: 16px 12px;
   border-radius: 12px;
   display: flex;
