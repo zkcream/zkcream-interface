@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro'
 import { Button, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
+import { darken } from 'polished'
 
 type ButtonProps = Omit<ButtonPropsOriginal, 'css'>
 
@@ -55,11 +56,14 @@ export const ButtonPrimary = styled(Base)`
 `
 
 export const ButtonIcon = styled(Base)`
+  background: ${({ theme }) => darken(0.03, theme.darkBackgraound)};
   border-radius: 10px;
-  color: ${({ theme }) => theme.black};
-  border: 1px solid;
+  color: ${({ theme }) => theme.primary};
   margin: 0.25rem;
-
+  padding: .8rem;
+  &:hover {
+    background-color: ${({ theme }) => darken(0.1, theme.darkBackgraound)};
+  }
   :disabled {
     opacity: 0.4;
     border: none;
