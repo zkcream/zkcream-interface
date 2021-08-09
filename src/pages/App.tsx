@@ -2,8 +2,10 @@ import React, { lazy, Suspense } from 'react'
 import styled from 'styled-components'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
+import Error from '../components/Error'
 import Header from '../components/Header'
 import Web3ReactManager from '../components/Web3ReactManager'
+import { useErrorState } from '../state/error/hooks'
 
 const AdminComponent = lazy(() => import('./Admin'))
 const VoteComponent = lazy(() => import('./Vote'))
@@ -38,6 +40,8 @@ const HeaderWrapper = styled.div`
 `
 
 function App() {
+  const error = useErrorState()
+
   return (
     <AppWrapper>
       <HeaderWrapper>
@@ -46,6 +50,7 @@ function App() {
       <BodyWrapper>
         <Web3ReactManager>
           <Suspense fallback={<></>}>
+            <Error error={error} />
             <Switch>
               <Route exact strict path="/" component={VoteComponent} />
               <Route exact strict path="/vote/:address" component={VotePageComponent} />

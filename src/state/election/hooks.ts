@@ -5,6 +5,8 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { PagingAction, setElectionData, setElections, setTotalElections, updateCurrentPage } from './actions'
 import { ElectionData } from './reducer'
 import { useAppDispatch, useAppSelector } from '../hooks'
+import { useSetError } from '../error/hooks'
+import { ErrorType } from '../error/actions'
 import { RootState } from '../index'
 
 import {
@@ -24,6 +26,7 @@ export enum ElectionState {
 export function useDataFromEventLogs() {
   const { library } = useActiveWeb3React()
   const [electionDataState, setElectionDataState] = useState<ElectionData[]>()
+  const setError = useSetError()
   const elections = useElections()
   const dispatch = useAppDispatch()
 
@@ -41,14 +44,20 @@ export function useDataFromEventLogs() {
 
   useEffect(() => {
     if (!electionDataState && !elections?.length) {
-      console.log('fetch called')
+      // console.log('fetch called')
       fetchFromFactory()
     }
 
     async function fetchFromFactory() {
-      const logs = (await get('factory/logs')).data
+      let logs: any
+      try {
+        logs = (await get('factory/logs')).data
+      } catch (e) {
+        e.message === 'Network Error' ? setError(ErrorType.NETWORK_ERROR) : setError(ErrorType.UNKNOWN_ERROR)
+        return
+      }
       const electionData: ElectionData[] = await Promise.all(
-        logs.map(async (log: any) => {
+        logs!.map(async (log: any) => {
           const decodedLog = (await get('zkcream/' + log[0])).data
           const maciParams = (await get('maci/params/' + decodedLog.maciAddress)).data
           /* TODO implement differetn election patterns */
@@ -71,7 +80,7 @@ export function useDataFromEventLogs() {
       )
       setElectionDataState(electionData.reverse())
     }
-  }, [elections, electionDataState])
+  }, [elections, electionDataState, setError])
 
   useEffect(() => {
     dispatch(setElections(electionDataState!))
