@@ -12,29 +12,11 @@ describe('application reducer', () => {
   })
 
   describe('setOpenModal()', () => {
-    it('set wallet modal', () => {
-      store.dispatch(setOpenModal(ApplicationModal.WALLET))
-      expect(store.getState().openModal).toEqual(ApplicationModal.WALLET)
-    })
-    it('set deploy modal', () => {
-      store.dispatch(setOpenModal(ApplicationModal.DEPLOY))
-      expect(store.getState().openModal).toEqual(ApplicationModal.DEPLOY)
-    })
-    it('set note modal', () => {
-      store.dispatch(setOpenModal(ApplicationModal.NOTE))
-      expect(store.getState().openModal).toEqual(ApplicationModal.NOTE)
-    })
-    it('set note modal', () => {
-      store.dispatch(setOpenModal(ApplicationModal.SIGNUP))
-      expect(store.getState().openModal).toEqual(ApplicationModal.SIGNUP)
-    })
-    it('set note modal', () => {
-      store.dispatch(setOpenModal(ApplicationModal.VOTERSTATE))
-      expect(store.getState().openModal).toEqual(ApplicationModal.VOTERSTATE)
-    })
-    it('set note modal', () => {
-      store.dispatch(setOpenModal(ApplicationModal.RANDOM_STATELEAF))
-      expect(store.getState().openModal).toEqual(ApplicationModal.RANDOM_STATELEAF)
+    it('modal tests', () => {
+      for (let i = 0; i < Object.entries(ApplicationModal).length / 2; i++) {
+        store.dispatch(setOpenModal(i))
+        expect(store.getState().openModal).toEqual(i)
+      }
     })
   })
 })

@@ -16,7 +16,7 @@ import {
   useZkCreamVerifierContractFactory,
 } from '../../hooks/useContract'
 import { useActiveWeb3React } from '../../hooks/web3'
-import { get } from '../../utils/api'
+import { fetchContractDetails, get } from '../../utils/api'
 
 export enum ElectionState {
   ACTIVE,
@@ -28,7 +28,7 @@ export function useDataFromEventLogs() {
   const [electionDataState, setElectionDataState] = useState<ElectionData[]>()
   const setError = useSetError()
   const elections = useElections()
-  const dispatch = useAppDispatch()
+  const setElections = useSetElections()
 
   useEffect(() => {
     /* early return for no library */
@@ -58,24 +58,7 @@ export function useDataFromEventLogs() {
       }
       const electionData: ElectionData[] = await Promise.all(
         logs!.map(async (log: any) => {
-          const decodedLog = (await get('zkcream/' + log[0])).data
-          const maciParams = (await get('maci/params/' + decodedLog.maciAddress)).data
-          /* TODO implement differetn election patterns */
-          return {
-            title: decodedLog.title,
-            recipients: decodedLog.recipients,
-            electionType: decodedLog.electionType,
-            owner: decodedLog.owner,
-            coordinator: decodedLog.coordinator,
-            zkCreamAddress: log[0],
-            maciAddress: decodedLog.maciAddress,
-            votingTokenAddress: decodedLog.votingTokenAddress,
-            signUpTokenAddress: decodedLog.signUpTokenAddress,
-            hash: log[1],
-            tallyHash: decodedLog.tallyHash,
-            approved: decodedLog.approved,
-            maciParams,
-          }
+          return await fetchContractDetails(log)
         })
       )
       setElectionDataState(electionData.reverse())
@@ -83,8 +66,8 @@ export function useDataFromEventLogs() {
   }, [elections, electionDataState, setError])
 
   useEffect(() => {
-    dispatch(setElections(electionDataState!))
-  }, [dispatch, electionDataState])
+    setElections(electionDataState!)
+  }, [electionDataState, setElections])
 
   return electionDataState
 }
@@ -193,6 +176,14 @@ export function useTotalElections(): number {
 export function useSetTotalElections(count: number) {
   const dispatch = useAppDispatch()
   dispatch(setTotalElections(count))
+}
+
+/*
+ * update elections
+ */
+export function useSetElections(): (elections: ElectionData[]) => void {
+  const dispatch = useAppDispatch()
+  return useCallback((elections) => dispatch(setElections(elections)), [dispatch])
 }
 
 /*

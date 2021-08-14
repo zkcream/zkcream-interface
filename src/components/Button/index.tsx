@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 import { Button, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
-import { darken } from 'polished'
+import { darken, lighten } from 'polished'
 
 type ButtonProps = Omit<ButtonPropsOriginal, 'css'>
 
@@ -52,6 +52,31 @@ export const ButtonPrimary = styled(Base)`
   background: ${({ theme }) => theme.primary};
   :disabled {
     opacity: 0.25;
+  }
+`
+
+export const ButtonInverse = styled(Base)`
+  color: ${({ theme }) => theme.primary};
+  background: ${({ theme }) => theme.white};
+  border: 1px solid ${({ theme }) => theme.primary};
+  :disabled {
+    opacity: 0.25;
+  }
+  &:hover {
+    color: ${({ theme }) => theme.black};
+    background: ${({ theme }) => theme.primary};
+  }
+`
+
+export const ButtonNav = styled(Base)`
+  margin: auto;
+  color: ${({ theme }) => theme.greyText};
+  border: none;
+  border-radius: 10em;
+  background: ${({ theme }) => lighten(0.4, theme.greyText)};
+  :disabled {
+    color: ${({ theme }) => theme.black};
+    background: ${({ theme }) => theme.primary};
   }
 `
 

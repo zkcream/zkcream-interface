@@ -23,9 +23,9 @@ const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } 
   {}
 ) as any
 
-const white = '#ffffff'
-const black = '#000000'
-const wutang_yellow = '#fecc01'
+export const white = '#ffffff'
+export const black = '#000000'
+export const wutang_yellow = '#fecc01'
 
 export function colors(): Colors {
   return {

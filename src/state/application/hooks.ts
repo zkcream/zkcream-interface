@@ -41,3 +41,11 @@ export function useVoterStateModalToggle(): () => void {
 export function useRandomStateLeafModalToggle(): () => void {
   return useToggleModal(ApplicationModal.VOTERSTATE)
 }
+
+export function useDistributeModalToggle(): () => void {
+  return useToggleModal(ApplicationModal.DISTRIBUTE)
+}
+
+export function useCoordinatorKeyModalToggle(): () => void {
+  return useToggleModal(ApplicationModal.COORDINATOR_KEY)
+}
