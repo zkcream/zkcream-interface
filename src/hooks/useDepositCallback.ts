@@ -3,17 +3,22 @@ import { createDeposit, rbigInt, toHex } from 'libcream'
 
 import { useZkCreamContract } from './useContract'
 import { useNoteModalToggle } from '../state/application/hooks'
+import { useFetchTokenState } from '../state/token/hooks'
+import { useActiveWeb3React } from './web3'
 
 type DepositNote = string | undefined
 
 export function useDepositCallback(
-  address: string
+  zkCreamAddress: string
 ): [state: boolean, note: DepositNote, callback: () => Promise<void>] {
+  const { account } = useActiveWeb3React()
   const [txState, setTxState] = useState<boolean>(false)
   const [preimage, setPreimage] = useState<string>()
   const toggleModal = useNoteModalToggle()
 
-  const zkCreamContract = useZkCreamContract(address)
+  const zkCreamContract = useZkCreamContract(zkCreamAddress)
+  const arg: any = { zkCreamAddress, account }
+  const fetchTokenState = useFetchTokenState(arg)
 
   const c = useCallback(async (): Promise<void> => {
     setTxState(true)
@@ -27,6 +32,9 @@ export function useDepositCallback(
         }
       })
       .then(() => {
+        fetchTokenState()
+      })
+      .then(() => {
         setPreimage(toHex(deposit.preimage))
         toggleModal()
       })
@@ -35,7 +43,7 @@ export function useDepositCallback(
         setTxState(false)
         throw e
       })
-  }, [toggleModal, zkCreamContract])
+  }, [fetchTokenState, toggleModal, zkCreamContract])
 
   const note: DepositNote = useMemo(() => preimage, [preimage])
 

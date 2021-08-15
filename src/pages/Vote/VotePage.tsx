@@ -11,12 +11,10 @@ import { TokenButtons } from '../../components/TokenButtons'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { useElectionState, useSetElectionData } from '../../state/election/hooks'
 import { ElectionData } from '../../state/election/reducer'
+import { TokenType } from '../../state/token/reducer'
+import { useFetchTokenState, useTokenType } from '../../state/token/hooks'
 
 import { StyledInternalLink } from '../../theme'
-
-import { TokenType, fetchTokenState } from '../../state/token/reducer'
-import { useTokenType } from '../../state/token/hooks'
-import { useAppDispatch } from '../../state/hooks'
 
 import CoordinatorActions from './CoordinatorActions'
 import OwnerActions from './OwnerActions'
@@ -55,25 +53,25 @@ export default function VotePage({
   /* get election details */
   const setElectionData = useSetElectionData(address)
   const electionData: ElectionData | undefined = useElectionState()
+  const zkCreamAddress = address
   const isOwner: boolean = account === electionData?.owner
   const isCoordinator: boolean = account === electionData?.coordinator
   const isPublished: boolean = electionData?.tallyHash !== undefined
   const isApproved: boolean = electionData?.approved !== false
+  const tokenState: TokenType = useTokenType()
+
+  const arg: any = { zkCreamAddress, account }
+  const fetchTokenState = useFetchTokenState(arg)
 
   useEffect(() => {
     setElectionData()
   }, [setElectionData])
 
-  /* fetch token status */
-  const dispatch = useAppDispatch()
-  const tokenState: TokenType = useTokenType()
-
   useEffect(() => {
     if (!isOwner && !isCoordinator) {
-      const arg: any = { address, account }
-      dispatch(fetchTokenState(arg))
+      fetchTokenState()
     }
-  }, [account, address, dispatch, isCoordinator, isOwner])
+  }, [fetchTokenState, isCoordinator, isOwner])
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -117,7 +115,7 @@ export default function VotePage({
                   ) : (
                     <TokenButtons
                       tokenState={tokenState}
-                      zkCreamAddress={address}
+                      zkCreamAddress={zkCreamAddress}
                       maciAddress={electionData.maciAddress}
                       votingTokenAddress={electionData.votingTokenAddress}
                     />

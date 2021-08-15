@@ -25,11 +25,10 @@ const initialState: TokenState = {
   txStatus: 'idle',
 }
 
-export const fetchTokenState = createAsyncThunk<TokenState, { address: string; account: string }>(
+export const fetchTokenState = createAsyncThunk<TokenState, { zkCreamAddress: string; account: string }>(
   'token/fetchTokenState',
-  async ({ address, account }) => {
-    const r = await fetchTokenStatus(address, account)
-    return r
+  async ({ zkCreamAddress, account }) => {
+    return await fetchTokenStatus(zkCreamAddress, account)
   }
 )
 

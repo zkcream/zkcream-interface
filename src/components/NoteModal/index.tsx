@@ -2,9 +2,10 @@ import React, { memo, useState } from 'react'
 import styled from 'styled-components'
 import { QRCode } from 'react-qr-svg'
 import { Box, Text } from 'rebass/styled-components'
+import { Label, Checkbox } from '@rebass/forms'
 import { Trans } from '@lingui/macro'
 
-import { ButtonNav } from '../Button'
+import { ButtonPrimary, ButtonNav } from '../Button'
 import { AutoColumn } from '../Column'
 import Modal from '../Modal'
 import { RowFixed } from '../Row'
@@ -41,6 +42,7 @@ interface NoteModalProps {
 export const NoteModal = memo(({ note, isOpen, onDismiss }: NoteModalProps) => {
   const patterns = ['Text', 'QR Code']
   const [nav, setNav] = useState<string>(patterns[0])
+  const [checked, setChecked] = useState<boolean>(false)
 
   function toggleNav() {
     const op: number = nav === patterns[0] ? 1 : 0
@@ -95,6 +97,17 @@ export const NoteModal = memo(({ note, isOpen, onDismiss }: NoteModalProps) => {
             ) : (
               <Text>{generateQR(note)}</Text>
             )}
+            <Box pb={3}>
+              <Label>
+                <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
+                <Trans>I've stored my deposit note</Trans>
+              </Label>
+            </Box>
+            <Box>
+              <ButtonPrimary disabled={!checked} onClick={onDismiss}>
+                <Text>Close</Text>
+              </ButtonPrimary>
+            </Box>
           </Box>
         </Box>
       )

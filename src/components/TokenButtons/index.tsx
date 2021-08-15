@@ -22,21 +22,13 @@ interface TokenButtonsProps {
 }
 
 export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTokenAddress }: TokenButtonsProps) {
-  /* modals */
+  const isApproved = useTokenStatus()
   const noteModalOpen = useModalOpen(ApplicationModal.NOTE)
   const signUpModalOpen = useModalOpen(ApplicationModal.SIGNUP)
   const toggleNoteModal = useNoteModalToggle()
   const toggleSignUpModal = useSignUpModalToggle()
 
-  /* check `isApproved` */
-  const isApproved = useTokenStatus()
-
   const [approveTxState, approveToken] = useApproveTokenCallback(zkCreamAddress, votingTokenAddress)
-
-  /*
-   * deposit callback from hook
-   * @retuns note for snark proof
-   */
   const [depositTxState, note, deposit] = useDepositCallback(zkCreamAddress)
 
   return (
