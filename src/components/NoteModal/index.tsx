@@ -4,7 +4,7 @@ import { QRCode } from 'react-qr-svg'
 import { Box, Text } from 'rebass/styled-components'
 import { Trans } from '@lingui/macro'
 
-import { ButtonPrimary } from '../Button'
+import { ButtonNav } from '../Button'
 import { AutoColumn } from '../Column'
 import Modal from '../Modal'
 import { RowFixed } from '../Row'
@@ -77,9 +77,9 @@ export const NoteModal = memo(({ note, isOpen, onDismiss }: NoteModalProps) => {
           </Box>
           <RowFixed style={{ width: '100%' }}>
             {patterns.map((pattern, i) => (
-              <ButtonPrimary disabled={nav === pattern} onClick={toggleNav} key={i}>
+              <ButtonNav disabled={nav === pattern} onClick={toggleNav} key={i}>
                 {pattern}
-              </ButtonPrimary>
+              </ButtonNav>
             ))}
           </RowFixed>
           <Box m={10}>

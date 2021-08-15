@@ -62,7 +62,7 @@ export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTo
         </>
       ) : null}
       {tokenState & TokenType.SIGNUP ? null : (
-        <ButtonPrimary onClick={signUp}>
+        <ButtonPrimary onClick={signUp} disabled={tokenState & TokenType.VOTING ? true : false}>
           <Trans>Sign Up</Trans>
         </ButtonPrimary>
       )}

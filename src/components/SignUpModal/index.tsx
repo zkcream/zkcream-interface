@@ -2,19 +2,26 @@ import React, { memo, useState } from 'react'
 import styled from 'styled-components'
 import QrReader from 'react-qr-reader'
 import { Box, Text } from 'rebass/styled-components'
-import { Input } from '@rebass/forms'
+import { Label } from '@rebass/forms'
 import { Trans } from '@lingui/macro'
 
-import { ButtonPrimary } from '../Button'
+import { ButtonPrimary, ButtonNav } from '../Button'
 import { AutoColumn } from '../Column'
 import Modal from '../Modal'
 import { RowFixed } from '../Row'
+import Spinner from '../Spinner'
 import { useInput } from '../../utils/inputs'
 import { useSignUpCallback } from '../../hooks/useSignUpCallback'
+import { FormInput } from '../../theme'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 24px;
+`
+
+const LoadingMessageWrapper = styled.div`
+  display: flex;
+  padding: 0.25rem;
 `
 
 interface SignUpModalProps {
@@ -84,20 +91,28 @@ export const SignUpModal = memo(({ zkCreamAddress, maciAddress, isOpen, onDismis
             </Box>
             <RowFixed style={{ width: '100%' }}>
               {patterns.map((pattern, i) => (
-                <ButtonPrimary disabled={nav === pattern} onClick={toggleNav} key={i}>
+                <ButtonNav disabled={nav === pattern} onClick={toggleNav} key={i}>
                   {pattern}
-                </ButtonPrimary>
+                </ButtonNav>
               ))}
             </RowFixed>
             <Box my={20}>
               {nav === patterns[0] ? (
                 <>
                   {noteReceived ? (
-                    <Text>
-                      <Trans>Submitting....</Trans>
-                    </Text>
+                    <LoadingMessageWrapper>
+                      <Spinner />
+                      <Text>
+                        <Trans>Submitting....</Trans>
+                      </Text>
+                    </LoadingMessageWrapper>
                   ) : (
-                    <Input {...bindNote} />
+                    <>
+                      <Label fontWeight="bold">
+                        <Trans>Note text</Trans>
+                      </Label>
+                      <FormInput {...bindNote} />
+                    </>
                   )}
                   <Box my={20}>
                     <ButtonPrimary onClick={submitNote}>
@@ -108,13 +123,16 @@ export const SignUpModal = memo(({ zkCreamAddress, maciAddress, isOpen, onDismis
               ) : (
                 <>
                   <Box my={20}>
-                    <Text textAlign={'center'} my={20}>
-                      <Trans>Please scan your barcode</Trans>
-                    </Text>
+                    <Label fontWeight="bold">
+                      <Trans>Scan your barcode</Trans>
+                    </Label>
                     {noteReceived ? (
-                      <Text>
-                        <Trans>Reading....</Trans>
-                      </Text>
+                      <LoadingMessageWrapper>
+                        <Spinner />
+                        <Text>
+                          <Trans>Reading....</Trans>
+                        </Text>
+                      </LoadingMessageWrapper>
                     ) : (
                       <QrReader delay={300} onError={handleError} onScan={handleScan} />
                     )}

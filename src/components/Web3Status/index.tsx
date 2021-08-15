@@ -1,4 +1,5 @@
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+import { lighten } from 'polished'
 import styled from 'styled-components'
 import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
@@ -14,6 +15,14 @@ const AddressWrapper = styled.span`
   color: ${({ theme }) => theme.white};
 `
 
+const ErrorWrapper = styled(Text)`
+  background-color: ${({ theme }) => lighten(0.5, theme.darkBackgraound)};
+  border-radius: 0.25rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+`
+
 export default function Web3Status() {
   const { account, connector, error } = useWeb3React()
   const toggleModal = useWalletModalToggle()
@@ -26,7 +35,11 @@ export default function Web3Status() {
       </>
     )
   } else if (error) {
-    return <Text>{error instanceof UnsupportedChainIdError ? <Trans>Wrong network</Trans> : <Trans>Error</Trans>}</Text>
+    return (
+      <ErrorWrapper>
+        {error instanceof UnsupportedChainIdError ? <Trans>Wrong network</Trans> : <Trans>Error</Trans>}
+      </ErrorWrapper>
+    )
   } else {
     return (
       <>

@@ -65,8 +65,6 @@ function DeployForm() {
   const [nav, setNav] = useState<string>(patterns[0])
   const [checked, setChecked] = useState<boolean>(false)
 
-  console.log(maciSk)
-
   const toggleModal = useDeployModalToggle()
   const elections = useElections()
   const setElections = useSetElections()
@@ -135,7 +133,6 @@ function DeployForm() {
     const sk = new PrivKey(privKey)
     setCoodinatorPubkey(pk.serialize())
     setMaciSk(sk.serialize())
-    console.log(sk.serialize())
   }
 
   return (

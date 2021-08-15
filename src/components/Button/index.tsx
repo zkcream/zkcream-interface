@@ -9,11 +9,13 @@ const Base = styled(Button)<
     padding?: string
     width?: string
     borderRadius?: string
+    fontSize?: string
     altDisabledStyle?: boolean
   } & ButtonProps
 >`
   padding: ${({ padding }) => (padding ? padding : '16px')};
   width: ${({ width }) => (width ? width : '100%')};
+  font-size: ${({ fontSize }) => (fontSize ? fontSize : 'inherit')};
   font-weight: 500;
   text-align: center;
   border-radius: 0.25rem;
