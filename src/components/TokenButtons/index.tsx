@@ -4,6 +4,7 @@ import { Trans } from '@lingui/macro'
 import { ButtonPrimary } from '../Button'
 import { NoteModal } from '../NoteModal'
 import { SignUpModal } from '../SignUpModal'
+import Spinner from '../Spinner'
 
 import { useDepositCallback } from '../../hooks/useDepositCallback'
 import { useApproveTokenCallback } from '../../hooks/useApproveTokenCallback'
@@ -11,7 +12,6 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useNoteModalToggle, useSignUpModalToggle } from '../../state/application/hooks'
 import { useTokenStatus } from '../../state/token/hooks'
 import { TokenType } from '../../state/token/reducer'
-import Spinner from '../Spinner'
 import { black } from '../../theme'
 
 interface TokenButtonsProps {
@@ -37,11 +37,7 @@ export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTo
    * deposit callback from hook
    * @retuns note for snark proof
    */
-  const [note, deposit] = useDepositCallback(zkCreamAddress)
-
-  function signUp() {
-    toggleSignUpModal()
-  }
+  const [depositTxState, note, deposit] = useDepositCallback(zkCreamAddress)
 
   return (
     <>
@@ -58,12 +54,12 @@ export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTo
             {approveTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Approve Token</Trans>}
           </ButtonPrimary>
           <ButtonPrimary onClick={deposit} disabled={!isApproved ? true : false}>
-            <Trans>Register</Trans>
+            {depositTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Register</Trans>}
           </ButtonPrimary>
         </>
       ) : null}
       {tokenState & TokenType.SIGNUP ? null : (
-        <ButtonPrimary onClick={signUp} disabled={tokenState & TokenType.VOTING ? true : false}>
+        <ButtonPrimary onClick={toggleSignUpModal} disabled={tokenState & TokenType.VOTING ? true : false}>
           <Trans>Sign Up</Trans>
         </ButtonPrimary>
       )}
