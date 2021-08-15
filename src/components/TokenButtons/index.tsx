@@ -11,6 +11,8 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useNoteModalToggle, useSignUpModalToggle } from '../../state/application/hooks'
 import { useTokenStatus } from '../../state/token/hooks'
 import { TokenType } from '../../state/token/reducer'
+import Spinner from '../Spinner'
+import { black } from '../../theme'
 
 interface TokenButtonsProps {
   tokenState: TokenType
@@ -29,14 +31,13 @@ export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTo
   /* check `isApproved` */
   const isApproved = useTokenStatus()
 
+  const [approveTxState, approveToken] = useApproveTokenCallback(zkCreamAddress, votingTokenAddress)
+
   /*
    * deposit callback from hook
    * @retuns note for snark proof
    */
   const [note, deposit] = useDepositCallback(zkCreamAddress)
-
-  /* approveToken callback from hook */
-  const approveToken = useApproveTokenCallback(zkCreamAddress, votingTokenAddress)
 
   function signUp() {
     toggleSignUpModal()
@@ -54,7 +55,7 @@ export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTo
       {tokenState & TokenType.VOTING ? (
         <>
           <ButtonPrimary onClick={approveToken} disabled={isApproved ? true : false}>
-            <Trans>Approve Token</Trans>
+            {approveTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Approve Token</Trans>}
           </ButtonPrimary>
           <ButtonPrimary onClick={deposit} disabled={!isApproved ? true : false}>
             <Trans>Register</Trans>
