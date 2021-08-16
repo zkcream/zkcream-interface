@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { generateDeposit, generateMerkleProof, pedersenHash, toHex } from 'libcream'
 import { Keypair, PrivKey } from 'maci-domainobjs'
 
@@ -15,7 +15,8 @@ const PARAMS = {
 export function useSignUpCallback(
   zkCreamAddress: string,
   maciAddress: string
-): [StateIndex, (note: string) => Promise<void>] {
+): [state: boolean, index: StateIndex, mackSk: string, callback: (note: string) => Promise<void>] {
+  const [txState, setTxState] = useState<boolean>(false)
   const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
 
   const [macisk, setMaciSk] = useLocalStorage('macisk', new Keypair().privKey.serialize())
@@ -23,8 +24,9 @@ export function useSignUpCallback(
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const maciContract = useMaciContract(maciAddress)
 
-  const signUp = useCallback(
+  const c = useCallback(
     async (note): Promise<void> => {
+      setTxState(true)
       const deposit = generateDeposit(note)
       const { root, merkleProof } = await generateMerkleProof(deposit, zkCreamAddress, PARAMS)
 
@@ -52,14 +54,13 @@ export function useSignUpCallback(
       return await zkCreamContract
         .signUpMaci(userKeyPair?.pubKey.asContractParam(), formattedProof.data, ...args)
         .then(async (r: any) => {
-          if (r.status) {
-            await r.wait()
-          }
+          await r.wait()
         })
         .then(async () => {
           await maciContract.on('SignUp', (_: any, _stateIndex: any) => {
             // store _stateIndex to local storage as string type
             setStateIndex(_stateIndex.toString())
+            setTxState(false)
           })
         })
         .catch((e: Error) => {
@@ -70,5 +71,5 @@ export function useSignUpCallback(
     [maciContract, macisk, setMaciSk, zkCreamAddress, zkCreamContract, setStateIndex]
   )
 
-  return [stateIndex, signUp]
+  return [txState, stateIndex, macisk, c]
 }

@@ -70,12 +70,31 @@ export const VoterStateModal = memo(({ isOpen, onDismiss }: VoterStateModalProps
     }
   }
 
-  /* TODO */
+  function validateStatesFormat(data: string[]): boolean {
+    if (
+      data.length !== 3 ||
+      !data[0].startsWith('signUpIndex:') ||
+      !data[1].startsWith('macisk.') ||
+      !data[2].startsWith('nonce:')
+    )
+      return false
+    return true
+  }
+
   function handleScan(data: string | null) {
     if (data) {
       setDataReceived(true)
+      const states = data.split(',')
+      if (validateStatesFormat(states)) {
+        setStateIndex(states[0].replace('signUpIndex:', ''))
+        setMaciSk(states[1])
+        setNonce(states[2].replace('nonce:', ''))
+        setDataReceived(false)
+      } else {
+        console.error('state data errror')
+      }
+      console.log('vote state loaded')
     }
-    console.log(data)
   }
 
   function getModalContent() {

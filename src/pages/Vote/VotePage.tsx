@@ -5,6 +5,10 @@ import styled from 'styled-components/macro'
 import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
+import CoordinatorActions from './CoordinatorActions'
+import OwnerActions from './OwnerActions'
+import VoteActions from './VoteActions'
+
 import { AutoColumn } from '../../components/Column'
 import { VotePatterns } from '../../components/VotePatterns'
 import { TokenButtons } from '../../components/TokenButtons'
@@ -15,10 +19,6 @@ import { TokenType } from '../../state/token/reducer'
 import { useFetchTokenState, useTokenType } from '../../state/token/hooks'
 
 import { StyledInternalLink } from '../../theme'
-
-import CoordinatorActions from './CoordinatorActions'
-import OwnerActions from './OwnerActions'
-import VoteActions from './VoteActions'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
