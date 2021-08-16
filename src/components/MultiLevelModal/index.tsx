@@ -24,7 +24,7 @@ export default function MultiLevelModal({ isOpen, onDismiss, content }: MultiLev
       <>
         {
           {
-            0: <Deploy />,
+            0: <Deploy toggleModal={onDismiss} />,
           }[content]
         }
       </>

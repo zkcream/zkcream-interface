@@ -6,14 +6,15 @@ import { PrivKey, PubKey } from 'maci-domainobjs'
 import { useState } from 'react'
 import { Box, Flex } from 'rebass'
 import styled from 'styled-components'
-import { useElections, useSetElections } from '../../state/election/hooks'
-import { ElectionData } from '../../state/election/reducer'
-import { FormInput } from '../../theme'
-import { isAddress } from '../../utils'
-import { fetchContractDetails, post } from '../../utils/api'
-import { useInput } from '../../utils/inputs'
-import { ButtonInverse, ButtonPrimary } from '../Button'
-import Candidates from './Candidates'
+import { useElections, useSetElections } from '../../../state/election/hooks'
+import { ElectionData } from '../../../state/election/reducer'
+import { FormInput } from '../../../theme'
+import { isAddress } from '../../../utils'
+import { fetchContractDetails, post } from '../../../utils/api'
+import { useInput } from '../../../utils/inputs'
+import { ButtonInverse, ButtonPrimary } from '../../Button'
+import { MaciSk } from '../../QrModal'
+import Candidates from '../Candidates'
 
 const RadioRabel = styled(Label)`
   line-height: 1.5rem;
@@ -32,10 +33,14 @@ interface ElectionForm {
   recipients: string[]
 }
 
-function InputForm({ setShowMaciSk }: { setShowMaciSk: any }) {
+interface InputFormProps {
+  setMaciSk: React.Dispatch<React.SetStateAction<MaciSk>>
+  setShowMaciSk: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function InputForm({ setMaciSk, setShowMaciSk }: InputFormProps) {
   const { account } = useWeb3React()
   const [electionType, setElectionType] = useState<string>('2')
-  const [maciSk, setMaciSk] = useState<string>()
   const [txState, setTxState] = useState<string>('Deploy')
   const [values, setValues] = useState({ for: '', against: '' })
   const { value: title, bind: bindTitle } = useInput('')
@@ -73,13 +78,12 @@ function InputForm({ setShowMaciSk }: { setShowMaciSk: any }) {
   }
 
   function genMaciKeypair() {
-    if (maciSk !== undefined) setMaciSk(undefined)
-
+    setMaciSk({ maciSk: '' })
     const { privKey, pubKey } = genKeypair()
     const sk = new PrivKey(privKey)
     const pk = new PubKey(pubKey)
     setCoodinatorPubkey(pk.serialize)
-    setMaciSk(sk.serialize())
+    setMaciSk({ maciSk: sk.serialize() })
   }
 
   return (
@@ -137,9 +141,4 @@ function InputForm({ setShowMaciSk }: { setShowMaciSk: any }) {
       </Box>
     </>
   )
-}
-
-export default function Deploy() {
-  const [showMaciSk, setShowMaciSk] = useState<boolean>(false)
-  return <>{showMaciSk ? <>show</> : <InputForm setShowMaciSk={setShowMaciSk} />}</>
 }
