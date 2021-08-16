@@ -7,7 +7,8 @@ import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
-import DeployModal from '../../components/DeployModal'
+//import DeployModal from '../../components/DeployModal'
+import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiLevelModal'
 import Paging from '../../components/Paging'
 import { RowBetween } from '../../components/Row'
 import { ApplicationModal } from '../../state/application/actions'
@@ -82,7 +83,8 @@ export default function Vote() {
 
   return (
     <PageWrapper gap="lg" justify="center">
-      <DeployModal isOpen={deployModalOpen} onDismiss={toggleModal} />
+      <MultiLevelModal isOpen={deployModalOpen} onDismiss={toggleModal} content={MultiLevelModalContent.Deploy} />
+      {/* <DeployModal isOpen={deployModalOpen} onDismiss={toggleModal} /> */}
       <TopSection gap="2px">
         <WrapSmall>
           <PageTitle>
