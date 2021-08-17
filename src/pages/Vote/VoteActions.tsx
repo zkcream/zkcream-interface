@@ -10,6 +10,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback'
 import { ApplicationModal } from '../../state/application/actions'
 import { useVoterStateModalToggle, useModalOpen } from '../../state/application/hooks'
+import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiLevelModal'
 
 export interface VoteActionsProps {
   recipients: string[]
@@ -36,7 +37,12 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
     <>
       {!isApproved ? (
         <>
-          <VoterStateModal isOpen={!parseInt(stateIndex) || voterStateModalOpen} onDismiss={toggleModal} />
+          <MultiLevelModal
+            isOpen={!parseInt(stateIndex) || voterStateModalOpen}
+            onDismiss={toggleModal}
+            content={MultiLevelModalContent.VoterState}
+          />
+          {/* <VoterStateModal isOpen={!parseInt(stateIndex) || voterStateModalOpen} onDismiss={toggleModal} /> */}
           <VoteNav radioState={radioState} handleChange={toggleRadio} />
           {radioState === 0 ? (
             <VotePatterns recipients={recipients} electionType={electionType} />

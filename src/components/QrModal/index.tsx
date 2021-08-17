@@ -7,11 +7,13 @@ import CoordinatorKey from './CoordinatorKey'
 import Nav from './Nav'
 import Note from './Note'
 import SignUp from './SignUp'
+import VoterState from './VoterState'
 
 export enum QrModalContent {
   CoordinatorKey,
   Note,
   SignUp,
+  VoterState,
 }
 
 interface ContentDataBasics {
@@ -81,6 +83,7 @@ export default function QrModal({ toggleModal, content, data, zkCreamAddress, ma
           0: <CoordinatorKey patterns={patterns} nav={nav} data={data!} />,
           1: <Note patterns={patterns} nav={nav} data={data!} />,
           2: <SignUp patterns={patterns} nav={nav} zkCreamAddress={zkCreamAddress!} maciAddress={maciAddress!} />,
+          3: <VoterState patterns={patterns} nav={nav} />,
         }[content]
       }
       {!data ? <Read /> : <View toggleModal={toggleModal} />}

@@ -5,6 +5,7 @@ import { NoteData } from '../QrModal'
 import Deploy from './Deploy'
 import Note from './Note'
 import SignUp from './SignUp'
+import VoterState from './VoterState'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -15,6 +16,7 @@ export enum MultiLevelModalContent {
   Deploy,
   Note,
   SignUp,
+  VoterState,
 }
 
 interface MultiLevelModalProps {
@@ -42,6 +44,7 @@ export default function MultiLevelModal({
             0: <Deploy toggleModal={onDismiss} />,
             1: <Note toggleModal={onDismiss} data={data!} />,
             2: <SignUp toggleModal={onDismiss} zkCreamAddress={zkCreamAddress!} maciAddress={maciAddress!} />,
+            3: <VoterState toggleModal={onDismiss} />,
           }[content]
         }
       </>
