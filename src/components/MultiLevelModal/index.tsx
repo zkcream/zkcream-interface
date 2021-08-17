@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 import { AutoColumn } from '../Column'
 import Modal from '../Modal'
-import { NoteData } from '../QrModal'
+import { ContentData } from '../QrModal'
 import Deploy from './Deploy'
 import Note from './Note'
+import PostSignUp from './PostSignUp'
 import SignUp from './SignUp'
 import VoterState from './VoterState'
 
@@ -16,6 +17,7 @@ export enum MultiLevelModalContent {
   Deploy,
   Note,
   SignUp,
+  PostSignUp,
   VoterState,
 }
 
@@ -23,7 +25,7 @@ interface MultiLevelModalProps {
   isOpen: boolean
   onDismiss: () => void
   content: MultiLevelModalContent
-  data?: NoteData
+  data?: ContentData
   zkCreamAddress?: string
   maciAddress?: string
 }
@@ -44,7 +46,8 @@ export default function MultiLevelModal({
             0: <Deploy toggleModal={onDismiss} />,
             1: <Note toggleModal={onDismiss} data={data!} />,
             2: <SignUp toggleModal={onDismiss} zkCreamAddress={zkCreamAddress!} maciAddress={maciAddress!} />,
-            3: <VoterState toggleModal={onDismiss} />,
+            3: <PostSignUp toggleModal={onDismiss} data={data!} />,
+            4: <VoterState toggleModal={onDismiss} />,
           }[content]
         }
       </>

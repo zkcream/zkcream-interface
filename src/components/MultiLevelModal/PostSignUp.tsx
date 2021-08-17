@@ -2,20 +2,20 @@ import { Trans } from '@lingui/macro'
 import { Box, Text } from 'rebass'
 import QrModal, { ContentData, QrModalContent } from '../QrModal'
 
-interface NoteProps {
+interface PostSignUpProps {
   toggleModal: () => void
   data: ContentData
 }
 
-export default function Note({ toggleModal, data }: NoteProps) {
+export default function PostSignUp({ toggleModal, data }: PostSignUpProps) {
   return (
     <Box>
       <Box mb={20}>
         <Text fontWeight="bold">
-          <Trans>Your Deposit Note</Trans>
+          <Trans>Your Vote status</Trans>
         </Text>
       </Box>
-      <QrModal toggleModal={toggleModal} content={QrModalContent.Note} data={data} />
+      <QrModal toggleModal={toggleModal} content={QrModalContent.PostSignUp} data={data} />
     </Box>
   )
 }

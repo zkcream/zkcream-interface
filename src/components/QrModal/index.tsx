@@ -6,6 +6,7 @@ import { ButtonPrimary } from '../Button'
 import CoordinatorKey from './CoordinatorKey'
 import Nav from './Nav'
 import Note from './Note'
+import PostSignUp from './PostSignUp'
 import SignUp from './SignUp'
 import VoterState from './VoterState'
 
@@ -13,12 +14,14 @@ export enum QrModalContent {
   CoordinatorKey,
   Note,
   SignUp,
+  PostSignUp,
   VoterState,
 }
 
 interface ContentDataBasics {
   maciSk?: string
   note?: string
+  signUpIndex?: number
 }
 
 export interface MaciSk extends ContentDataBasics {
@@ -29,7 +32,12 @@ export interface NoteData extends ContentDataBasics {
   note: string
 }
 
-export type ContentData = MaciSk | NoteData
+export interface PostSignUpData extends ContentDataBasics {
+  maciSk: string
+  signUpIndex: number
+}
+
+export type ContentData = MaciSk | NoteData | PostSignUpData
 
 interface QrViewerProps {
   toggleModal: () => void
@@ -82,8 +90,17 @@ export default function QrModal({ toggleModal, content, data, zkCreamAddress, ma
         {
           0: <CoordinatorKey patterns={patterns} nav={nav} data={data!} />,
           1: <Note patterns={patterns} nav={nav} data={data!} />,
-          2: <SignUp patterns={patterns} nav={nav} zkCreamAddress={zkCreamAddress!} maciAddress={maciAddress!} />,
-          3: <VoterState patterns={patterns} nav={nav} />,
+          2: (
+            <SignUp
+              toggleModal={toggleModal}
+              patterns={patterns}
+              nav={nav}
+              zkCreamAddress={zkCreamAddress!}
+              maciAddress={maciAddress!}
+            />
+          ),
+          3: <PostSignUp patterns={patterns} nav={nav} data={data!} />,
+          4: <VoterState patterns={patterns} nav={nav} />,
         }[content]
       }
       {!data ? <Read /> : <View toggleModal={toggleModal} />}

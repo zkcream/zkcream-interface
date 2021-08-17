@@ -4,13 +4,20 @@ import { useState } from 'react'
 import QrReader from 'react-qr-reader'
 import { Box, Text } from 'rebass'
 import styled from 'styled-components'
+import { PostSignUpData } from '.'
 import { useSignUpCallback } from '../../hooks/useSignUpCallback'
+import { useActiveWeb3React } from '../../hooks/web3'
+import { ApplicationModal } from '../../state/application/actions'
+import { useModalOpen } from '../../state/application/hooks'
+import { useFetchTokenState } from '../../state/token/hooks'
 import { black, FormInput } from '../../theme'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
+import MultiLevelModal, { MultiLevelModalContent } from '../MultiLevelModal'
 import Spinner from '../Spinner'
 
 interface SignUpReaderProps {
+  toggleModal: () => void
   patterns: string[]
   nav: string
   zkCreamAddress: string
@@ -22,9 +29,14 @@ const LoadingMessageWrapper = styled.div`
   padding: 0.25rem;
 `
 
-export default function SignUp({ patterns, nav, zkCreamAddress, maciAddress }: SignUpReaderProps) {
+export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, maciAddress }: SignUpReaderProps) {
+  const { account } = useActiveWeb3React()
   const [noteReceived, setNoteReceived] = useState<boolean>(false)
   const { value: note, bind: bindNote, reset: resetNote } = useInput('')
+
+  const signUpModalOpen = useModalOpen(ApplicationModal.SIGNUP)
+  const arg: any = { zkCreamAddress, account }
+  const fetchTokenState = useFetchTokenState(arg)
 
   const [txState, signUpIndex, maciSk, signUp] = useSignUpCallback(zkCreamAddress, maciAddress)
 
@@ -49,52 +61,74 @@ export default function SignUp({ patterns, nav, zkCreamAddress, maciAddress }: S
     }
   }
 
+  function closeModal() {
+    window.localStorage.clear()
+    fetchTokenState()
+    toggleModal()
+  }
+
+  const data: PostSignUpData = {
+    maciSk: maciSk,
+    signUpIndex: parseInt(signUpIndex!),
+  }
+
   return (
     <Box my={20}>
-      {nav === patterns[0] ? (
-        <>
-          {noteReceived ? (
-            <LoadingMessageWrapper>
-              <Spinner />
-              <Text>
-                <Trans>Submitting....</Trans>
-              </Text>
-            </LoadingMessageWrapper>
-          ) : (
-            <>
-              <Label fontWeight="bold">
-                <Trans>Note text</Trans>
-              </Label>
-              <FormInput {...bindNote} />
-            </>
-          )}
-          <Box my={20}>
-            <ButtonPrimary onClick={submit}>
-              {txState && signUpIndex === '0' ? (
-                <Spinner color={black} height={16} width={16} />
-              ) : (
-                <Trans>Submit note</Trans>
-              )}
-            </ButtonPrimary>
-          </Box>
-        </>
+      {parseInt(signUpIndex!) !== 0 ? (
+        <MultiLevelModal
+          isOpen={signUpModalOpen}
+          onDismiss={closeModal}
+          content={MultiLevelModalContent.PostSignUp}
+          data={data}
+        />
       ) : (
         <>
-          <Box my={20}>
-            <Label fontWeight="bold">
-              <Trans>Scan your barcode</Trans>
-            </Label>
-            {noteReceived ? (
-              <LoadingMessageWrapper>
-                <Spinner />
-                <Text>
-                  <Trans>Reading....</Trans>
-                </Text>
-              </LoadingMessageWrapper>
-            ) : (
-              <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
-            )}
-          </Box>
+          {nav === patterns[0] ? (
+            <>
+              {noteReceived ? (
+                <LoadingMessageWrapper>
+                  <Spinner />
+                  <Text>
+                    <Trans>Submitting....</Trans>
+                  </Text>
+                </LoadingMessageWrapper>
+              ) : (
+                <>
+                  <Label fontWeight="bold">
+                    <Trans>Note text</Trans>
+                  </Label>
+                  <FormInput {...bindNote} />
+                </>
+              )}
+              <Box my={20}>
+                <ButtonPrimary onClick={submit}>
+                  {txState && signUpIndex === '0' ? (
+                    <Spinner color={black} height={16} width={16} />
+                  ) : (
+                    <Trans>Submit note</Trans>
+                  )}
+                </ButtonPrimary>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box my={20}>
+                <Label fontWeight="bold">
+                  <Trans>Scan your barcode</Trans>
+                </Label>
+                {noteReceived ? (
+                  <LoadingMessageWrapper>
+                    <Spinner />
+                    <Text>
+                      <Trans>Reading....</Trans>
+                    </Text>
+                  </LoadingMessageWrapper>
+                ) : (
+                  <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
+                )}
+              </Box>
+            </>
+          )}
         </>
       )}
     </Box>
