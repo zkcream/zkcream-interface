@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 import { AutoColumn } from '../Column'
 import Modal from '../Modal'
+import { NoteData } from '../QrModal'
 import Deploy from './Deploy'
+import Note from './Note'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -10,21 +12,24 @@ const ContentWrapper = styled(AutoColumn)`
 
 export enum MultiLevelModalContent {
   Deploy,
+  Note,
 }
 
 interface MultiLevelModalProps {
   isOpen: boolean
   onDismiss: () => void
   content: MultiLevelModalContent
+  data?: NoteData
 }
 
-export default function MultiLevelModal({ isOpen, onDismiss, content }: MultiLevelModalProps) {
+export default function MultiLevelModal({ isOpen, onDismiss, content, data }: MultiLevelModalProps) {
   function getModalcontent() {
     return (
       <>
         {
           {
             0: <Deploy toggleModal={onDismiss} />,
+            1: <Note toggleModal={onDismiss} data={data!} />,
           }[content]
         }
       </>

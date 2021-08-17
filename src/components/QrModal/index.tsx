@@ -5,16 +5,27 @@ import { Box, Text } from 'rebass'
 import { ButtonPrimary } from '../Button'
 import CoordinatorKey from './CoordinatorKey'
 import Nav from './Nav'
+import Note from './Note'
 
 export enum QrModalContent {
   CoordinatorKey,
+  Note,
 }
 
-export interface MaciSk {
+interface ContentDataBasics {
+  maciSk?: string
+  note?: string
+}
+
+export interface MaciSk extends ContentDataBasics {
   maciSk: string
 }
 
-export type ContentData = MaciSk
+export interface NoteData extends ContentDataBasics {
+  note: string
+}
+
+export type ContentData = MaciSk | NoteData
 
 interface QrModalProps {
   toggleModal: () => void
@@ -36,6 +47,7 @@ function Show({ toggleModal, patterns, nav, toggleNav, content, data }: DetailPr
       {
         {
           0: <CoordinatorKey patterns={patterns} nav={nav} data={data} />,
+          1: <Note patterns={patterns} nav={nav} data={data} />,
         }[content]
       }
       <Box pb={3}>

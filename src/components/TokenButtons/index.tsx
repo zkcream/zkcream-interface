@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../Button'
-import { NoteModal } from '../NoteModal'
 import { SignUpModal } from '../SignUpModal'
 import Spinner from '../Spinner'
 
@@ -12,6 +11,7 @@ import { useModalOpen, useNoteModalToggle, useSignUpModalToggle } from '../../st
 import { useTokenStatus } from '../../state/token/hooks'
 import { TokenType } from '../../state/token/reducer'
 import { black } from '../../theme'
+import MultiLevelModal, { MultiLevelModalContent } from '../MultiLevelModal'
 
 interface TokenButtonsProps {
   tokenState: TokenType
@@ -32,7 +32,12 @@ export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTo
 
   return (
     <>
-      <NoteModal isOpen={noteModalOpen} onDismiss={toggleNoteModal} note={note} />
+      <MultiLevelModal
+        isOpen={noteModalOpen}
+        onDismiss={toggleNoteModal}
+        content={MultiLevelModalContent.Note}
+        data={note}
+      />
       <SignUpModal
         zkCreamAddress={zkCreamAddress}
         maciAddress={maciAddress}

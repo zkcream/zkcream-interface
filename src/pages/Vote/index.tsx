@@ -84,7 +84,6 @@ export default function Vote() {
   return (
     <PageWrapper gap="lg" justify="center">
       <MultiLevelModal isOpen={deployModalOpen} onDismiss={toggleModal} content={MultiLevelModalContent.Deploy} />
-      {/* <DeployModal isOpen={deployModalOpen} onDismiss={toggleModal} /> */}
       <TopSection gap="2px">
         <WrapSmall>
           <PageTitle>

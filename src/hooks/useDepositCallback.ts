@@ -5,15 +5,14 @@ import { useZkCreamContract } from './useContract'
 import { useNoteModalToggle } from '../state/application/hooks'
 import { useFetchTokenState } from '../state/token/hooks'
 import { useActiveWeb3React } from './web3'
-
-type DepositNote = string | undefined
+import { NoteData } from '../components/QrModal'
 
 export function useDepositCallback(
   zkCreamAddress: string
-): [state: boolean, note: DepositNote, callback: () => Promise<void>] {
+): [state: boolean, note: NoteData, callback: () => Promise<void>] {
   const { account } = useActiveWeb3React()
   const [txState, setTxState] = useState<boolean>(false)
-  const [preimage, setPreimage] = useState<string>()
+  const [preimage, setPreimage] = useState<NoteData>({ note: '' })
   const toggleModal = useNoteModalToggle()
 
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
@@ -35,7 +34,7 @@ export function useDepositCallback(
         fetchTokenState()
       })
       .then(() => {
-        setPreimage(toHex(deposit.preimage))
+        setPreimage({ note: toHex(deposit.preimage) })
         toggleModal()
       })
       .catch((e: Error) => {
@@ -45,7 +44,7 @@ export function useDepositCallback(
       })
   }, [fetchTokenState, toggleModal, zkCreamContract])
 
-  const note: DepositNote = useMemo(() => preimage, [preimage])
+  const note: NoteData = useMemo(() => preimage, [preimage])
 
   return [txState, note, c]
 }

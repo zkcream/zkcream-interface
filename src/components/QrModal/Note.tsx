@@ -4,13 +4,13 @@ import { Box, Text } from 'rebass'
 import styled from 'styled-components'
 import { ContentData } from '.'
 
-interface CoordinatorKeyProps {
+interface NoteProps {
   patterns: string[]
   nav: string
   data: ContentData
 }
 
-const MaciSkText = styled(Text)`
+const NoteText = styled(Text)`
   font-weight: bold;
   word-break: break-all;
 `
@@ -19,29 +19,32 @@ const QRContaier = styled.div`
   padding-top: 1rem;
 `
 
-export default function CoordinatorKey({ patterns, nav, data }: CoordinatorKeyProps) {
-  function generateQR(maciSk: string) {
+export default function Note({ patterns, nav, data }: NoteProps) {
+  function generateQR(note: string) {
+    const qr: string = 'note:' + note
     return (
-      <QRContaier>
-        <QRCode bgColor="#FFFFFF" fgColor="#000000" level="Q" style={{ width: 256, marginBottom: 20 }} value={maciSk} />
-      </QRContaier>
+      <>
+        <QRContaier>
+          <QRCode bgColor="#FFFFFF" fgColor="#000000" level="Q" style={{ width: 256, marginBottom: 20 }} value={qr} />
+        </QRContaier>
+      </>
     )
   }
 
   return (
-    <Box m={10}>
+    <>
       {nav === patterns[0] ? (
         <>
           <Box mb={10}>
             <Text>
-              <Trans>Coordinator Private key:</Trans>
+              <Trans>Your Note:</Trans>
             </Text>
           </Box>
-          <MaciSkText>{data.maciSk}</MaciSkText>
+          <NoteText>{data.note}</NoteText>
         </>
       ) : (
-        <Text>{generateQR(data.maciSk!)}</Text>
+        <Text>{generateQR(data.note!)}</Text>
       )}
-    </Box>
+    </>
   )
 }
