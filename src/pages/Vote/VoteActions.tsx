@@ -4,7 +4,6 @@ import { Trans } from '@lingui/macro'
 import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 import { ActionNames, MessageAction, VoteNav } from '../../components/VoteNav'
-import { VoterStateModal } from '../../components/VoterStateModal'
 import { VotePatterns } from '../../components/VotePatterns'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback'
@@ -42,7 +41,6 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
             onDismiss={toggleModal}
             content={MultiLevelModalContent.VoterState}
           />
-          {/* <VoterStateModal isOpen={!parseInt(stateIndex) || voterStateModalOpen} onDismiss={toggleModal} /> */}
           <VoteNav radioState={radioState} handleChange={toggleRadio} />
           {radioState === 0 ? (
             <VotePatterns recipients={recipients} electionType={electionType} />
