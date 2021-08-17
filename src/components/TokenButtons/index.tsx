@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../Button'
-import { SignUpModal } from '../SignUpModal'
 import Spinner from '../Spinner'
 
 import { useDepositCallback } from '../../hooks/useDepositCallback'
@@ -38,11 +37,12 @@ export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTo
         content={MultiLevelModalContent.Note}
         data={note}
       />
-      <SignUpModal
-        zkCreamAddress={zkCreamAddress}
-        maciAddress={maciAddress}
+      <MultiLevelModal
         isOpen={signUpModalOpen}
         onDismiss={toggleSignUpModal}
+        content={MultiLevelModalContent.SignUp}
+        zkCreamAddress={zkCreamAddress!}
+        maciAddress={maciAddress!}
       />
       {tokenState & TokenType.VOTING ? (
         <>

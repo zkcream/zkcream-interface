@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { Box, Text } from 'rebass'
-import QrModal, { QrModalContent } from '../../QrModal'
-import { NoteData } from '../../QrModal'
+import QrModal, { QrModalContent } from '../QrModal'
+import { NoteData } from '../QrModal'
 
 interface NoteProps {
   toggleModal: () => void

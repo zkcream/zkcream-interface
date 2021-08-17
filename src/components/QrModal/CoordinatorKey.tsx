@@ -37,7 +37,7 @@ export default function CoordinatorKey({ patterns, nav, data }: CoordinatorKeyPr
               <Trans>Coordinator Private key:</Trans>
             </Text>
           </Box>
-          <MaciSkText>{data.maciSk}</MaciSkText>
+          <MaciSkText>{data?.maciSk}</MaciSkText>
         </>
       ) : (
         <Text>{generateQR(data.maciSk!)}</Text>

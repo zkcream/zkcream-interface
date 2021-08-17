@@ -6,10 +6,12 @@ import { ButtonPrimary } from '../Button'
 import CoordinatorKey from './CoordinatorKey'
 import Nav from './Nav'
 import Note from './Note'
+import SignUp from './SignUp'
 
 export enum QrModalContent {
   CoordinatorKey,
   Note,
+  SignUp,
 }
 
 interface ContentDataBasics {
@@ -27,29 +29,26 @@ export interface NoteData extends ContentDataBasics {
 
 export type ContentData = MaciSk | NoteData
 
+interface QrViewerProps {
+  toggleModal: () => void
+}
+
 interface QrModalProps {
   toggleModal: () => void
   content: QrModalContent
-  data: ContentData
+  data?: ContentData
+  zkCreamAddress?: string
+  maciAddress?: string
 }
 
-interface DetailProps extends QrModalProps {
-  patterns: string[]
-  nav: string
-  toggleNav: () => void
+function Read() {
+  return <></>
 }
 
-function Show({ toggleModal, patterns, nav, toggleNav, content, data }: DetailProps) {
+function View({ toggleModal }: QrViewerProps) {
   const [checked, setChecked] = useState<boolean>(false)
   return (
     <>
-      <Nav patterns={patterns} nav={nav} toggleNav={toggleNav} />
-      {
-        {
-          0: <CoordinatorKey patterns={patterns} nav={nav} data={data} />,
-          1: <Note patterns={patterns} nav={nav} data={data} />,
-        }[content]
-      }
       <Box pb={3}>
         <Label>
           <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
@@ -65,7 +64,7 @@ function Show({ toggleModal, patterns, nav, toggleNav, content, data }: DetailPr
   )
 }
 
-export default function QrModal({ toggleModal, content, data }: QrModalProps) {
+export default function QrModal({ toggleModal, content, data, zkCreamAddress, maciAddress }: QrModalProps) {
   const patterns = ['Text', 'QR Code']
   const [nav, setNav] = useState<string>(patterns[0])
 
@@ -76,14 +75,15 @@ export default function QrModal({ toggleModal, content, data }: QrModalProps) {
 
   return (
     <>
-      <Show
-        toggleModal={toggleModal}
-        patterns={patterns}
-        nav={nav}
-        toggleNav={toggleNav}
-        content={content}
-        data={data}
-      />
+      <Nav patterns={patterns} nav={nav} toggleNav={toggleNav} />
+      {
+        {
+          0: <CoordinatorKey patterns={patterns} nav={nav} data={data!} />,
+          1: <Note patterns={patterns} nav={nav} data={data!} />,
+          2: <SignUp patterns={patterns} nav={nav} zkCreamAddress={zkCreamAddress!} maciAddress={maciAddress!} />,
+        }[content]
+      }
+      {!data ? <Read /> : <View toggleModal={toggleModal} />}
     </>
   )
 }
