@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components/macro'
-import { Text } from 'rebass'
+import { Flex, Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
 import CoordinatorActions from './CoordinatorActions'
@@ -19,6 +19,7 @@ import { TokenType } from '../../state/token/reducer'
 import { useFetchTokenState, useTokenType } from '../../state/token/hooks'
 
 import { StyledInternalLink } from '../../theme'
+import Menu from '../../components/Menu'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -40,7 +41,7 @@ const ArrowWrapper = styled(StyledInternalLink)`
   align-items: center;
   gap: 8px;
   height: 24px;
-  width: 120px;
+  width: 100%;
 `
 
 export default function VotePage({
@@ -79,10 +80,13 @@ export default function VotePage({
         {electionData && (
           <>
             <AutoColumn gap="10px" style={{ width: '100%' }}>
-              <ArrowWrapper to={'/'}>
-                <ArrowLeft size={20} />
-                <Trans>All Elections</Trans>
-              </ArrowWrapper>
+              <Flex>
+                <ArrowWrapper to={'/'}>
+                  <ArrowLeft size={20} />
+                  <Trans>All Elections</Trans>
+                </ArrowWrapper>
+                {!isApproved && !isOwner && !isCoordinator ? <Menu /> : null}
+              </Flex>
               <Text fontSize={[5]} fontWeight="bold" mt={4} mb={2}>
                 {electionData.title}
               </Text>

@@ -22,6 +22,7 @@ interface ContentDataBasics {
   maciSk?: string
   note?: string
   signUpIndex?: number
+  nonce?: number
 }
 
 export interface MaciSk extends ContentDataBasics {
@@ -35,6 +36,7 @@ export interface NoteData extends ContentDataBasics {
 export interface PostSignUpData extends ContentDataBasics {
   maciSk: string
   signUpIndex: number
+  nonce?: number
 }
 
 export type ContentData = MaciSk | NoteData | PostSignUpData

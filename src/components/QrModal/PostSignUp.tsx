@@ -20,8 +20,10 @@ const QRContaier = styled.div`
 `
 
 export default function PostSignUp({ patterns, nav, data }: PostSignUpProps) {
-  function generateQR(signUpIndex: number, maciSk: string) {
-    const qr: string = 'signUpIndex:' + signUpIndex + ',' + maciSk + ',nonce:1'
+  const nonce = data.nonce ? data.nonce : 1
+
+  function generateQR(signUpIndex: number, maciSk: string, nonce: number) {
+    const qr: string = 'signUpIndex:' + signUpIndex + ',' + maciSk + ',nonce:' + nonce
     return (
       <>
         <QRContaier>
@@ -51,11 +53,11 @@ export default function PostSignUp({ patterns, nav, data }: PostSignUpProps) {
             <Text fontWeight="bold">
               <Trans>Your nonce</Trans>
             </Text>
-            <TextWrapper>1</TextWrapper>
+            <TextWrapper>{nonce}</TextWrapper>
           </Box>
         </>
       ) : (
-        <Text>{generateQR(data.signUpIndex!, data.maciSk!)}</Text>
+        <Text>{generateQR(data.signUpIndex!, data.maciSk!, nonce)}</Text>
       )}
     </>
   )

@@ -34,6 +34,10 @@ export function useSignUpModalToggle(): () => void {
   return useToggleModal(ApplicationModal.SIGNUP)
 }
 
+export function usePostSignUpModalToggle(): () => void {
+  return useToggleModal(ApplicationModal.POST_SIGNUP)
+}
+
 export function useVoterStateModalToggle(): () => void {
   return useToggleModal(ApplicationModal.VOTERSTATE)
 }

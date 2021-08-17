@@ -5,6 +5,7 @@ export enum ApplicationModal {
   DEPLOY,
   NOTE,
   SIGNUP,
+  POST_SIGNUP,
   VOTERSTATE,
   RANDOM_STATELEAF,
   DISTRIBUTE,
