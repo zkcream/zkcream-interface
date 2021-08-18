@@ -3,7 +3,7 @@ import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../../components/Button'
-import { CoordinatorKeyModal } from '../../components/CoordinatorKeyModal'
+// import { CoordinatorKeyModal } from '../../components/CoordinatorKeyModal'
 import { RandomStateLeafModal } from '../../components/RandomStateLeafModal'
 import { ApplicationModal } from '../../state/application/actions'
 import {
@@ -14,6 +14,7 @@ import {
 import { useProcessMessageCallback } from '../../hooks/useProcessMessageCallback'
 import { usePublishTallyCallback } from '../../hooks/usePublishTallyCallback'
 import { useWithdrawCallback } from '../../hooks/useWithdrawCallback'
+import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiLevelModal'
 
 export default function CoordinatorActions({ isPublished, isApproved }: { isPublished: boolean; isApproved: boolean }) {
   /* modals */
@@ -33,7 +34,12 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
         isOpen={randomStateLeafModalOpen}
         onDismiss={toggleRandomStateLeafModal}
       />
-      <CoordinatorKeyModal isOpen={coordinatorKeyModalOpen} onDismiss={toggleCoordinatorKeyModal} />
+      <MultiLevelModal
+        isOpen={coordinatorKeyModalOpen}
+        onDismiss={toggleCoordinatorKeyModal}
+        content={MultiLevelModalContent.CoordinatorKey}
+      />
+      {/* <CoordinatorKeyModal isOpen={coordinatorKeyModalOpen} onDismiss={toggleCoordinatorKeyModal} /> */}
       <Text>
         <Trans>You are Coordinator</Trans>
       </Text>

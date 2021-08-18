@@ -7,6 +7,7 @@ import CoordinatorKey from './CoordinatorKey'
 import Nav from './Nav'
 import Note from './Note'
 import PostSignUp from './PostSignUp'
+import ReadCoordinatorKey from './ReadCoordiantorKey'
 import SignUp from './SignUp'
 import VoterState from './VoterState'
 
@@ -16,6 +17,7 @@ export enum QrModalContent {
   SignUp,
   PostSignUp,
   VoterState,
+  ReadCoordinatorKey,
 }
 
 interface ContentDataBasics {
@@ -103,6 +105,7 @@ export default function QrModal({ toggleModal, content, data, zkCreamAddress, ma
           ),
           3: <PostSignUp patterns={patterns} nav={nav} data={data!} />,
           4: <VoterState patterns={patterns} nav={nav} />,
+          5: <ReadCoordinatorKey patterns={patterns} nav={nav} />,
         }[content]
       }
       {!data ? <Read /> : <View toggleModal={toggleModal} />}

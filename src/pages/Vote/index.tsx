@@ -7,7 +7,6 @@ import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
-//import DeployModal from '../../components/DeployModal'
 import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiLevelModal'
 import Paging from '../../components/Paging'
 import { RowBetween } from '../../components/Row'

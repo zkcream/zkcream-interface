@@ -5,6 +5,7 @@ import { ContentData } from '../QrModal'
 import Deploy from './Deploy'
 import Note from './Note'
 import PostSignUp from './PostSignUp'
+import ReadCoordinatorKey from './ReadCoordinatorKey'
 import SignUp from './SignUp'
 import VoterState from './VoterState'
 
@@ -19,6 +20,7 @@ export enum MultiLevelModalContent {
   SignUp,
   PostSignUp,
   VoterState,
+  CoordinatorKey,
 }
 
 interface MultiLevelModalProps {
@@ -48,6 +50,7 @@ export default function MultiLevelModal({
             2: <SignUp toggleModal={onDismiss} zkCreamAddress={zkCreamAddress!} maciAddress={maciAddress!} />,
             3: <PostSignUp toggleModal={onDismiss} data={data!} />,
             4: <VoterState toggleModal={onDismiss} />,
+            5: <ReadCoordinatorKey toggleModal={onDismiss} />,
           }[content]
         }
       </>
