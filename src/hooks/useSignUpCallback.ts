@@ -19,7 +19,7 @@ export function useSignUpCallback(
   const [txState, setTxState] = useState<boolean>(false)
   const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
 
-  const [macisk, setMaciSk] = useLocalStorage('macisk', new Keypair().privKey.serialize())
+  const [macisk, setMaciSk] = useLocalStorage('macisk', '')
 
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const maciContract = useMaciContract(maciAddress)
@@ -45,10 +45,11 @@ export function useSignUpCallback(
 
       const formattedProof = await post('zkcream/genproof', data)
 
+      const privKey: PrivKey | undefined = parseInt(macisk) ? PrivKey.unserialize(macisk) : undefined
+      const userKeyPair: Keypair | undefined = privKey ? new Keypair(privKey) : new Keypair()
+
       // store userPubKey to local storage
-      setMaciSk(macisk)
-      const privKey: PrivKey | undefined = macisk ? PrivKey.unserialize(macisk) : undefined
-      const userKeyPair: Keypair | undefined = privKey ? new Keypair(privKey) : undefined
+      setMaciSk(userKeyPair.privKey.serialize())
 
       const args = [toHex(input.root), toHex(input.nullifierHash)]
       return await zkCreamContract
