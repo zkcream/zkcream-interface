@@ -37,7 +37,7 @@ export default function PostSignUp({ patterns, nav, data }: PostSignUpProps) {
     <>
       {nav === patterns[0] ? (
         <>
-          <Box mb={20}>
+          <Box my={10}>
             <Text fontWeight="bold">
               <Trans>Your sign up index</Trans>
             </Text>

@@ -35,7 +35,7 @@ export default function PostProcessMessage({ patterns, nav, data }: PostProcessM
     <>
       {nav === patterns[0] ? (
         <>
-          <Box mb={20}>
+          <Box my={10}>
             <Text fontWeight="bold">
               <Trans>Current random state leaf</Trans>
             </Text>

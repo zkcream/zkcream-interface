@@ -75,7 +75,7 @@ function View({ toggleModal }: QrViewerProps) {
   const [checked, setChecked] = useState<boolean>(false)
   return (
     <>
-      <Box pb={3}>
+      <Box my={10}>
         <Label>
           <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
           <Trans>I've stored my coordinator Private key</Trans>

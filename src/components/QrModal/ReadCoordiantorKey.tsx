@@ -6,7 +6,11 @@ import { Box, Text } from 'rebass'
 import styled from 'styled-components'
 import { useProcessMessageCallback } from '../../hooks/useProcessMessageCallback'
 import { ApplicationModal } from '../../state/application/actions'
-import { usePostProcessMessageModalToggle, useModalOpen } from '../../state/application/hooks'
+import {
+  usePostProcessMessageModalToggle,
+  useModalOpen,
+  useCoordinatorKeyModalToggle,
+} from '../../state/application/hooks'
 import { FormInput } from '../../theme'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
@@ -31,8 +35,8 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
     reset: resetCoordinatorPrivateKey,
   } = useInput('')
   const [randomStateLeaf, processMessage] = useProcessMessageCallback()
-  const isOpen = useModalOpen(ApplicationModal.POST_PROCESSMESSAGE)
-  const toggleModal = usePostProcessMessageModalToggle()
+  const isOpen = useModalOpen(ApplicationModal.COORDINATOR_KEY)
+  const toggleModal = useCoordinatorKeyModalToggle()
 
   function submit() {
     processMessage(coordinatorPrivateKey).then(() => resetCoordinatorPrivateKey())
@@ -53,7 +57,7 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
 
   return (
     <Box mb={20}>
-      {!randomStateLeaf ? (
+      {randomStateLeaf.randomStateLeaf !== '' ? (
         <MultiLevelModal
           isOpen={isOpen}
           onDismiss={toggleModal}
@@ -64,7 +68,7 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
         <>
           {nav === patterns[0] ? (
             <>
-              <Box>
+              <Box my={10}>
                 <Label fontWeight="bold">
                   <Trans>Coordinator Private key</Trans>
                 </Label>

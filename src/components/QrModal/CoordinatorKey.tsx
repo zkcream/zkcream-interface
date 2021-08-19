@@ -32,7 +32,7 @@ export default function CoordinatorKey({ patterns, nav, data }: CoordinatorKeyPr
     <Box m={10}>
       {nav === patterns[0] ? (
         <>
-          <Box mb={10}>
+          <Box my={10}>
             <Text>
               <Trans>Coordinator Private key:</Trans>
             </Text>

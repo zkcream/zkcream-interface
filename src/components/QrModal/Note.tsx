@@ -35,7 +35,7 @@ export default function Note({ patterns, nav, data }: NoteProps) {
     <>
       {nav === patterns[0] ? (
         <>
-          <Box mb={10}>
+          <Box my={10}>
             <Text>
               <Trans>Your Note:</Trans>
             </Text>
