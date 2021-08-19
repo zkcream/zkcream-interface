@@ -74,7 +74,7 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
 
   return (
     <Box my={20}>
-      {parseInt(signUpIndex!) !== 0 ? (
+      {parseInt(signUpIndex!) !== 0 ? ( // show vote state with nonce === 1, data = { maciSk, signUpIndex }
         <MultiLevelModal
           isOpen={signUpModalOpen}
           onDismiss={closeModal}

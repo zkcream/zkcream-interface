@@ -3,16 +3,12 @@ import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
 import { ButtonPrimary } from '../../components/Button'
-// import { CoordinatorKeyModal } from '../../components/CoordinatorKeyModal'
-import { RandomStateLeafModal } from '../../components/RandomStateLeafModal'
 import { ApplicationModal } from '../../state/application/actions'
 import {
   useModalOpen,
   useCoordinatorKeyModalToggle,
   useRandomStateLeafModalToggle,
 } from '../../state/application/hooks'
-import { useProcessMessageCallback } from '../../hooks/useProcessMessageCallback'
-import { usePublishTallyCallback } from '../../hooks/usePublishTallyCallback'
 import { useWithdrawCallback } from '../../hooks/useWithdrawCallback'
 import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiLevelModal'
 
@@ -23,23 +19,20 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
   const toggleRandomStateLeafModal = useRandomStateLeafModalToggle()
   const toggleCoordinatorKeyModal = useCoordinatorKeyModalToggle()
 
-  const [randomStateLeaf] = useProcessMessageCallback()
-  const publishTally = usePublishTallyCallback()
   const withdraw = useWithdrawCallback()
 
   return (
     <>
-      <RandomStateLeafModal
-        randomStateLeaf={randomStateLeaf}
+      <MultiLevelModal
         isOpen={randomStateLeafModalOpen}
         onDismiss={toggleRandomStateLeafModal}
+        content={MultiLevelModalContent.ReadRandomStateLeaf}
       />
       <MultiLevelModal
         isOpen={coordinatorKeyModalOpen}
         onDismiss={toggleCoordinatorKeyModal}
         content={MultiLevelModalContent.CoordinatorKey}
       />
-      {/* <CoordinatorKeyModal isOpen={coordinatorKeyModalOpen} onDismiss={toggleCoordinatorKeyModal} /> */}
       <Text>
         <Trans>You are Coordinator</Trans>
       </Text>
@@ -49,7 +42,7 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
           <ButtonPrimary onClick={toggleCoordinatorKeyModal}>
             <Trans>Process Message</Trans>
           </ButtonPrimary>
-          <ButtonPrimary onClick={() => publishTally(randomStateLeaf)}>
+          <ButtonPrimary onClick={toggleRandomStateLeafModal}>
             <Trans>Publish Tally</Trans>
           </ButtonPrimary>
         </>

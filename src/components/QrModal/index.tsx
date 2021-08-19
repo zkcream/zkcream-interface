@@ -7,9 +7,11 @@ import CoordinatorKey from './CoordinatorKey'
 import Nav from './Nav'
 import Note from './Note'
 import PostSignUp from './PostSignUp'
+import ReadRandomStateLeaf from './ReadRandomStateLeaf'
 import ReadCoordinatorKey from './ReadCoordiantorKey'
 import SignUp from './SignUp'
 import VoterState from './VoterState'
+import PostProcessMessage from './PostProcessMessage'
 
 export enum QrModalContent {
   CoordinatorKey,
@@ -18,6 +20,8 @@ export enum QrModalContent {
   PostSignUp,
   VoterState,
   ReadCoordinatorKey,
+  PostProcessMessage,
+  ReadRandomStateLeaf,
 }
 
 interface ContentDataBasics {
@@ -25,6 +29,7 @@ interface ContentDataBasics {
   note?: string
   signUpIndex?: number
   nonce?: number
+  randomStateLeaf?: string
 }
 
 export interface MaciSk extends ContentDataBasics {
@@ -41,7 +46,11 @@ export interface PostSignUpData extends ContentDataBasics {
   nonce?: number
 }
 
-export type ContentData = MaciSk | NoteData | PostSignUpData
+export interface RandomStateLeaf extends ContentDataBasics {
+  randomStateLeaf: string
+}
+
+export type ContentData = MaciSk | NoteData | PostSignUpData | RandomStateLeaf
 
 interface QrViewerProps {
   toggleModal: () => void
@@ -53,6 +62,9 @@ interface QrModalProps {
   data?: ContentData
   zkCreamAddress?: string
   maciAddress?: string
+  setStateIndex?: any
+  setNonce?: any
+  setMaciSk?: any
 }
 
 function Read() {
@@ -78,7 +90,16 @@ function View({ toggleModal }: QrViewerProps) {
   )
 }
 
-export default function QrModal({ toggleModal, content, data, zkCreamAddress, maciAddress }: QrModalProps) {
+export default function QrModal({
+  toggleModal,
+  content,
+  data,
+  zkCreamAddress,
+  maciAddress,
+  setStateIndex,
+  setNonce,
+  setMaciSk,
+}: QrModalProps) {
   const patterns = ['Text', 'QR Code']
   const [nav, setNav] = useState<string>(patterns[0])
 
@@ -104,8 +125,19 @@ export default function QrModal({ toggleModal, content, data, zkCreamAddress, ma
             />
           ),
           3: <PostSignUp patterns={patterns} nav={nav} data={data!} />,
-          4: <VoterState patterns={patterns} nav={nav} />,
+          4: (
+            <VoterState
+              toggleModal={toggleModal}
+              patterns={patterns}
+              nav={nav}
+              setStateIndex={setStateIndex}
+              setNonce={setNonce}
+              setMaciSk={setMaciSk}
+            />
+          ),
           5: <ReadCoordinatorKey patterns={patterns} nav={nav} />,
+          6: <PostProcessMessage patterns={patterns} nav={nav} data={data!} />,
+          7: <ReadRandomStateLeaf patterns={patterns} nav={nav} />,
         }[content]
       }
       {!data ? <Read /> : <View toggleModal={toggleModal} />}

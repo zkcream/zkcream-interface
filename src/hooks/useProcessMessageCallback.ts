@@ -1,16 +1,15 @@
 // ported from https://github.com/appliedzkp/maci/blob/v0.4.11/cli/ts/process.ts
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Keypair, PrivKey, PubKey, StateLeaf } from 'maci-domainobjs'
 
 import { useMaciContract } from './useContract'
 import { genMaciStateFromContract } from '../utils/genMaciStateFromContract'
 import { useElectionState } from '../state/election/hooks'
 import { post } from '../utils/api'
-
-export type RandomStateLeaf = string | undefined
+import { RandomStateLeaf } from '../components/QrModal'
 
 export function useProcessMessageCallback(): [RandomStateLeaf, (maciSk: string) => Promise<void>] {
-  const [randomStateLeaf, setRandomStateLeaf] = useState<string | undefined>('')
+  const [randomStateLeaf, setRandomStateLeaf] = useState<RandomStateLeaf>({ randomStateLeaf: '' })
   const { maciAddress, maciParams }: any = useElectionState()
   const maciContract = useMaciContract(maciAddress)
   const { publishMessageLogs, signUpLogs }: any = maciParams
@@ -131,7 +130,7 @@ export function useProcessMessageCallback(): [RandomStateLeaf, (maciSk: string) 
         console.log(`Random state leaf: ${rndStateLeaf.serialize()}`)
 
         if (!(await maciContract.hasUnprocessedMessages())) {
-          setRandomStateLeaf(rndStateLeaf.serialize())
+          setRandomStateLeaf({ randomStateLeaf: rndStateLeaf.serialize() })
           break
         }
       }
@@ -139,7 +138,7 @@ export function useProcessMessageCallback(): [RandomStateLeaf, (maciSk: string) 
     [maciContract, publishMessageLogs, signUpLogs]
   )
 
-  const serializedRandomStateLeaf: RandomStateLeaf = useMemo(() => randomStateLeaf, [randomStateLeaf])
+  // const serializedRandomStateLeaf: RandomStateLeaf = useMemo(() => randomStateLeaf, [randomStateLeaf])
 
-  return [serializedRandomStateLeaf, tx]
+  return [randomStateLeaf, tx]
 }

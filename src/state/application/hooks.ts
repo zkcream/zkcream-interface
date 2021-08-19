@@ -42,8 +42,12 @@ export function useVoterStateModalToggle(): () => void {
   return useToggleModal(ApplicationModal.VOTERSTATE)
 }
 
+export function usePostProcessMessageModalToggle(): () => void {
+  return useToggleModal(ApplicationModal.POST_PROCESSMESSAGE)
+}
+
 export function useRandomStateLeafModalToggle(): () => void {
-  return useToggleModal(ApplicationModal.VOTERSTATE)
+  return useToggleModal(ApplicationModal.RANDOM_STATELEAF)
 }
 
 export function useDistributeModalToggle(): () => void {

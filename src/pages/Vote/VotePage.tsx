@@ -85,7 +85,7 @@ export default function VotePage({
                   <ArrowLeft size={20} />
                   <Trans>All Elections</Trans>
                 </ArrowWrapper>
-                {!isApproved && !isOwner && !isCoordinator ? <Menu /> : null}
+                {!isApproved && !isOwner && !isCoordinator && tokenState & TokenType.SIGNUP ? <Menu /> : null}
               </Flex>
               <Text fontSize={[5]} fontWeight="bold" mt={4} mb={2}>
                 {electionData.title}

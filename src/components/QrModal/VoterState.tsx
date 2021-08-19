@@ -3,22 +3,29 @@ import { Label } from '@rebass/forms'
 import { useState } from 'react'
 import QrReader from 'react-qr-reader'
 import { Box, Text } from 'rebass'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { FormInput } from '../../theme'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
 
 interface VoterStateProps {
+  toggleModal: () => void
   patterns: string[]
   nav: string
+  setStateIndex: React.Dispatch<any>
+  setNonce: React.Dispatch<any>
+  setMaciSk: React.Dispatch<any>
 }
 
-export default function VoterState({ patterns, nav }: VoterStateProps) {
+export default function VoterState({
+  toggleModal,
+  patterns,
+  nav,
+  setStateIndex,
+  setNonce,
+  setMaciSk,
+}: VoterStateProps) {
   const [dataReceived, setDataReceived] = useState<boolean>(false)
 
-  const [, setStateIndex] = useLocalStorage('stateIndex', '')
-  const [, setNonce] = useLocalStorage('nonce', '')
-  const [, setMaciSk] = useLocalStorage('macisk', '')
   const { value: _stateIndex, bind: bindStateIndex, reset: resetStateIndex } = useInput('')
   const { value: _nonce, bind: bindNonce, reset: resetNonce } = useInput('')
   const { value: _macisk, bind: bindMaciSk, reset: resetMaciSk } = useInput('')
@@ -59,6 +66,7 @@ export default function VoterState({ patterns, nav }: VoterStateProps) {
         setMaciSk(states[1])
         setNonce(states[2].replace('nonce:', ''))
         setDataReceived(false)
+        toggleModal()
       } else {
         console.error('state data errror')
         return

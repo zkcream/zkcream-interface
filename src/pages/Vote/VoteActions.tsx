@@ -20,8 +20,9 @@ export interface VoteActionsProps {
 
 export default function VoteActions({ recipients, electionType, isApproved }: VoteActionsProps) {
   const [radioState, setRadioState] = useState<MessageAction>(MessageAction.SELECT)
-  const [stateIndex] = useLocalStorage('stateIndex', '0')
+  const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
   const [nonce, setNonce] = useLocalStorage('nonce', '1')
+  const [, setMaciSk] = useLocalStorage('macisk', '')
   const publishMessage = usePublishMessageCallback()
 
   // toggle voter state modal
@@ -40,6 +41,9 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
             isOpen={!parseInt(stateIndex) || voterStateModalOpen}
             onDismiss={toggleModal}
             content={MultiLevelModalContent.VoterState}
+            setStateIndex={setStateIndex}
+            setNonce={setNonce}
+            setMaciSk={setMaciSk}
           />
           <VoteNav radioState={radioState} handleChange={toggleRadio} />
           {radioState === 0 ? (

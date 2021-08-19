@@ -7,6 +7,9 @@ import QrModal, { QrModalContent } from '../QrModal'
 
 interface VoterstateProps {
   toggleModal: () => void
+  setStateIndex: React.Dispatch<any>
+  setNonce: React.Dispatch<any>
+  setMaciSk: React.Dispatch<any>
 }
 
 const ArrowWrapper = styled(StyledInternalLink)`
@@ -17,7 +20,7 @@ const ArrowWrapper = styled(StyledInternalLink)`
   color: ${({ theme }) => theme.greyText};
 `
 
-export default function VoterState({ toggleModal }: VoterstateProps) {
+export default function VoterState({ toggleModal, setStateIndex, setNonce, setMaciSk }: VoterstateProps) {
   return (
     <Box>
       <ArrowWrapper to={'/'}>
@@ -32,7 +35,13 @@ export default function VoterState({ toggleModal }: VoterstateProps) {
           <Trans>Please provide your voting state informations</Trans>
         </Text>
       </Box>
-      <QrModal toggleModal={toggleModal} content={QrModalContent.VoterState} />
+      <QrModal
+        toggleModal={toggleModal}
+        content={QrModalContent.VoterState}
+        setStateIndex={setStateIndex}
+        setNonce={setNonce}
+        setMaciSk={setMaciSk}
+      />
     </Box>
   )
 }

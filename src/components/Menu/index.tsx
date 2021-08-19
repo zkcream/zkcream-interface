@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { ApplicationModal } from '../../state/application/actions'

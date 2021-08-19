@@ -9,7 +9,6 @@ import { genRandomSalt } from 'maci-crypto'
 import { Keypair, PrivKey, StateLeaf } from 'maci-domainobjs'
 
 import { useMaciContract, useZkCreamContract } from './useContract'
-import { RandomStateLeaf } from './useProcessMessageCallback'
 import { genMaciStateFromContract } from '../utils/genMaciStateFromContract'
 import { useElectionState } from '../state/election/hooks'
 import { post } from '../utils/api'
@@ -20,14 +19,14 @@ const ethProvider: string = process.env.REACT_APP_URL!
 const coordinatorPrivKey: string = process.env.REACT_APP_COORDINATOR_PRIVKEY!
 const coordinatorKeypair = new Keypair(new PrivKey(BigInt(coordinatorPrivKey)))
 
-export function usePublishTallyCallback(): (leaf_zero: RandomStateLeaf) => Promise<void> {
+export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> {
   const { maciAddress, zkCreamAddress, maciParams }: any = useElectionState()
   const maciContract = useMaciContract(maciAddress)
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const { publishMessageLogs, signUpLogs }: any = maciParams
 
   return useCallback(
-    async (leaf_zero: RandomStateLeaf) => {
+    async (leaf_zero: string) => {
       // Check whether it's the right time to tally messages
       if (await maciContract.hasUnprocessedMessages()) {
         console.error('Error: not all messages have been processed')
@@ -49,7 +48,7 @@ export function usePublishTallyCallback(): (leaf_zero: RandomStateLeaf) => Promi
       let currentPvcSalt = BigInt(current_per_vo_vc_salt)
 
       // Zeroth leaf
-      const serialized = leaf_zero as string
+      const serialized = leaf_zero
       let zerothLeaf: StateLeaf
       try {
         zerothLeaf = StateLeaf.unserialize(serialized)

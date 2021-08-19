@@ -19,7 +19,8 @@ export function usePublishMessageCallback(): (
   const maciContract = useMaciContract(maciAddress)
   const { coordinatorPubKey } = maciParams
   const [macisk, setMaciSk] = useLocalStorage('macisk', '')
-  const privKey: PrivKey | undefined = macisk ? PrivKey.unserialize(macisk) : undefined
+
+  const privKey: PrivKey | undefined = macisk !== '' ? PrivKey.unserialize(macisk) : undefined
   const userKeyPair: Keypair | undefined = useMemo(() => (privKey ? new Keypair(privKey) : undefined), [privKey])
   return useCallback(
     async (recipientIndex, stateIndex, nonce): Promise<void> => {

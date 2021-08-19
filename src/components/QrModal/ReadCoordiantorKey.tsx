@@ -5,9 +5,12 @@ import QrReader from 'react-qr-reader'
 import { Box, Text } from 'rebass'
 import styled from 'styled-components'
 import { useProcessMessageCallback } from '../../hooks/useProcessMessageCallback'
+import { ApplicationModal } from '../../state/application/actions'
+import { usePostProcessMessageModalToggle, useModalOpen } from '../../state/application/hooks'
 import { FormInput } from '../../theme'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
+import MultiLevelModal, { MultiLevelModalContent } from '../MultiLevelModal'
 import Spinner from '../Spinner'
 
 interface ReadCoordinatorKeyProps {
@@ -27,7 +30,9 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
     bind: bindCoordinaotrPrivateKey,
     reset: resetCoordinatorPrivateKey,
   } = useInput('')
-  const [, processMessage] = useProcessMessageCallback()
+  const [randomStateLeaf, processMessage] = useProcessMessageCallback()
+  const isOpen = useModalOpen(ApplicationModal.POST_PROCESSMESSAGE)
+  const toggleModal = usePostProcessMessageModalToggle()
 
   function submit() {
     processMessage(coordinatorPrivateKey).then(() => resetCoordinatorPrivateKey())
@@ -48,36 +53,47 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
 
   return (
     <Box mb={20}>
-      {nav === patterns[0] ? (
-        <>
-          <Box>
-            <Label fontWeight="bold">
-              <Trans>Coordinator Private key</Trans>
-            </Label>
-            <FormInput {...bindCoordinaotrPrivateKey} />
-          </Box>
-          <Box my={20}>
-            <ButtonPrimary onClick={submit}>
-              <Trans>Submit</Trans>
-            </ButtonPrimary>
-          </Box>
-        </>
+      {!randomStateLeaf ? (
+        <MultiLevelModal
+          isOpen={isOpen}
+          onDismiss={toggleModal}
+          content={MultiLevelModalContent.PostProcessMessage}
+          data={randomStateLeaf!}
+        />
       ) : (
-        <Box my={20}>
-          <Label fontWeight="bold">
-            <Trans>Scan your barcode</Trans>
-          </Label>
-          {maciSkReceived ? (
-            <LoadingMessageWrapper>
-              <Spinner />
-              <Text>
-                <Trans>Reading....</Trans>
-              </Text>
-            </LoadingMessageWrapper>
+        <>
+          {nav === patterns[0] ? (
+            <>
+              <Box>
+                <Label fontWeight="bold">
+                  <Trans>Coordinator Private key</Trans>
+                </Label>
+                <FormInput {...bindCoordinaotrPrivateKey} />
+              </Box>
+              <Box my={20}>
+                <ButtonPrimary onClick={submit}>
+                  <Trans>Submit</Trans>
+                </ButtonPrimary>
+              </Box>
+            </>
           ) : (
-            <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
+            <Box my={20}>
+              <Label fontWeight="bold">
+                <Trans>Scan your barcode</Trans>
+              </Label>
+              {maciSkReceived ? (
+                <LoadingMessageWrapper>
+                  <Spinner />
+                  <Text>
+                    <Trans>Reading....</Trans>
+                  </Text>
+                </LoadingMessageWrapper>
+              ) : (
+                <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
+              )}
+            </Box>
           )}
-        </Box>
+        </>
       )}
     </Box>
   )

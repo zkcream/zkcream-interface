@@ -49,7 +49,7 @@ export default function InputForm({ setMaciSk, setShowMaciSk }: InputFormProps) 
   const elections = useElections()
   const setElections = useSetElections()
 
-  async function deploy(setShowMaciSk: any) {
+  async function deploy(setShowMaciSk: React.Dispatch<React.SetStateAction<boolean>>) {
     setTxState('Deploying...')
     const election: ElectionForm = {
       title,

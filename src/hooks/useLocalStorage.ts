@@ -38,6 +38,7 @@ export function useLocalStorage(key: string, initialValue: string) {
       }
 
       localMaciObj[key] = storedValue
+      console.log(localMaciObj)
       window.localStorage.setItem(maciAddress, JSON.stringify(localMaciObj))
     } catch (e) {
       console.error(e)
