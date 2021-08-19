@@ -62,7 +62,7 @@ function ForOrAgainst({ recipients, isApproved }: { recipients: string[]; isAppr
           return (
             <ButtonPrimary
               onClick={() => {
-                publishMessage(i, stateIndex, nonce).then(() => setNonce(parseInt(nonce) + 1))
+                publishMessage(i, stateIndex, nonce).then(() => setNonce((parseInt(nonce) + 1).toString()))
               }}
               key={i}
             >

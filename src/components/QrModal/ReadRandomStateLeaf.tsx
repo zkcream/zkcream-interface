@@ -35,7 +35,7 @@ export default function ReadRandomStateLeaf({ patterns, nav }: ReadRandomStateLe
       setDataReceived(true)
       if (data.startsWith('rsl:')) {
         const randomStateLeaf = data.replace('rsl:', '')
-        publishTally(data).then(() => setDataReceived(false))
+        publishTally(randomStateLeaf).then(() => setDataReceived(false))
       } else {
         console.log('Wrong format')
         setDataReceived(false)

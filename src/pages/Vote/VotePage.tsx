@@ -19,7 +19,7 @@ import { TokenType } from '../../state/token/reducer'
 import { useFetchTokenState, useTokenType } from '../../state/token/hooks'
 
 import { StyledInternalLink } from '../../theme'
-import Menu from '../../components/Menu'
+import ExportButton from '../../components/ExportButton'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -85,7 +85,9 @@ export default function VotePage({
                   <ArrowLeft size={20} />
                   <Trans>All Elections</Trans>
                 </ArrowWrapper>
-                {!isApproved && !isOwner && !isCoordinator && tokenState & TokenType.SIGNUP ? <Menu /> : null}
+                {!isApproved && !isOwner && !isCoordinator && tokenState & TokenType.SIGNUP ? (
+                  <ExportButton maciAddress={electionData.maciAddress} />
+                ) : null}
               </Flex>
               <Text fontSize={[5]} fontWeight="bold" mt={4} mb={2}>
                 {electionData.title}

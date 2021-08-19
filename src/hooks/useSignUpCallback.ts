@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { generateDeposit, generateMerkleProof, pedersenHash, toHex } from 'libcream'
-import { Keypair, PrivKey } from 'maci-domainobjs'
+import { Keypair } from 'maci-domainobjs'
 
 import { useMaciContract, useZkCreamContract } from './useContract'
 import { useLocalStorage } from './useLocalStorage'
@@ -67,7 +67,7 @@ export function useSignUpCallback(
           throw e
         })
     },
-    [maciContract, macisk, setMaciSk, zkCreamAddress, zkCreamContract, setStateIndex]
+    [maciContract, setMaciSk, zkCreamAddress, zkCreamContract, setStateIndex]
   )
 
   return [txState, stateIndex, macisk, c]
