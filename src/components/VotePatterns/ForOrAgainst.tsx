@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import { darken } from 'polished'
 import { Box } from 'rebass'
 import styled from 'styled-components'
 
@@ -7,8 +8,11 @@ import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback
 import { ButtonPrimary } from '../Button'
 import { RowFixed } from '../Row'
 
-const ResultBox = styled(Box)`
-  border: 1px solid;
+const ResultBox = styled(Box)<{
+  winner?: boolean
+}>`
+  border: 2px solid;
+  border-color: ${({ theme, winner }) => (winner ? theme.green : darken(0.6, theme.white))};
   border-radius: 20px;
   display: flex;
   justify-content: flex-start;
@@ -16,7 +20,7 @@ const ResultBox = styled(Box)`
 `
 
 const TitleWrapper = styled(Box)`
-  font-weight: 500;
+  font-weight: 600;
 `
 
 const ResultWrapper = styled.div`
@@ -24,7 +28,7 @@ const ResultWrapper = styled.div`
 `
 
 const ResultText = styled.div`
-  font-weight: 500;
+  font-weight: 600;
 `
 
 export default function ForOrAgainst({
@@ -58,7 +62,7 @@ export default function ForOrAgainst({
           )
         } else {
           return (
-            <ResultBox key={i} width={1 / 2}>
+            <ResultBox key={i} width={1 / 2} winner={tokenCounts![i] > tokenCounts![i + 1]}>
               <TitleWrapper>
                 <Trans>{i === 0 ? 'For' : 'Against'}</Trans>
               </TitleWrapper>

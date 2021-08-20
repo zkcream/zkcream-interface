@@ -135,21 +135,21 @@ export default function VotePage({
               )}
             </AutoColumn>
             <AutoColumn gap="sm">
-              <Text fontSize={[3]}>
+              <Text fontSize={[2]}>
                 <Trans>Administration Committees</Trans>
               </Text>
-              <Text fontSize={[2]}>
+              <Text fontSize={[1]}>
                 <Trans>Group owner</Trans>
               </Text>
-              {electionData.owner}
-              <Text fontSize={[2]}>
+              <Text fontSize={[1]}>{electionData.owner}</Text>
+              <Text fontSize={[1]}>
                 <Trans>Coordinator</Trans>
               </Text>
-              {electionData.coordinator}
-              <Text fontSize={[2]}>
+              <Text fontSize={[1]}>{electionData.coordinator}</Text>
+              <Text fontSize={[1]}>
                 <Trans>Tally Hash</Trans>
               </Text>
-              {electionData.tallyHash}
+              <Text fontSize={[1]}>{electionData.tallyHash}</Text>
             </AutoColumn>
           </>
         )}
