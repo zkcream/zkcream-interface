@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, usePostSignUpModalToggle } from '../../state/application/hooks'
@@ -17,6 +18,7 @@ interface ExportButtonProps {
 
 export default function ExportButton({ maciAddress }: ExportButtonProps) {
   const [data, setData] = useState<PostSignUpData>({ maciSk: '', signUpIndex: 0, nonce: undefined })
+  let history = useHistory()
   const isOpen = useModalOpen(ApplicationModal.POST_SIGNUP)
   const toggleModal = usePostSignUpModalToggle()
 
@@ -33,7 +35,7 @@ export default function ExportButton({ maciAddress }: ExportButtonProps) {
 
   function closeModal() {
     window.localStorage.clear()
-    toggleModal()
+    history.push('/')
   }
 
   return (
