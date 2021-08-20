@@ -17,6 +17,7 @@ const ResultBox = styled(Box)<{
   display: flex;
   justify-content: flex-start;
   padding: 20px;
+  color: ${({ theme, winner }) => (winner ? theme.green : darken(0.6, theme.white))};
 `
 
 const TitleWrapper = styled(Box)`
