@@ -3,7 +3,6 @@ import { darken } from 'polished'
 import { Box } from 'rebass'
 import styled from 'styled-components'
 
-import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback'
 import { ButtonPrimary } from '../Button'
 import { RowFixed } from '../Row'
@@ -32,19 +31,28 @@ const ResultText = styled.div`
   font-weight: 600;
 `
 
+interface ForOrAgainstProps {
+  recipients: string[]
+  isApproved: boolean | undefined
+  tokenCounts?: number[] | undefined
+  stateIndex?: string
+  nonce?: string
+  setNonce?: any
+  maciSk?: string
+}
+
 export default function ForOrAgainst({
   recipients,
   isApproved,
   tokenCounts,
-}: {
-  recipients: string[]
-  isApproved: boolean | undefined
-  tokenCounts: number[] | undefined
-}) {
+  stateIndex,
+  nonce,
+  setNonce,
+  maciSk,
+}: ForOrAgainstProps) {
   /* TEMP flags */
   const isBeforeVotingDeadline = true
-  const [stateIndex] = useLocalStorage('stateIndex', '0')
-  const [nonce, setNonce] = useLocalStorage('nonce', '1')
+
   const publishMessage = usePublishMessageCallback()
 
   return (
@@ -54,7 +62,9 @@ export default function ForOrAgainst({
           return (
             <ButtonPrimary
               onClick={() => {
-                publishMessage(i, stateIndex, nonce).then(() => setNonce((parseInt(nonce) + 1).toString()))
+                publishMessage(i, parseInt(stateIndex!), parseInt(nonce!), maciSk!, undefined).then(() =>
+                  setNonce((parseInt(nonce!) + 1).toString())
+                )
               }}
               key={i}
             >

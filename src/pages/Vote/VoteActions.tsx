@@ -22,7 +22,7 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
   const [radioState, setRadioState] = useState<MessageAction>(MessageAction.SELECT)
   const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
   const [nonce, setNonce] = useLocalStorage('nonce', '1')
-  const [, setMaciSk] = useLocalStorage('macisk', '')
+  const [maciSk, setMaciSk] = useLocalStorage('macisk', '')
   const publishMessage = usePublishMessageCallback()
 
   // toggle voter state modal
@@ -47,12 +47,23 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
           />
           <VoteNav radioState={radioState} handleChange={toggleRadio} />
           {radioState === 0 ? (
-            <VotePatterns recipients={recipients} electionType={electionType} />
+            <VotePatterns
+              recipients={recipients}
+              electionType={electionType}
+              stateIndex={stateIndex}
+              nonce={nonce}
+              setNonce={setNonce}
+              maciSk={maciSk}
+            />
           ) : (
             <AutoColumn justify="center">
               <ButtonPrimary
                 width="50%"
-                onClick={() => publishMessage(null, stateIndex, nonce).then(() => setNonce(parseInt(nonce) + 1))}
+                onClick={() =>
+                  publishMessage(null, parseInt(stateIndex!), parseInt(nonce!), maciSk, setMaciSk).then(() =>
+                    setNonce(parseInt(nonce) + 1)
+                  )
+                }
               >
                 <Trans>New Key</Trans>
               </ButtonPrimary>

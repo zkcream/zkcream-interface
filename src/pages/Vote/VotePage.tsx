@@ -107,11 +107,7 @@ export default function VotePage({
                   {isOwner ? (
                     <OwnerActions isPublished={isPublished} isApproved={isApproved} />
                   ) : (
-                    <>
-                      {electionData.tokenCounts.length < 1 ? (
-                        <CoordinatorActions isPublished={isPublished} isApproved={isApproved} />
-                      ) : null}
-                    </>
+                    <CoordinatorActions isPublished={isPublished} isApproved={isApproved} />
                   )}
                 </>
               ) : (
