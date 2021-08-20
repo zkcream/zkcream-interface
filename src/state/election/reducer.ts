@@ -41,6 +41,7 @@ export interface ElectionData {
   tallyHash: string
   approved: boolean | undefined
   maciParams: MaciParams
+  tokenCounts: number[]
 }
 
 export interface ElectionState {

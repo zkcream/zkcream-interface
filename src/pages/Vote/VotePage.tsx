@@ -98,6 +98,7 @@ export default function VotePage({
                     recipients={electionData.recipients}
                     electionType={electionData.electionType}
                     isApproved={isApproved}
+                    tokenCounts={electionData.tokenCounts}
                   />
                 </>
               ) : null}
@@ -106,7 +107,11 @@ export default function VotePage({
                   {isOwner ? (
                     <OwnerActions isPublished={isPublished} isApproved={isApproved} />
                   ) : (
-                    <CoordinatorActions isPublished={isPublished} isApproved={isApproved} />
+                    <>
+                      {electionData.tokenCounts.length < 1 ? (
+                        <CoordinatorActions isPublished={isPublished} isApproved={isApproved} />
+                      ) : null}
+                    </>
                   )}
                 </>
               ) : (

@@ -27,6 +27,15 @@ export async function fetchTokenStatus(address: string, account: string): Promis
 export async function fetchContractDetails(log: string[]): Promise<ElectionData> {
   const decodedLog = (await get('zkcream/' + log[0])).data
   const maciParams = (await get('maci/params/' + decodedLog.maciAddress)).data
+  const tokenCounts: number[] = []
+
+  if (decodedLog.approved) {
+    for (let i = 0; i < decodedLog.recipients.length; i++) {
+      const r = (await get('zkcream/tally/' + log[0] + '/' + decodedLog.recipients[i])).data
+      tokenCounts.push(r)
+    }
+  }
+
   /* TODO implement differetn election patterns */
   return {
     title: decodedLog.title,
@@ -42,5 +51,6 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
     tallyHash: decodedLog.tallyHash,
     approved: decodedLog.approved,
     maciParams,
+    tokenCounts,
   }
 }
