@@ -36,6 +36,7 @@ export default function ExportButton({ maciAddress }: ExportButtonProps) {
   function closeModal() {
     window.localStorage.clear()
     history.push('/')
+    toggleModal()
   }
 
   return (
