@@ -12,21 +12,21 @@ import { useMaciContract, useZkCreamContract } from './useContract'
 import { genMaciStateFromContract } from '../utils/genMaciStateFromContract'
 import { useElectionState } from '../state/election/hooks'
 import { post } from '../utils/api'
+import { useLocalStorage } from './useLocalStorage'
 
 const ethProvider: string = process.env.REACT_APP_URL!
-
-/* TODO: download privKey OR show QR code */
-const coordinatorPrivKey: string = process.env.REACT_APP_COORDINATOR_PRIVKEY!
-const coordinatorKeypair = new Keypair(new PrivKey(BigInt(coordinatorPrivKey)))
 
 export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> {
   const { maciAddress, zkCreamAddress, maciParams }: any = useElectionState()
   const maciContract = useMaciContract(maciAddress)
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const { publishMessageLogs, signUpLogs }: any = maciParams
+  const [macisk] = useLocalStorage('macisk', '')
 
   return useCallback(
     async (leaf_zero: string) => {
+      const coordinatorKeypair = new Keypair(PrivKey.unserialize(macisk))
+
       // Check whether it's the right time to tally messages
       if (await maciContract.hasUnprocessedMessages()) {
         console.error('Error: not all messages have been processed')
@@ -268,7 +268,7 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
         }
       }
 
-      console.log(tallyFileData)
+      // console.log(tallyFileData)
 
       // receive ipfs hash
       let tallyHash: any
@@ -294,6 +294,6 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
           throw e
         })
     },
-    [maciContract, publishMessageLogs, signUpLogs, zkCreamContract]
+    [maciContract, macisk, publishMessageLogs, signUpLogs, zkCreamContract]
   )
 }

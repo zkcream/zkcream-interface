@@ -1,5 +1,8 @@
 import { Trans } from '@lingui/macro'
+import { useState } from 'react'
+import { useEffect } from 'react'
 import { Box, Text } from 'rebass'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 import QrModal, { QrModalContent } from '../QrModal'
 
 interface ReadRandomStateLeafProps {
@@ -7,14 +10,34 @@ interface ReadRandomStateLeafProps {
 }
 
 export default function ReadRandomStateLeaf({ toggleModal }: ReadRandomStateLeafProps) {
+  const [hasMaciSk, setHasMaciSk] = useState<boolean>(false)
+  const [maciSk, setMaciSk] = useLocalStorage('macisk', '')
+
+  useEffect(() => {
+    function checkMaciSk(): boolean {
+      return maciSk !== '' ? true : false
+    }
+
+    const r = checkMaciSk()
+    setHasMaciSk(r)
+  }, [maciSk])
+
   return (
     <Box>
       <Box mb={20}>
         <Text fontWeight="bold">
-          <Trans>Read Random state leaf</Trans>
+          {hasMaciSk ? (
+            <Trans>Read Random state leaf</Trans>
+          ) : (
+            <Trans>Provide Coordinatr key before publish tally</Trans>
+          )}
         </Text>
       </Box>
-      <QrModal toggleModal={toggleModal} content={QrModalContent.ReadRandomStateLeaf} />
+      {hasMaciSk ? (
+        <QrModal toggleModal={toggleModal} content={QrModalContent.ReadRandomStateLeaf} />
+      ) : (
+        <QrModal toggleModal={toggleModal} content={QrModalContent.SetCoodrinatorKey} setMaciSk={setMaciSk} />
+      )}
     </Box>
   )
 }

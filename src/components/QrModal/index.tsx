@@ -12,6 +12,7 @@ import ReadCoordinatorKey from './ReadCoordiantorKey'
 import SignUp from './SignUp'
 import VoterState from './VoterState'
 import PostProcessMessage from './PostProcessMessage'
+import SetCoordinatorKey from './SetCoordiantorKey'
 
 export enum QrModalContent {
   CoordinatorKey,
@@ -22,6 +23,7 @@ export enum QrModalContent {
   ReadCoordinatorKey,
   PostProcessMessage,
   ReadRandomStateLeaf,
+  SetCoodrinatorKey,
 }
 
 interface ContentDataBasics {
@@ -78,7 +80,7 @@ function View({ toggleModal }: QrViewerProps) {
       <Box my={10}>
         <Label>
           <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
-          <Trans>I've stored my coordinator Private key</Trans>
+          <Trans>I've stored information ast safe place</Trans>
         </Label>
       </Box>
       <Box>
@@ -138,6 +140,7 @@ export default function QrModal({
           5: <ReadCoordinatorKey patterns={patterns} nav={nav} />,
           6: <PostProcessMessage patterns={patterns} nav={nav} data={data!} />,
           7: <ReadRandomStateLeaf patterns={patterns} nav={nav} />,
+          8: <SetCoordinatorKey patterns={patterns} nav={nav} setMaciSk={setMaciSk} />,
         }[content]
       }
       {!data ? <Read /> : <View toggleModal={toggleModal} />}

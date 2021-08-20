@@ -48,7 +48,8 @@ export default function ReadRandomStateLeaf({ patterns, nav }: ReadRandomStateLe
     <Box mb={20}>
       {nav === patterns[0] ? (
         <>
-          <Box>
+          {/* add result of check coordiantor */}
+          <Box my={10}>
             <Label fontWeight="bold">
               <Trans>Random state leaf</Trans>
             </Label>

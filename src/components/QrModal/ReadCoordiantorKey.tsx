@@ -4,13 +4,10 @@ import { useState } from 'react'
 import QrReader from 'react-qr-reader'
 import { Box, Text } from 'rebass'
 import styled from 'styled-components'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { useProcessMessageCallback } from '../../hooks/useProcessMessageCallback'
 import { ApplicationModal } from '../../state/application/actions'
-import {
-  usePostProcessMessageModalToggle,
-  useModalOpen,
-  useCoordinatorKeyModalToggle,
-} from '../../state/application/hooks'
+import { useModalOpen, useCoordinatorKeyModalToggle } from '../../state/application/hooks'
 import { FormInput } from '../../theme'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
@@ -37,8 +34,10 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
   const [randomStateLeaf, processMessage] = useProcessMessageCallback()
   const isOpen = useModalOpen(ApplicationModal.COORDINATOR_KEY)
   const toggleModal = useCoordinatorKeyModalToggle()
+  const [, setMaciSk] = useLocalStorage('macisk', '')
 
   function submit() {
+    setMaciSk(coordinatorPrivateKey)
     processMessage(coordinatorPrivateKey).then(() => resetCoordinatorPrivateKey())
   }
 
@@ -46,6 +45,7 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
     if (maciSk) {
       setMaciSkReceived(true)
       if (maciSk.startsWith('macisk.')) {
+        setMaciSk(coordinatorPrivateKey)
         processMessage(maciSk).then(() => setMaciSkReceived(false))
       } else {
         console.log('Wrong format')
