@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { ElectionData } from '../state/election/reducer'
+import { DateProps, ElectionData } from '../state/election/reducer'
 
 /* api settngs */
 const API_HOST = process.env.REACT_APP_API_HOST
@@ -36,6 +36,15 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
     }
   }
 
+  const start = parseInt(maciParams.signUpTimestamp.hex, 16)
+  const signUpEnd = parseInt(maciParams.signUpDurationSeconds.hex, 16)
+  const votingEnd = parseInt(maciParams.votingDurationSeconds.hex, 16)
+  const signUpDeadline = (start + signUpEnd) * 1000
+  const votingDeadline = (start + signUpEnd + votingEnd) * 1000
+  const now = new Date().getTime()
+  const signUpUntil = signUpDeadline - now > 0 ? calcDifference(signUpDeadline - now) : null
+  const votingUntil = signUpDeadline - now > 0 ? calcDifference(votingDeadline - now) : null
+
   /* TODO implement differetn election patterns */
   return {
     title: decodedLog.title,
@@ -52,5 +61,22 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
     approved: decodedLog.approved,
     maciParams,
     tokenCounts,
+    signUpUntil,
+    votingUntil,
   }
+}
+
+function calcDifference(diff: number): DateProps {
+  const d = Math.floor(diff / 1000 / 60 / 60 / 24)
+  diff -= d * 1000 * 60 * 60 * 24
+
+  const h = Math.floor(diff / 1000 / 60 / 60)
+  diff -= h * 1000 * 60 * 60
+
+  const m = Math.floor(diff / 1000 / 60)
+  diff -= m * 1000 * 60
+
+  const s = Math.floor(diff / 1000)
+
+  return { d, h, m, s }
 }

@@ -20,6 +20,7 @@ import { useFetchTokenState, useTokenType } from '../../state/token/hooks'
 
 import { StyledInternalLink } from '../../theme'
 import ExportButton from '../../components/ExportButton'
+import CountdownClock from '../../components/CountdownClock'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -74,6 +75,8 @@ export default function VotePage({
     }
   }, [fetchTokenState, isCoordinator, isOwner])
 
+  console.log(electionData)
+
   return (
     <PageWrapper gap="lg" justify="center">
       <ElectionInfo gap="lg" justify="start">
@@ -85,6 +88,12 @@ export default function VotePage({
                   <ArrowLeft size={20} />
                   <Trans>All Elections</Trans>
                 </ArrowWrapper>
+                {electionData.signUpUntil && electionData.votingUntil ? (
+                  <CountdownClock
+                    beforeSignUpDeadline={electionData.signUpUntil !== null}
+                    limit={electionData.signUpUntil ? electionData.signUpUntil : electionData.votingUntil}
+                  />
+                ) : null}
                 {!isApproved && !isOwner && !isCoordinator && tokenState & TokenType.SIGNUP ? (
                   <ExportButton maciAddress={electionData.maciAddress} />
                 ) : null}

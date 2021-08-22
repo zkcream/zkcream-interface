@@ -27,6 +27,13 @@ export interface MaciParams {
   votingDurationSeconds: number
 }
 
+export interface DateProps {
+  d: number
+  h: number
+  m: number
+  s: number
+}
+
 export interface ElectionData {
   title: string
   recipients: string[]
@@ -42,6 +49,8 @@ export interface ElectionData {
   approved: boolean | undefined
   maciParams: MaciParams
   tokenCounts: number[]
+  signUpUntil: DateProps | null
+  votingUntil: DateProps | null
 }
 
 export interface ElectionState {
