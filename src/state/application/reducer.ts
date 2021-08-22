@@ -1,16 +1,33 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { ApplicationModal, setOpenModal } from './actions'
+import { ApplicationModal, setOpenModal, updateBlockNumber, updateChainId } from './actions'
 
 export interface ApplicationState {
+  readonly chainId: number | null
+  readonly blockNumber: { readonly [chainId: number]: number }
   readonly openModal: ApplicationModal | null
 }
 
 const initialState: ApplicationState = {
+  chainId: null,
+  blockNumber: {},
   openModal: null,
 }
 
 export default createReducer(initialState, (builder) => {
-  builder.addCase(setOpenModal, (state, action) => {
-    state.openModal = action.payload
-  })
+  builder
+    .addCase(updateChainId, (state, action) => {
+      const { chainId } = action.payload
+      state.chainId = chainId
+    })
+    .addCase(updateBlockNumber, (state, action) => {
+      const { chainId, blockNumber } = action.payload
+      if (typeof state.blockNumber[chainId] !== 'number') {
+        state.blockNumber[chainId] = blockNumber
+      } else {
+        state.blockNumber[chainId] = Math.max(blockNumber, state.blockNumber[chainId])
+      }
+    })
+    .addCase(setOpenModal, (state, action) => {
+      state.openModal = action.payload
+    })
 })

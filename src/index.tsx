@@ -12,11 +12,20 @@ import store from './state'
 import { GlobalStyle, theme, ThemedGlobalStyle } from './theme'
 import { ThemeProvider } from 'styled-components'
 import getLibrary from './utils/getLibrary'
+import ApplicationUpdater from './state/application/updater'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 if (!!window.ethereum) {
   window.ethereum.autoRefreshOnNetworkChange = false
+}
+
+function Updaters() {
+  return (
+    <>
+      <ApplicationUpdater />
+    </>
+  )
 }
 
 ReactDOM.render(
@@ -26,6 +35,7 @@ ReactDOM.render(
       <LanguageProvider>
         <Web3ReactProvider getLibrary={getLibrary}>
           <Web3ProviderNetwork getLibrary={getLibrary}>
+            <Updaters />
             <ThemeProvider theme={theme}>
               <ThemedGlobalStyle />
               <HashRouter>

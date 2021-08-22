@@ -1,8 +1,18 @@
 import { useCallback } from 'react'
+import { useActiveWeb3React } from '../../hooks/web3'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { RootState } from '../index'
 
 import { ApplicationModal, setOpenModal } from './actions'
+
+/*
+ * blockNumber
+ */
+export function useBlockNumber(): number | undefined {
+  const { chainId } = useActiveWeb3React()
+
+  return useAppSelector((state: RootState) => state.application.blockNumber[chainId ?? -1])
+}
 
 /*
  * modals
