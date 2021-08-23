@@ -42,7 +42,7 @@ export default function ExportButton({ maciAddress }: ExportButtonProps) {
   return (
     <>
       <MultiLevelModal isOpen={isOpen} onDismiss={closeModal} content={MultiLevelModalContent.PostSignUp} data={data} />
-      <ExportButtonStyle padding={'5px'} width={'160px'} onClick={fetchAndToggleModal}>
+      <ExportButtonStyle padding={'5px'} width={'170px'} onClick={fetchAndToggleModal}>
         <Trans>Export State</Trans>
       </ExportButtonStyle>
     </>
