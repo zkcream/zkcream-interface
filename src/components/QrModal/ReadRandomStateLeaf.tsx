@@ -5,7 +5,7 @@ import QrReader from 'react-qr-reader'
 import { Box, Text } from 'rebass'
 import styled from 'styled-components'
 import { usePublishTallyCallback } from '../../hooks/usePublishTallyCallback'
-import { FormInput } from '../../theme'
+import { black, FormInput } from '../../theme'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
 import Spinner from '../Spinner'
@@ -24,7 +24,7 @@ export default function ReadRandomStateLeaf({ patterns, nav }: ReadRandomStateLe
   const [dataReceived, setDataReceived] = useState<boolean>(false)
   const { value: randomStateLeaf, bind: bindRandomStateLeaf, reset: resetRandomStateLeaf } = useInput('')
 
-  const publishTally = usePublishTallyCallback()
+  const [txState, publishTally] = usePublishTallyCallback()
 
   function submit() {
     publishTally(randomStateLeaf).then(() => resetRandomStateLeaf())
@@ -57,7 +57,7 @@ export default function ReadRandomStateLeaf({ patterns, nav }: ReadRandomStateLe
           </Box>
           <Box my={20}>
             <ButtonPrimary onClick={submit}>
-              <Trans>Submit</Trans>
+              {txState ? <Spinner color={black} height={16} width={16} /> : <Trans>Submit</Trans>}
             </ButtonPrimary>
           </Box>
         </>

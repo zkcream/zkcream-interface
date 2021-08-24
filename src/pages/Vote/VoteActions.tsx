@@ -10,6 +10,8 @@ import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback
 import { ApplicationModal } from '../../state/application/actions'
 import { useVoterStateModalToggle, useModalOpen } from '../../state/application/hooks'
 import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiLevelModal'
+import Spinner from '../../components/Spinner'
+import { black } from '../../theme'
 
 export interface VoteActionsProps {
   recipients: string[]
@@ -23,7 +25,7 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
   const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
   const [nonce, setNonce] = useLocalStorage('nonce', '1')
   const [maciSk, setMaciSk] = useLocalStorage('macisk', '')
-  const publishMessage = usePublishMessageCallback()
+  const [publishTxState, publishMessage] = usePublishMessageCallback()
 
   // toggle voter state modal
   const voterStateModalOpen = useModalOpen(ApplicationModal.VOTERSTATE)
@@ -65,7 +67,7 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
                   )
                 }
               >
-                <Trans>New Key</Trans>
+                {publishTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>New Key</Trans>}
               </ButtonPrimary>
             </AutoColumn>
           )}

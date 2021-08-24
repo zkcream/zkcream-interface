@@ -1,5 +1,5 @@
 // ported from https://github.com/appliedzkp/maci/blob/v0.4.11/cli/ts/tally.ts
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import {
   genPerVOSpentVoiceCreditsCommitment,
   genSpentVoiceCreditsCommitment,
@@ -16,26 +16,30 @@ import { useLocalStorage } from './useLocalStorage'
 
 const ethProvider: string = process.env.REACT_APP_URL!
 
-export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> {
+export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero: string) => Promise<void>] {
+  const [txState, setTxState] = useState<boolean>(false)
   const { maciAddress, zkCreamAddress, maciParams }: any = useElectionState()
   const maciContract = useMaciContract(maciAddress)
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const { publishMessageLogs, signUpLogs }: any = maciParams
   const [macisk] = useLocalStorage('macisk', '')
 
-  return useCallback(
+  const c = useCallback(
     async (leaf_zero: string) => {
+      setTxState(true)
       const coordinatorKeypair = new Keypair(PrivKey.unserialize(macisk))
 
       // Check whether it's the right time to tally messages
       if (await maciContract.hasUnprocessedMessages()) {
         console.error('Error: not all messages have been processed')
+        setTxState(false)
         return
       }
 
       // Ensure that there are untallied state leaves
       if (!(await maciContract.hasUntalliedStateLeaves())) {
         console.error('Error: all state leaves have been tallied')
+        setTxState(false)
         return
       }
 
@@ -54,6 +58,7 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
         zerothLeaf = StateLeaf.unserialize(serialized)
       } catch {
         console.error('Error: invalid zeroth state leaf')
+        setTxState(false)
         return
       }
 
@@ -69,6 +74,7 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
         )
       } catch (e) {
         console.error(e)
+        setTxState(false)
         return
       }
 
@@ -98,16 +104,19 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
 
         if (startIndex === BigInt(0) && currentResultsSalt !== BigInt(0)) {
           console.error('Error: the first current result salt should be zero')
+          setTxState(false)
           return
         }
 
         if (startIndex === BigInt(0) && currentTvcSalt !== BigInt(0)) {
           console.error('Error: the first current total spent voice credits salt should be zero')
+          setTxState(false)
           return
         }
 
         if (startIndex === BigInt(0) && currentPvcSalt !== BigInt(0)) {
           console.error('Error: the first current spent voice credits per vote option salt should be zero')
+          setTxState(false)
           return
         }
 
@@ -196,6 +205,7 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
         } catch (e) {
           console.error('Error: unable to compute quadratic vote tally witness data')
           console.error(e)
+          setTxState(false)
           return
         }
 
@@ -216,6 +226,7 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
           console.error('Error: proveVoteTallyBatch() failed')
           console.error(txErr)
           console.error(e)
+          setTxState(false)
           break
         }
 
@@ -223,6 +234,7 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
 
         if (receipt.status !== 1) {
           console.error(txErr)
+          setTxState(false)
           break
         }
 
@@ -277,6 +289,7 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
       } catch (e) {
         console.error('Error: unable to receive tallyHash from ipfs')
         console.error(e)
+        setTxState(false)
         return
       }
 
@@ -284,16 +297,20 @@ export function usePublishTallyCallback(): (leaf_zero: string) => Promise<void> 
       return await zkCreamContract
         .publishTallyHash(tallyHash.data.path)
         .then(async (r: any) => {
-          if (r.status) {
-            await r.wait()
+          const w = await r.wait()
+          if (w.status) {
+            setTxState(false)
             console.log('tally published :', tallyHash.data.path)
           }
         })
         .catch((e: Error) => {
           console.error('Error: signupMaci error: ', e.message)
+          setTxState(false)
           throw e
         })
     },
     [maciContract, macisk, publishMessageLogs, signUpLogs, zkCreamContract]
   )
+
+  return [txState, c]
 }

@@ -1,11 +1,14 @@
 import { Trans } from '@lingui/macro'
 import { darken } from 'polished'
+import { useState } from 'react'
 import { Box } from 'rebass'
 import styled from 'styled-components'
 
 import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback'
+import { black } from '../../theme'
 import { ButtonPrimary } from '../Button'
 import { RowFixed } from '../Row'
+import Spinner from '../Spinner'
 
 const ResultBox = styled(Box)<{
   winner?: boolean
@@ -53,7 +56,8 @@ export default function ForOrAgainst({
   /* TEMP flags */
   const isBeforeVotingDeadline = true
 
-  const publishMessage = usePublishMessageCallback()
+  const [index, setIndex] = useState<number | undefined>(undefined)
+  const [publishTxState, publishMessage] = usePublishMessageCallback()
 
   return (
     <RowFixed style={{ width: '100%', gap: '12px' }}>
@@ -62,13 +66,19 @@ export default function ForOrAgainst({
           return (
             <ButtonPrimary
               onClick={() => {
-                publishMessage(i, parseInt(stateIndex!), parseInt(nonce!), maciSk!, undefined).then(() =>
+                setIndex(i)
+                publishMessage(i, parseInt(stateIndex!), parseInt(nonce!), maciSk!, undefined).then(() => {
                   setNonce((parseInt(nonce!) + 1).toString())
-                )
+                  setIndex(undefined)
+                })
               }}
               key={i}
             >
-              <Trans>Vote {i === 0 ? 'For' : 'Against'}</Trans>
+              {publishTxState && i === index ? (
+                <Spinner color={black} height={16} width={16} />
+              ) : (
+                <Trans>Vote {i === 0 ? 'For' : 'Against'}</Trans>
+              )}
             </ButtonPrimary>
           )
         } else {

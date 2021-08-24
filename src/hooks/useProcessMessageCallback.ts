@@ -8,14 +8,20 @@ import { useElectionState } from '../state/election/hooks'
 import { post } from '../utils/api'
 import { RandomStateLeaf } from '../components/QrModal'
 
-export function useProcessMessageCallback(): [RandomStateLeaf, (maciSk: string) => Promise<void>] {
+export function useProcessMessageCallback(): [
+  state: boolean,
+  random: RandomStateLeaf,
+  callback: (maciSk: string) => Promise<void>
+] {
+  const [txState, setTxState] = useState<boolean>(false)
   const [randomStateLeaf, setRandomStateLeaf] = useState<RandomStateLeaf>({ randomStateLeaf: '' })
   const { maciAddress, maciParams }: any = useElectionState()
   const maciContract = useMaciContract(maciAddress)
   const { publishMessageLogs, signUpLogs }: any = maciParams
 
-  const tx = useCallback(
+  const c = useCallback(
     async (maciSk: string) => {
+      setTxState(true)
       const privKey: PrivKey = PrivKey.unserialize(maciSk)
       const coordinatorKeypair: Keypair = new Keypair(privKey)
 
@@ -25,11 +31,13 @@ export function useProcessMessageCallback(): [RandomStateLeaf, (maciSk: string) 
 
       if (!(await maciContract.hasUnprocessedMessages())) {
         console.error('Error: all messages have already been processed')
+        setTxState(false)
         return
       }
 
       if (currentMessageBatchIndex > messageTreeMaxLeafIndex) {
         console.error('Error: the message batch index is invalid. This should never happen.')
+        setTxState(false)
         return
       }
 
@@ -45,6 +53,7 @@ export function useProcessMessageCallback(): [RandomStateLeaf, (maciSk: string) 
         )
       } catch (e) {
         console.error(e)
+        setTxState(false)
         return
       }
 
@@ -109,6 +118,7 @@ export function useProcessMessageCallback(): [RandomStateLeaf, (maciSk: string) 
         } catch (e) {
           console.error(txErr)
           console.error(e)
+          setTxState(false)
           break
         }
 
@@ -116,29 +126,30 @@ export function useProcessMessageCallback(): [RandomStateLeaf, (maciSk: string) 
 
         if (receipt.status !== 1) {
           console.error(txErr)
+          setTxState(false)
           break
         }
 
         const stateRoot = await maciContract.stateRoot()
         if (stateRoot.toString() !== stateRootAfter.toString()) {
           console.error('Error: state root mismatch after processing a batch of messges')
+          setTxState(false)
           return
         }
 
-        console.log(`Processed batch starting at index ${messageBatchIndex}`)
-        console.log(`Transaction hash: ${tx.hash}`)
-        console.log(`Random state leaf: ${rndStateLeaf.serialize()}`)
+        // console.log(`Processed batch starting at index ${messageBatchIndex}`)
+        // console.log(`Transaction hash: ${tx.hash}`)
+        // console.log(`Random state leaf: ${rndStateLeaf.serialize()}`)
 
         if (!(await maciContract.hasUnprocessedMessages())) {
           setRandomStateLeaf({ randomStateLeaf: rndStateLeaf.serialize() })
           break
         }
       }
+      setTxState(false)
     },
     [maciContract, publishMessageLogs, signUpLogs]
   )
 
-  // const serializedRandomStateLeaf: RandomStateLeaf = useMemo(() => randomStateLeaf, [randomStateLeaf])
-
-  return [randomStateLeaf, tx]
+  return [txState, randomStateLeaf, c]
 }

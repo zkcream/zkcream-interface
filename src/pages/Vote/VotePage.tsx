@@ -75,8 +75,6 @@ export default function VotePage({
     }
   }, [fetchTokenState, isCoordinator, isOwner])
 
-  console.log(electionData)
-
   return (
     <PageWrapper gap="lg" justify="center">
       <ElectionInfo gap="lg" justify="start">

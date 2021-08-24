@@ -1,14 +1,16 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import { useZkCreamContract } from './useContract'
 import { useElectionState } from '../state/election/hooks'
 import { get } from '../utils/api'
 
-export function useWithdrawCallback() {
+export function useWithdrawCallback(): [state: boolean, callback: () => Promise<void>] {
+  const [txState, setTxState] = useState<boolean>(false)
   const { zkCreamAddress, tallyHash, recipients }: any = useElectionState()
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
 
-  return useCallback(async () => {
+  const c = useCallback(async () => {
+    setTxState(true)
     const r_tally = await get('ipfs/' + tallyHash)
     const resultsArr = r_tally.data.results.tally
 
@@ -22,5 +24,8 @@ export function useWithdrawCallback() {
         }
       }
     }
+    setTxState(false)
   }, [recipients.length, tallyHash, zkCreamContract])
+
+  return [txState, c]
 }

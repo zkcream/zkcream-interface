@@ -11,6 +11,8 @@ import {
 } from '../../state/application/hooks'
 import { useWithdrawCallback } from '../../hooks/useWithdrawCallback'
 import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiLevelModal'
+import Spinner from '../../components/Spinner'
+import { black } from '../../theme'
 
 export default function CoordinatorActions({ isPublished, isApproved }: { isPublished: boolean; isApproved: boolean }) {
   /* modals */
@@ -19,7 +21,7 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
   const toggleRandomStateLeafModal = useRandomStateLeafModalToggle()
   const toggleCoordinatorKeyModal = useCoordinatorKeyModalToggle()
 
-  const withdraw = useWithdrawCallback()
+  const [withdrawTxState, withdraw] = useWithdrawCallback()
 
   return (
     <>
@@ -48,7 +50,7 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
         </>
       ) : null}
       <ButtonPrimary disabled={!isApproved ? true : false} onClick={withdraw}>
-        <Trans>Withdraw</Trans>
+        {withdrawTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Withdraw</Trans>}
       </ButtonPrimary>
     </>
   )

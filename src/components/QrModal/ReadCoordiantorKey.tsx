@@ -8,7 +8,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { useProcessMessageCallback } from '../../hooks/useProcessMessageCallback'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useCoordinatorKeyModalToggle } from '../../state/application/hooks'
-import { FormInput } from '../../theme'
+import { black, FormInput } from '../../theme'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
 import MultiLevelModal, { MultiLevelModalContent } from '../MultiLevelModal'
@@ -31,7 +31,7 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
     bind: bindCoordinaotrPrivateKey,
     reset: resetCoordinatorPrivateKey,
   } = useInput('')
-  const [randomStateLeaf, processMessage] = useProcessMessageCallback()
+  const [txState, randomStateLeaf, processMessage] = useProcessMessageCallback()
   const isOpen = useModalOpen(ApplicationModal.COORDINATOR_KEY)
   const toggleModal = useCoordinatorKeyModalToggle()
   const [, setMaciSk] = useLocalStorage('macisk', '')
@@ -76,7 +76,7 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
               </Box>
               <Box my={20}>
                 <ButtonPrimary onClick={submit}>
-                  <Trans>Submit</Trans>
+                  {txState ? <Spinner color={black} height={16} width={16} /> : <Trans>Submit</Trans>}
                 </ButtonPrimary>
               </Box>
             </>
