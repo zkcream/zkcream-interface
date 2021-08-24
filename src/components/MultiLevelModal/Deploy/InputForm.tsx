@@ -8,12 +8,13 @@ import { Box, Flex } from 'rebass'
 import styled from 'styled-components'
 import { useElections, useSetElections } from '../../../state/election/hooks'
 import { ElectionData } from '../../../state/election/reducer'
-import { FormInput } from '../../../theme'
+import { black, FormInput } from '../../../theme'
 import { isAddress } from '../../../utils'
 import { fetchContractDetails, post } from '../../../utils/api'
 import { useInput } from '../../../utils/inputs'
 import { ButtonInverse, ButtonPrimary } from '../../Button'
 import { MaciSk } from '../../QrModal'
+import Spinner from '../../Spinner'
 import Candidates from '../Candidates'
 
 const RadioRabel = styled(Label)`
@@ -132,10 +133,17 @@ export default function InputForm({ setMaciSk, setShowMaciSk }: InputFormProps) 
         <Box>
           <ButtonPrimary
             value={txState}
-            disabled={txState !== 'Deploy' || !electionType || disabled}
+            disabled={
+              txState !== 'Deploy' ||
+              !electionType ||
+              disabled ||
+              values.for === values.against ||
+              !title ||
+              !coordinatorPubkey
+            }
             onClick={() => deploy(setShowMaciSk)}
           >
-            <Trans>Deploy</Trans>
+            {txState !== 'Deploy' ? <Spinner color={black} height={16} width={16} /> : <Trans>Deploy</Trans>}
           </ButtonPrimary>
         </Box>
       </Box>
