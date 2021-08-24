@@ -101,7 +101,7 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
                 </>
               )}
               <Box my={20}>
-                <ButtonPrimary onClick={submit}>
+                <ButtonPrimary onClick={submit} disabled={txState}>
                   {txState && signUpIndex === '0' ? (
                     <Spinner color={black} height={16} width={16} />
                   ) : (

@@ -56,7 +56,7 @@ export default function ReadRandomStateLeaf({ patterns, nav }: ReadRandomStateLe
             <FormInput {...bindRandomStateLeaf} />
           </Box>
           <Box my={20}>
-            <ButtonPrimary onClick={submit}>
+            <ButtonPrimary onClick={submit} disabled={txState}>
               {txState ? <Spinner color={black} height={16} width={16} /> : <Trans>Submit</Trans>}
             </ButtonPrimary>
           </Box>

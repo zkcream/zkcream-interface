@@ -34,7 +34,7 @@ export default function Distribute({ toggleModal }: DistributeProps) {
       </Box>
       <Box>
         <ButtonPrimary
-          disabled={!isValidEthAddress}
+          disabled={!isValidEthAddress || txState}
           onClick={() => sendToken(voterAddress).then(resetEthAddresss).then(toggleModal)}
         >
           {txState ? <Spinner color={black} height={16} width={16} /> : <Trans>Send Token</Trans>}

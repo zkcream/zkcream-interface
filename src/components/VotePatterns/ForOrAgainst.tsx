@@ -65,6 +65,7 @@ export default function ForOrAgainst({
         if (isBeforeVotingDeadline && !isApproved) {
           return (
             <ButtonPrimary
+              disabled={publishTxState}
               onClick={() => {
                 setIndex(i)
                 publishMessage(i, parseInt(stateIndex!), parseInt(nonce!), maciSk!, undefined).then(() => {

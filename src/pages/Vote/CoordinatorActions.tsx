@@ -49,7 +49,7 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
           </ButtonPrimary>
         </>
       ) : null}
-      <ButtonPrimary disabled={!isApproved ? true : false} onClick={withdraw}>
+      <ButtonPrimary disabled={!isApproved || withdrawTxState ? true : false} onClick={withdraw}>
         {withdrawTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Withdraw</Trans>}
       </ButtonPrimary>
     </>

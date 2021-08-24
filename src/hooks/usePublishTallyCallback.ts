@@ -13,6 +13,7 @@ import { genMaciStateFromContract } from '../utils/genMaciStateFromContract'
 import { useElectionState } from '../state/election/hooks'
 import { post } from '../utils/api'
 import { useLocalStorage } from './useLocalStorage'
+import { useRandomStateLeafModalToggle } from '../state/application/hooks'
 
 const ethProvider: string = process.env.REACT_APP_URL!
 
@@ -23,6 +24,7 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const { publishMessageLogs, signUpLogs }: any = maciParams
   const [macisk] = useLocalStorage('macisk', '')
+  const toggleModal = useRandomStateLeafModalToggle()
 
   const c = useCallback(
     async (leaf_zero: string) => {
@@ -303,13 +305,16 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
             console.log('tally published :', tallyHash.data.path)
           }
         })
+        .then(() => {
+          toggleModal()
+        })
         .catch((e: Error) => {
           console.error('Error: signupMaci error: ', e.message)
           setTxState(false)
           throw e
         })
     },
-    [maciContract, macisk, publishMessageLogs, signUpLogs, zkCreamContract]
+    [maciContract, macisk, publishMessageLogs, signUpLogs, toggleModal, zkCreamContract]
   )
 
   return [txState, c]

@@ -46,10 +46,10 @@ export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTo
       />
       {tokenState & TokenType.VOTING ? (
         <>
-          <ButtonPrimary onClick={approveToken} disabled={isApproved ? true : false}>
+          <ButtonPrimary onClick={approveToken} disabled={isApproved || approveTxState ? true : false}>
             {approveTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Approve Token</Trans>}
           </ButtonPrimary>
-          <ButtonPrimary onClick={deposit} disabled={!isApproved ? true : false}>
+          <ButtonPrimary onClick={deposit} disabled={!isApproved || depositTxState ? true : false}>
             {depositTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Register</Trans>}
           </ButtonPrimary>
         </>
