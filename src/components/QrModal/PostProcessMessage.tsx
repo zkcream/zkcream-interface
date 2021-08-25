@@ -34,6 +34,8 @@ export default function PostProcessMessage({ patterns, nav, data }: PostProcessM
   return (
     <>
       {nav === patterns[0] ? (
+        <Text>{generateQR(data.randomStateLeaf!)}</Text>
+      ) : (
         <>
           <Box my={10}>
             <Text fontWeight="bold">
@@ -42,8 +44,6 @@ export default function PostProcessMessage({ patterns, nav, data }: PostProcessM
             <TextWrapper>{data.randomStateLeaf}</TextWrapper>
           </Box>
         </>
-      ) : (
-        <Text>{generateQR(data.randomStateLeaf!)}</Text>
       )}
     </>
   )

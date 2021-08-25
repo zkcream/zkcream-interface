@@ -85,6 +85,24 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
         <>
           {nav === patterns[0] ? (
             <>
+              <Box my={20}>
+                <Label fontWeight="bold">
+                  <Trans>Scan your barcode</Trans>
+                </Label>
+                {noteReceived ? (
+                  <LoadingMessageWrapper>
+                    <Spinner />
+                    <Text>
+                      <Trans>Reading....</Trans>
+                    </Text>
+                  </LoadingMessageWrapper>
+                ) : (
+                  <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
+                )}
+              </Box>
+            </>
+          ) : (
+            <>
               {noteReceived ? (
                 <LoadingMessageWrapper>
                   <Spinner />
@@ -108,24 +126,6 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
                     <Trans>Submit note</Trans>
                   )}
                 </ButtonPrimary>
-              </Box>
-            </>
-          ) : (
-            <>
-              <Box my={20}>
-                <Label fontWeight="bold">
-                  <Trans>Scan your barcode</Trans>
-                </Label>
-                {noteReceived ? (
-                  <LoadingMessageWrapper>
-                    <Spinner />
-                    <Text>
-                      <Trans>Reading....</Trans>
-                    </Text>
-                  </LoadingMessageWrapper>
-                ) : (
-                  <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
-                )}
               </Box>
             </>
           )}

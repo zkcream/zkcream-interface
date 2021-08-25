@@ -36,6 +36,8 @@ export default function PostSignUp({ patterns, nav, data }: PostSignUpProps) {
   return (
     <>
       {nav === patterns[0] ? (
+        <Text>{generateQR(data.signUpIndex!, data.maciSk!, nonce)}</Text>
+      ) : (
         <>
           <Box my={10}>
             <Text fontWeight="bold">
@@ -56,8 +58,6 @@ export default function PostSignUp({ patterns, nav, data }: PostSignUpProps) {
             <TextWrapper>{nonce}</TextWrapper>
           </Box>
         </>
-      ) : (
-        <Text>{generateQR(data.signUpIndex!, data.maciSk!, nonce)}</Text>
       )}
     </>
   )

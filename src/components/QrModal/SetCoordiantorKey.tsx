@@ -45,20 +45,6 @@ export default function ReadCoordinatorKey({ patterns, nav, setMaciSk }: ReadCoo
     <Box>
       <>
         {nav === patterns[0] ? (
-          <>
-            <Box my={10}>
-              <Label fontWeight="bold">
-                <Trans>Coordinator Private key</Trans>
-              </Label>
-              <FormInput {...bindCoordinaotrPrivateKey} />
-            </Box>
-            <Box my={20}>
-              <ButtonPrimary onClick={set}>
-                <Trans>Set</Trans>
-              </ButtonPrimary>
-            </Box>
-          </>
-        ) : (
           <Box my={20}>
             <Label fontWeight="bold">
               <Trans>Scan your barcode</Trans>
@@ -74,6 +60,20 @@ export default function ReadCoordinatorKey({ patterns, nav, setMaciSk }: ReadCoo
               <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
             )}
           </Box>
+        ) : (
+          <>
+            <Box my={10}>
+              <Label fontWeight="bold">
+                <Trans>Coordinator Private key</Trans>
+              </Label>
+              <FormInput {...bindCoordinaotrPrivateKey} />
+            </Box>
+            <Box my={20}>
+              <ButtonPrimary onClick={set}>
+                <Trans>Set</Trans>
+              </ButtonPrimary>
+            </Box>
+          </>
         )}
       </>
     </Box>

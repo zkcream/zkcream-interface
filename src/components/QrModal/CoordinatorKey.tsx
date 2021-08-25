@@ -30,7 +30,9 @@ export default function CoordinatorKey({ patterns, nav, data }: CoordinatorKeyPr
 
   return (
     <Box m={10}>
-      {nav === patterns[0] ? (
+      {nav === patterns[1] ? (
+        <Text>{generateQR(data.maciSk!)}</Text>
+      ) : (
         <>
           <Box my={10}>
             <Text>
@@ -39,8 +41,6 @@ export default function CoordinatorKey({ patterns, nav, data }: CoordinatorKeyPr
           </Box>
           <MaciSkText>{data?.maciSk}</MaciSkText>
         </>
-      ) : (
-        <Text>{generateQR(data.maciSk!)}</Text>
       )}
     </Box>
   )

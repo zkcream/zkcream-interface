@@ -34,6 +34,8 @@ export default function Note({ patterns, nav, data }: NoteProps) {
   return (
     <>
       {nav === patterns[0] ? (
+        <Text>{generateQR(data.note!)}</Text>
+      ) : (
         <>
           <Box my={10}>
             <Text>
@@ -42,8 +44,6 @@ export default function Note({ patterns, nav, data }: NoteProps) {
           </Box>
           <NoteText>{data.note}</NoteText>
         </>
-      ) : (
-        <Text>{generateQR(data.note!)}</Text>
       )}
     </>
   )

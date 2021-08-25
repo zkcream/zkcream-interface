@@ -79,6 +79,21 @@ export default function VoterState({
     <Box my={20}>
       {nav === patterns[0] ? (
         <>
+          <Box my={20}>
+            <Text textAlign={'center'} my={20}>
+              <Trans>Please scan your barcode</Trans>
+            </Text>
+            {dataReceived ? (
+              <Text>
+                <Trans>Reading....</Trans>
+              </Text>
+            ) : (
+              <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
+            )}
+          </Box>
+        </>
+      ) : (
+        <>
           {dataReceived ? (
             <Text>
               <Trans>Submitting....</Trans>
@@ -109,21 +124,6 @@ export default function VoterState({
             <ButtonPrimary onClick={setState}>
               <Trans>Set Voting state</Trans>
             </ButtonPrimary>
-          </Box>
-        </>
-      ) : (
-        <>
-          <Box my={20}>
-            <Text textAlign={'center'} my={20}>
-              <Trans>Please scan your barcode</Trans>
-            </Text>
-            {dataReceived ? (
-              <Text>
-                <Trans>Reading....</Trans>
-              </Text>
-            ) : (
-              <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
-            )}
           </Box>
         </>
       )}

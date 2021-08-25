@@ -102,7 +102,7 @@ export default function QrModal({
   setNonce,
   setMaciSk,
 }: QrModalProps) {
-  const patterns = ['Text', 'QR Code']
+  const patterns = ['QR Code', 'Text']
   const [nav, setNav] = useState<string>(patterns[0])
 
   function toggleNav() {

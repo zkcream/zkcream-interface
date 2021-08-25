@@ -47,21 +47,6 @@ export default function ReadRandomStateLeaf({ patterns, nav }: ReadRandomStateLe
   return (
     <Box mb={20}>
       {nav === patterns[0] ? (
-        <>
-          {/* add result of check coordiantor */}
-          <Box my={10}>
-            <Label fontWeight="bold">
-              <Trans>Random state leaf</Trans>
-            </Label>
-            <FormInput {...bindRandomStateLeaf} />
-          </Box>
-          <Box my={20}>
-            <ButtonPrimary onClick={submit} disabled={txState}>
-              {txState ? <Spinner color={black} height={16} width={16} /> : <Trans>Submit</Trans>}
-            </ButtonPrimary>
-          </Box>
-        </>
-      ) : (
         <Box my={20}>
           <Label fontWeight="bold">
             <Trans>Scan your barcode</Trans>
@@ -77,6 +62,21 @@ export default function ReadRandomStateLeaf({ patterns, nav }: ReadRandomStateLe
             <QrReader delay={300} onError={(e) => console.error(e)} onScan={handleScan} />
           )}
         </Box>
+      ) : (
+        <>
+          {/* add result of check coordiantor */}
+          <Box my={10}>
+            <Label fontWeight="bold">
+              <Trans>Random state leaf</Trans>
+            </Label>
+            <FormInput {...bindRandomStateLeaf} />
+          </Box>
+          <Box my={20}>
+            <ButtonPrimary onClick={submit} disabled={txState}>
+              {txState ? <Spinner color={black} height={16} width={16} /> : <Trans>Submit</Trans>}
+            </ButtonPrimary>
+          </Box>
+        </>
       )}
     </Box>
   )
