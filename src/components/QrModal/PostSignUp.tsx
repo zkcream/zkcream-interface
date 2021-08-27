@@ -3,6 +3,7 @@ import { QRCode } from 'react-qr-svg'
 import { Box, Text } from 'rebass'
 import styled from 'styled-components'
 import { ContentData } from '.'
+import Copy from '../Copy'
 
 interface PostSignUpProps {
   patterns: string[]
@@ -43,19 +44,25 @@ export default function PostSignUp({ patterns, nav, data }: PostSignUpProps) {
             <Text fontWeight="bold">
               <Trans>Your sign up index</Trans>
             </Text>
-            <TextWrapper>{data.signUpIndex}</TextWrapper>
+            <TextWrapper>
+              <Copy toCopy={data.signUpIndex?.toString()!}>{data.signUpIndex!}</Copy>
+            </TextWrapper>
           </Box>
           <Box mb={10}>
             <Text fontWeight="bold">
               <Trans>Your maci secret key</Trans>
             </Text>
-            <TextWrapper>{data.maciSk}</TextWrapper>
+            <TextWrapper>
+              <Copy toCopy={data.maciSk!}>{data.maciSk}</Copy>
+            </TextWrapper>
           </Box>
           <Box mb={10}>
             <Text fontWeight="bold">
               <Trans>Your nonce</Trans>
             </Text>
-            <TextWrapper>{nonce}</TextWrapper>
+            <TextWrapper>
+              <Copy toCopy={nonce.toString()}>{nonce}</Copy>
+            </TextWrapper>
           </Box>
         </>
       )}

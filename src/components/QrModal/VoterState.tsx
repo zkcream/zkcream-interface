@@ -108,15 +108,15 @@ export default function VoterState({
               </Box>
               <Box>
                 <Label fontWeight="bold">
-                  <Trans>Nonce</Trans>
-                </Label>
-                <FormInput {...bindNonce} />
-              </Box>
-              <Box>
-                <Label fontWeight="bold">
                   <Trans>MaciSk</Trans>
                 </Label>
                 <FormInput {...bindMaciSk} />
+              </Box>
+              <Box>
+                <Label fontWeight="bold">
+                  <Trans>Nonce</Trans>
+                </Label>
+                <FormInput {...bindNonce} />
               </Box>
             </Box>
           )}

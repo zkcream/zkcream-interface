@@ -3,6 +3,7 @@ import { QRCode } from 'react-qr-svg'
 import { Box, Text } from 'rebass'
 import styled from 'styled-components'
 import { ContentData } from '.'
+import Copy from '../Copy'
 
 interface NoteProps {
   patterns: string[]
@@ -42,7 +43,9 @@ export default function Note({ patterns, nav, data }: NoteProps) {
               <Trans>Your Note:</Trans>
             </Text>
           </Box>
-          <NoteText>{data.note}</NoteText>
+          <NoteText>
+            <Copy toCopy={data.note!}>{data.note}</Copy>
+          </NoteText>
         </>
       )}
     </>

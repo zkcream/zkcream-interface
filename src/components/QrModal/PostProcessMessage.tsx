@@ -3,6 +3,7 @@ import { QRCode } from 'react-qr-svg'
 import { Box, Text } from 'rebass'
 import styled from 'styled-components'
 import { ContentData } from '.'
+import Copy from '../Copy'
 
 interface PostProcessMessageProps {
   patterns: string[]
@@ -41,7 +42,9 @@ export default function PostProcessMessage({ patterns, nav, data }: PostProcessM
             <Text fontWeight="bold">
               <Trans>Current random state leaf</Trans>
             </Text>
-            <TextWrapper>{data.randomStateLeaf}</TextWrapper>
+            <TextWrapper>
+              <Copy toCopy={data.randomStateLeaf!}>{data.randomStateLeaf}</Copy>
+            </TextWrapper>
           </Box>
         </>
       )}

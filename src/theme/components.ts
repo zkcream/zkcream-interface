@@ -6,6 +6,25 @@ export const StyledInternalLink = styled(Link)`
   cursor: pointer;
 `
 
+export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
+  border: none;
+  text-decoration: none;
+  background: none;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  color: ${({ theme, disabled }) => (disabled ? theme.black : theme.primary)};
+  font-weight: 500;
+  :hover {
+    text-decoration: ${({ disabled }) => (disabled ? null : 'underline')};
+  }
+  :focus {
+    outline: none;
+    text-decoration: ${({ disabled }) => (disabled ? null : 'underline')};
+  }
+  :active {
+    text-decoration: none;
+  }
+`
+
 export const FormInput = styled.input`
   width: 100%;
   font-size: 1rem;

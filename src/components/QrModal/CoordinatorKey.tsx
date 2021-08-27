@@ -3,6 +3,7 @@ import { QRCode } from 'react-qr-svg'
 import { Box, Text } from 'rebass'
 import styled from 'styled-components'
 import { ContentData } from '.'
+import Copy from '../Copy'
 
 interface CoordinatorKeyProps {
   patterns: string[]
@@ -30,7 +31,7 @@ export default function CoordinatorKey({ patterns, nav, data }: CoordinatorKeyPr
 
   return (
     <Box m={10}>
-      {nav === patterns[1] ? (
+      {nav === patterns[0] ? (
         <Text>{generateQR(data.maciSk!)}</Text>
       ) : (
         <>
@@ -39,7 +40,9 @@ export default function CoordinatorKey({ patterns, nav, data }: CoordinatorKeyPr
               <Trans>Coordinator Private key:</Trans>
             </Text>
           </Box>
-          <MaciSkText>{data?.maciSk}</MaciSkText>
+          <MaciSkText>
+            <Copy toCopy={data.maciSk!}>{data.maciSk!}</Copy>
+          </MaciSkText>
         </>
       )}
     </Box>
