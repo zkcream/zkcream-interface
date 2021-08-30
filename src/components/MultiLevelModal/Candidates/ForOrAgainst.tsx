@@ -36,7 +36,7 @@ export default function ForOrAgainst({ values, setValues }: { values: any; setVa
     <>
       <Box>
         <Text fontWeight="bold">
-          <Trans>Set candidates address</Trans>
+          <Trans>Set candidate's address</Trans>
         </Text>
       </Box>
       <FormEditor values={values} setValues={setValues} />
