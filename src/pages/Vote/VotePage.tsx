@@ -152,7 +152,13 @@ export default function VotePage({
               <Text fontSize={[1]}>
                 <Trans>Tally Hash</Trans>
               </Text>
-              <Text fontSize={[1]}>{electionData.tallyHash}</Text>
+              {!electionData.tallyHash || electionData.tallyHash !== '' ? (
+                <Text fontSize={[1]}>
+                  <Trans>Not published yet</Trans>
+                </Text>
+              ) : (
+                <Text fontSize={[1]}>{electionData.tallyHash}</Text>
+              )}
             </AutoColumn>
           </>
         )}
