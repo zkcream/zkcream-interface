@@ -5,6 +5,7 @@ import error from './error/reducer'
 import token from './token/reducer'
 import user from './user/reducer'
 import { updateVersion } from './global/actions'
+import { load, save } from 'redux-localstorage-simple'
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,8 @@ const store = configureStore({
     token,
     user,
   },
+  preloadedState: load(),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(save()),
 })
 
 store.dispatch(updateVersion())
