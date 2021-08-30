@@ -12,7 +12,7 @@ export default function CoordinatorKey({ toggleModal, maciSk }: CoordinatorKeyPr
     <Box>
       <Box mb={20}>
         <Text fontWeight="bold">
-          <Trans>Your coordinator Private key</Trans>
+          <Trans>Your coordinator's Private key</Trans>
         </Text>
       </Box>
       <QrModal toggleModal={toggleModal} content={QrModalContent.CoordinatorKey} data={maciSk} />

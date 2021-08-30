@@ -11,7 +11,7 @@ export default function ReadCoordinatorKey({ toggleModal }: ReadCoordinatorKeyPr
     <Box>
       <Box mb={20}>
         <Text fontWeight="bold">
-          <Trans>Your Coordinator key</Trans>
+          <Trans>Your coordinator key</Trans>
         </Text>
         <Text>
           <Trans>Please provide your coordinator key informations</Trans>
