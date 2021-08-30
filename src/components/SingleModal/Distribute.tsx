@@ -28,7 +28,7 @@ export default function Distribute({ toggleModal }: DistributeProps) {
     <Box>
       <Box mb={20}>
         <Label fontWeight="bold">
-          <Trans>Ethereum Address</Trans>
+          <Trans>Voter's Address</Trans>
         </Label>
         <FormInput type="text" {...bindVoterAddress} />
       </Box>
