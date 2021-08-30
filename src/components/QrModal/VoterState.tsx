@@ -122,7 +122,7 @@ export default function VoterState({
           )}
           <Box my={20}>
             <ButtonPrimary onClick={setState}>
-              <Trans>Set Voting state</Trans>
+              <Trans>Set Voter's State</Trans>
             </ButtonPrimary>
           </Box>
         </>
