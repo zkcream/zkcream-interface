@@ -9,10 +9,13 @@ import { useSignUpCallback } from '../../hooks/useSignUpCallback'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen } from '../../state/application/hooks'
+import { ErrorType } from '../../state/error/actions'
 import { useFetchTokenState } from '../../state/token/hooks'
 import { black, FormInput } from '../../theme'
+import { FormatError, TxError } from '../../utils/error'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
+import Error from '../Error'
 import MultiLevelModal, { MultiLevelModalContent } from '../MultiLevelModal'
 import Spinner from '../Spinner'
 
@@ -31,6 +34,7 @@ const LoadingMessageWrapper = styled.div`
 
 export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, maciAddress }: SignUpReaderProps) {
   const { account } = useActiveWeb3React()
+  const [error, setError] = useState<ErrorType | null>(null)
   const [noteReceived, setNoteReceived] = useState<boolean>(false)
   const { value: note, bind: bindNote, reset: resetNote } = useInput('')
 
@@ -42,7 +46,18 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
 
   function submit() {
     setNoteReceived(true)
-    signUp(note).then(() => resetNote)
+    signUp(note)
+      .then(() => resetNote())
+      .catch((e) => {
+        if (e instanceof FormatError) {
+          setError(ErrorType.FORMAT_ERROR)
+        } else if (e instanceof TxError) {
+          setError(ErrorType.TX_ERROR)
+        } else {
+          setError(ErrorType.UNKNOWN_ERROR)
+        }
+        console.error(e.message)
+      })
     setNoteReceived(false)
   }
 
@@ -52,9 +67,12 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
       setNoteReceived(true)
       if (data.startsWith(prefix)) {
         const note = data.replace(prefix, '')
-        signUp(note).then(() => setNoteReceived(false))
+        signUp(note).then(() => {
+          setError(null)
+          setNoteReceived(false)
+        })
       } else {
-        console.log('Wrong format')
+        setError(ErrorType.FORMAT_ERROR)
         setNoteReceived(false)
         return
       }
@@ -83,6 +101,7 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
         />
       ) : (
         <>
+          {error ? <Error error={error} /> : null}
           {nav === patterns[0] ? (
             <>
               <Box my={20}>

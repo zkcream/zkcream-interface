@@ -3,9 +3,11 @@ import { Label } from '@rebass/forms'
 import { useState } from 'react'
 import QrReader from 'react-qr-reader'
 import { Box, Text } from 'rebass'
+import { ErrorType } from '../../state/error/actions'
 import { FormInput } from '../../theme'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
+import Error from '../Error'
 
 interface VoterStateProps {
   toggleModal: () => void
@@ -25,7 +27,7 @@ export default function VoterState({
   setMaciSk,
 }: VoterStateProps) {
   const [dataReceived, setDataReceived] = useState<boolean>(false)
-
+  const [error, setError] = useState<ErrorType | null>(null)
   const { value: _stateIndex, bind: bindStateIndex, reset: resetStateIndex } = useInput('')
   const { value: _nonce, bind: bindNonce, reset: resetNonce } = useInput('')
   const { value: _macisk, bind: bindMaciSk, reset: resetMaciSk } = useInput('')
@@ -42,7 +44,7 @@ export default function VoterState({
 
       // TODO validate and reload
     } else {
-      console.error('Type doesnot match')
+      setError(ErrorType.FORMAT_ERROR)
     }
   }
 
@@ -65,10 +67,12 @@ export default function VoterState({
         setStateIndex(states[0].replace('signUpIndex:', ''))
         setMaciSk(states[1])
         setNonce(states[2].replace('nonce:', ''))
+        setError(null)
         setDataReceived(false)
         toggleModal()
       } else {
-        console.error('state data errror')
+        setError(ErrorType.FORMAT_ERROR)
+        setDataReceived(false)
         return
       }
       console.log('vote state loaded')
@@ -77,6 +81,7 @@ export default function VoterState({
 
   return (
     <Box my={20}>
+      {error ? <Error error={error} /> : null}
       {nav === patterns[0] ? (
         <>
           <Box my={20}>

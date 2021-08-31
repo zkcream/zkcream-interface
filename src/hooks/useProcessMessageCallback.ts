@@ -7,6 +7,7 @@ import { genMaciStateFromContract } from '../utils/genMaciStateFromContract'
 import { useElectionState } from '../state/election/hooks'
 import { post } from '../utils/api'
 import { RandomStateLeaf } from '../components/QrModal'
+import { FormatError, TxError } from '../utils/error'
 
 export function useProcessMessageCallback(): [
   state: boolean,
@@ -22,6 +23,11 @@ export function useProcessMessageCallback(): [
   const c = useCallback(
     async (maciSk: string) => {
       setTxState(true)
+      if (!maciSk.startsWith('macisk') || maciSk.length !== 71) {
+        setTxState(false)
+        throw new FormatError('maciSk need to start with macisk or 71-bit length')
+      }
+
       const privKey: PrivKey = PrivKey.unserialize(maciSk)
       const coordinatorKeypair: Keypair = new Keypair(privKey)
 
@@ -30,15 +36,13 @@ export function useProcessMessageCallback(): [
       const messageTreeMaxLeafIndex = (await maciContract.messageTreeMaxLeafIndex()).toNumber()
 
       if (!(await maciContract.hasUnprocessedMessages())) {
-        console.error('Error: all messages have already been processed')
         setTxState(false)
-        return
+        throw new TxError('Error: all messages have already been processed')
       }
 
       if (currentMessageBatchIndex > messageTreeMaxLeafIndex) {
-        console.error('Error: the message batch index is invalid. This should never happen.')
         setTxState(false)
-        return
+        throw new TxError('Error: the message batch index is invalid. This should never happen.')
       }
 
       // Build an off-chain representation of the MACI contract using data in the contract storage
@@ -52,9 +56,8 @@ export function useProcessMessageCallback(): [
           publishMessageLogs
         )
       } catch (e) {
-        console.error(e)
         setTxState(false)
-        return
+        throw new TxError(e.message)
       }
 
       const messageBatchSize = await maciContract.messageBatchSize()
@@ -93,9 +96,8 @@ export function useProcessMessageCallback(): [
         try {
           formattedProof = await post('maci/genproof', data)
         } catch (e) {
-          console.error('Error: unable to compute batch update state tree witness data')
-          console.error(e)
-          return
+          setTxState(false)
+          throw new TxError('Error: unable to compute batch update state tree witness data')
         }
 
         const ecdhPubKeys: PubKey[] = []
@@ -116,10 +118,8 @@ export function useProcessMessageCallback(): [
             { gasLimit: 2000000 }
           )
         } catch (e) {
-          console.error(txErr)
-          console.error(e)
           setTxState(false)
-          break
+          throw new TxError(txErr)
         }
 
         const receipt = await tx.wait()
@@ -132,9 +132,8 @@ export function useProcessMessageCallback(): [
 
         const stateRoot = await maciContract.stateRoot()
         if (stateRoot.toString() !== stateRootAfter.toString()) {
-          console.error('Error: state root mismatch after processing a batch of messges')
           setTxState(false)
-          return
+          throw new TxError('Error: state root mismatch after processing a batch of messges')
         }
 
         // console.log(`Processed batch starting at index ${messageBatchIndex}`)

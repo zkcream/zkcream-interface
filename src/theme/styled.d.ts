@@ -8,6 +8,7 @@ export interface Colors {
 
   blue: Color
   green: Color
+  red: Color
 
   baseBackground: Color
   darkBackgraound: Color

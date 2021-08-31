@@ -6,6 +6,7 @@ import { useMaciContract, useZkCreamContract } from './useContract'
 import { useLocalStorage } from './useLocalStorage'
 import { StateIndex } from '../state/election/reducer'
 import { post } from '../utils/api'
+import { FormatError, TxError } from '../utils/error'
 
 const PARAMS = {
   depth: process.env.REACT_APP_MERKLETREE_HEIGHT,
@@ -27,7 +28,19 @@ export function useSignUpCallback(
   const c = useCallback(
     async (note): Promise<void> => {
       setTxState(true)
-      const deposit = generateDeposit(note)
+      if (!note.startsWith('0x') || note.length !== 126) {
+        setTxState(false)
+        throw new FormatError('Note need to start with 0x or 126-bit length')
+      }
+
+      let deposit
+      try {
+        deposit = generateDeposit(note)
+      } catch (e) {
+        setTxState(false)
+        throw new TxError('Generate deposit failed')
+      }
+
       const { root, merkleProof } = await generateMerkleProof(deposit, zkCreamAddress, PARAMS)
 
       const input = {
@@ -43,7 +56,13 @@ export function useSignUpCallback(
         input: JSON.stringify(input, (key, value) => (typeof value === 'bigint' ? value.toString() : value)),
       }
 
-      const formattedProof = await post('zkcream/genproof', data)
+      let formattedProof
+      try {
+        formattedProof = await post('zkcream/genproof', data)
+      } catch (e) {
+        setTxState(false)
+        throw new TxError('Generate proof failed')
+      }
 
       const userKeyPair: Keypair = new Keypair()
       // store userPubKey to local storage
@@ -63,8 +82,8 @@ export function useSignUpCallback(
           })
         })
         .catch((e: Error) => {
-          console.error('Error: signupMaci error: ', e.message)
-          throw e
+          setTxState(false)
+          throw new TxError('SignUpMaci contract tx failed')
         })
     },
     [maciContract, setMaciSk, zkCreamAddress, zkCreamContract, setStateIndex]

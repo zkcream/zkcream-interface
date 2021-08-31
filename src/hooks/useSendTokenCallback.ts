@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { TxError } from '../utils/error'
 import { useVotingTokenContract } from './useContract'
 
 export function useSendTokenCallback(
@@ -19,9 +20,8 @@ export function useSendTokenCallback(
           }
         })
         .catch((e: Error) => {
-          console.error('Error: giveToken error: ', e.message)
           setTxState(false)
-          throw e
+          throw new TxError('giveToken contract tx failed')
         })
     },
     [votingTokenContract]

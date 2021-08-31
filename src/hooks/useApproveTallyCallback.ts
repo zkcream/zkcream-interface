@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { useZkCreamContract } from './useContract'
 import { useElectionState } from '../state/election/hooks'
+import { TxError } from '../utils/error'
 
 export function useApproveTallyCallback(): [state: boolean, callback: () => Promise<void>] {
   const [txState, setTxState] = useState<boolean>(false)
@@ -19,9 +20,8 @@ export function useApproveTallyCallback(): [state: boolean, callback: () => Prom
         }
       })
       .catch((e: Error) => {
-        console.log('approve tally error: ', e.message)
         setTxState(false)
-        throw e
+        throw new TxError(e.message)
       })
   }, [zkCreamContract])
 

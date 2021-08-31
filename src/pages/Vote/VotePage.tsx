@@ -152,7 +152,7 @@ export default function VotePage({
               <Text fontSize={[1]}>
                 <Trans>Tally Hash</Trans>
               </Text>
-              {!electionData.tallyHash || electionData.tallyHash !== '' ? (
+              {!electionData.tallyHash || electionData.tallyHash === '' ? (
                 <Text fontSize={[1]}>
                   <Trans>Not published yet</Trans>
                 </Text>

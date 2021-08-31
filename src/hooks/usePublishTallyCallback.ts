@@ -14,6 +14,7 @@ import { useElectionState } from '../state/election/hooks'
 import { post } from '../utils/api'
 import { useLocalStorage } from './useLocalStorage'
 import { useRandomStateLeafModalToggle } from '../state/application/hooks'
+import { TxError } from '../utils/error'
 
 const ethProvider: string = process.env.REACT_APP_URL!
 
@@ -29,20 +30,19 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
   const c = useCallback(
     async (leaf_zero: string) => {
       setTxState(true)
+
       const coordinatorKeypair = new Keypair(PrivKey.unserialize(macisk))
 
       // Check whether it's the right time to tally messages
       if (await maciContract.hasUnprocessedMessages()) {
-        console.error('Error: not all messages have been processed')
         setTxState(false)
-        return
+        throw new TxError('Error: not all messages have been processed')
       }
 
       // Ensure that there are untallied state leaves
       if (!(await maciContract.hasUntalliedStateLeaves())) {
-        console.error('Error: all state leaves have been tallied')
         setTxState(false)
-        return
+        throw new TxError('Error: all state leaves have been tallied')
       }
 
       // TEMP
@@ -59,9 +59,8 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
       try {
         zerothLeaf = StateLeaf.unserialize(serialized)
       } catch {
-        console.error('Error: invalid zeroth state leaf')
         setTxState(false)
-        return
+        throw new TxError('Error: invalid zeroth state leaf')
       }
 
       // Build an off-chain representation of the MACI contract using data in the contract storage
@@ -75,9 +74,8 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
           publishMessageLogs
         )
       } catch (e) {
-        console.error(e)
         setTxState(false)
-        return
+        throw new TxError(e.message)
       }
 
       const batchSize = BigInt((await maciContract.tallyBatchSize()).toString())
@@ -105,21 +103,18 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
         }
 
         if (startIndex === BigInt(0) && currentResultsSalt !== BigInt(0)) {
-          console.error('Error: the first current result salt should be zero')
           setTxState(false)
-          return
+          throw new TxError('Error: the first current result salt should be zero')
         }
 
         if (startIndex === BigInt(0) && currentTvcSalt !== BigInt(0)) {
-          console.error('Error: the first current total spent voice credits salt should be zero')
           setTxState(false)
-          return
+          throw new TxError('Error: the first current total spent voice credits salt should be zero')
         }
 
         if (startIndex === BigInt(0) && currentPvcSalt !== BigInt(0)) {
-          console.error('Error: the first current spent voice credits per vote option salt should be zero')
           setTxState(false)
-          return
+          throw new TxError('Error: the first current spent voice credits per vote option salt should be zero')
         }
 
         const newResultsSalt: any = genRandomSalt()
@@ -205,10 +200,8 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
         try {
           formattedProof = await post('maci/gen_qvtproof', data)
         } catch (e) {
-          console.error('Error: unable to compute quadratic vote tally witness data')
-          console.error(e)
           setTxState(false)
-          return
+          throw new TxError('Error: unable to compute quadratic vote tally witness data')
         }
 
         let tx
@@ -225,11 +218,8 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
             { gasLimit: 2000000 }
           )
         } catch (e) {
-          console.error('Error: proveVoteTallyBatch() failed')
-          console.error(txErr)
-          console.error(e)
           setTxState(false)
-          break
+          throw new TxError(txErr)
         }
 
         const receipt = await tx.wait()
@@ -289,10 +279,8 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
       try {
         tallyHash = await post('ipfs/', tallyFileData)
       } catch (e) {
-        console.error('Error: unable to receive tallyHash from ipfs')
-        console.error(e)
         setTxState(false)
-        return
+        throw new TxError('Error: unable to receive tallyHash from ipfs')
       }
 
       // publishTally on chain
@@ -309,9 +297,8 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
           toggleModal()
         })
         .catch((e: Error) => {
-          console.error('Error: signupMaci error: ', e.message)
           setTxState(false)
-          throw e
+          throw new TxError(e.message)
         })
     },
     [maciContract, macisk, publishMessageLogs, signUpLogs, toggleModal, zkCreamContract]

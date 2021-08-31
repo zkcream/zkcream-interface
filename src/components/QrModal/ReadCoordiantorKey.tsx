@@ -8,9 +8,12 @@ import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { useProcessMessageCallback } from '../../hooks/useProcessMessageCallback'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useCoordinatorKeyModalToggle } from '../../state/application/hooks'
+import { ErrorType } from '../../state/error/actions'
 import { black, FormInput } from '../../theme'
+import { FormatError, TxError } from '../../utils/error'
 import { useInput } from '../../utils/inputs'
 import { ButtonPrimary } from '../Button'
+import Error from '../Error'
 import MultiLevelModal, { MultiLevelModalContent } from '../MultiLevelModal'
 import Spinner from '../Spinner'
 
@@ -26,6 +29,7 @@ const LoadingMessageWrapper = styled.div`
 
 export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKeyProps) {
   const [maciSkReceived, setMaciSkReceived] = useState<boolean>(false)
+  const [error, setError] = useState<ErrorType | null>(null)
   const {
     value: coordinatorPrivateKey,
     bind: bindCoordinaotrPrivateKey,
@@ -38,7 +42,18 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
 
   function submit() {
     setMaciSk(coordinatorPrivateKey)
-    processMessage(coordinatorPrivateKey).then(() => resetCoordinatorPrivateKey())
+    processMessage(coordinatorPrivateKey)
+      .then(() => resetCoordinatorPrivateKey())
+      .catch((e) => {
+        if (e instanceof FormatError) {
+          setError(ErrorType.FORMAT_ERROR)
+        } else if (e instanceof TxError) {
+          setError(ErrorType.TX_ERROR)
+        } else {
+          setError(ErrorType.UNKNOWN_ERROR)
+        }
+        console.error(e.message)
+      })
   }
 
   function handleScan(maciSk: string | null) {
@@ -46,9 +61,12 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
       setMaciSkReceived(true)
       if (maciSk.startsWith('macisk.')) {
         setMaciSk(coordinatorPrivateKey)
-        processMessage(maciSk).then(() => setMaciSkReceived(false))
+        processMessage(maciSk).then(() => {
+          setError(null)
+          setMaciSkReceived(false)
+        })
       } else {
-        console.log('Wrong format')
+        setError(ErrorType.FORMAT_ERROR)
         setMaciSkReceived(false)
         return
       }
@@ -56,7 +74,7 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
   }
 
   return (
-    <Box mb={20}>
+    <Box my={20}>
       {randomStateLeaf.randomStateLeaf !== '' ? (
         <MultiLevelModal
           isOpen={isOpen}
@@ -66,6 +84,7 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
         />
       ) : (
         <>
+          {error ? <Error error={error} /> : null}
           {nav === patterns[0] ? (
             <Box my={20}>
               <Label fontWeight="bold">
