@@ -13,6 +13,7 @@ import SignUp from './SignUp'
 import VoterState from './VoterState'
 import PostProcessMessage from './PostProcessMessage'
 import SetCoordinatorKey from './SetCoordiantorKey'
+import { useToggleable, useToggleToggleable } from '../../state/application/hooks'
 
 export enum QrModalContent {
   CoordinatorKey,
@@ -74,17 +75,19 @@ function Read() {
 }
 
 function View({ toggleModal }: QrViewerProps) {
-  const [checked, setChecked] = useState<boolean>(false)
+  const toggleable = useToggleable()
+  const setToggleable = useToggleToggleable()
+
   return (
     <>
       <Box my={10}>
         <Label>
-          <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
+          <Checkbox checked={toggleable} onChange={setToggleable} />
           <Trans>I've stored information ast safe place</Trans>
         </Label>
       </Box>
       <Box>
-        <ButtonPrimary disabled={!checked} onClick={toggleModal}>
+        <ButtonPrimary disabled={!toggleable} onClick={toggleModal}>
           <Text>Clear Data</Text>
         </ButtonPrimary>
       </Box>

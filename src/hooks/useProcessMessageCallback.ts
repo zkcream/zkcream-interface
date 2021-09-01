@@ -8,6 +8,7 @@ import { useElectionState } from '../state/election/hooks'
 import { post } from '../utils/api'
 import { RandomStateLeaf } from '../components/QrModal'
 import { FormatError, TxError } from '../utils/error'
+import { useToggleToggleable } from '../state/application/hooks'
 
 export function useProcessMessageCallback(): [
   state: boolean,
@@ -19,6 +20,8 @@ export function useProcessMessageCallback(): [
   const { maciAddress, maciParams }: any = useElectionState()
   const maciContract = useMaciContract(maciAddress)
   const { publishMessageLogs, signUpLogs }: any = maciParams
+
+  const setUntoggleable = useToggleToggleable()
 
   const c = useCallback(
     async (maciSk: string) => {
@@ -142,12 +145,13 @@ export function useProcessMessageCallback(): [
 
         if (!(await maciContract.hasUnprocessedMessages())) {
           setRandomStateLeaf({ randomStateLeaf: rndStateLeaf.serialize() })
+          setUntoggleable()
           break
         }
       }
       setTxState(false)
     },
-    [maciContract, publishMessageLogs, signUpLogs]
+    [maciContract, publishMessageLogs, setUntoggleable, signUpLogs]
   )
 
   return [txState, randomStateLeaf, c]

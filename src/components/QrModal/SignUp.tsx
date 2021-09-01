@@ -8,7 +8,7 @@ import { PostSignUpData } from '.'
 import { useSignUpCallback } from '../../hooks/useSignUpCallback'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen } from '../../state/application/hooks'
+import { useModalOpen, useToggleable } from '../../state/application/hooks'
 import { ErrorType } from '../../state/error/actions'
 import { useFetchTokenState } from '../../state/token/hooks'
 import { black, FormInput } from '../../theme'
@@ -43,6 +43,7 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
   const fetchTokenState = useFetchTokenState(arg)
 
   const [txState, signUpIndex, maciSk, signUp] = useSignUpCallback(zkCreamAddress, maciAddress)
+  const toggleable = useToggleable()
 
   function submit() {
     setNoteReceived(true)
@@ -80,6 +81,7 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
   }
 
   function closeModal() {
+    if (!toggleable) return
     window.localStorage.clear()
     fetchTokenState()
     toggleModal()

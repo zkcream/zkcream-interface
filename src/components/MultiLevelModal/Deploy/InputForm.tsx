@@ -6,6 +6,7 @@ import { PrivKey, PubKey } from 'maci-domainobjs'
 import { useState } from 'react'
 import { Box, Flex } from 'rebass'
 import styled from 'styled-components'
+import { useToggleToggleable } from '../../../state/application/hooks'
 import { useElections, useSetElections } from '../../../state/election/hooks'
 import { ElectionData } from '../../../state/election/reducer'
 import { black, FormInput } from '../../../theme'
@@ -49,6 +50,7 @@ export default function InputForm({ setMaciSk, setShowMaciSk }: InputFormProps) 
   const disabled = !isAddress(values['for']) || !isAddress(values['against'])
   const elections = useElections()
   const setElections = useSetElections()
+  const setUntoggleable = useToggleToggleable()
 
   async function deploy(setShowMaciSk: React.Dispatch<React.SetStateAction<boolean>>) {
     setTxState('Deploying...')
@@ -75,6 +77,7 @@ export default function InputForm({ setMaciSk, setShowMaciSk }: InputFormProps) 
     temp.unshift(newContractData)
     setElections(temp)
     setTxState('Deploy')
+    setUntoggleable()
     setShowMaciSk(true)
   }
 

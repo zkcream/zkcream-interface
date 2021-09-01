@@ -7,6 +7,7 @@ import { useLocalStorage } from './useLocalStorage'
 import { StateIndex } from '../state/election/reducer'
 import { post } from '../utils/api'
 import { FormatError, TxError } from '../utils/error'
+import { useToggleToggleable } from '../state/application/hooks'
 
 const PARAMS = {
   depth: process.env.REACT_APP_MERKLETREE_HEIGHT,
@@ -24,6 +25,7 @@ export function useSignUpCallback(
 
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const maciContract = useMaciContract(maciAddress)
+  const setUntoggleable = useToggleToggleable()
 
   const c = useCallback(
     async (note): Promise<void> => {
@@ -78,6 +80,7 @@ export function useSignUpCallback(
           await maciContract.on('SignUp', (_: any, _stateIndex: any) => {
             // store _stateIndex to local storage as string type
             setStateIndex(_stateIndex.toString())
+            setUntoggleable()
             setTxState(false)
           })
         })
@@ -86,7 +89,7 @@ export function useSignUpCallback(
           throw new TxError('SignUpMaci contract tx failed')
         })
     },
-    [maciContract, setMaciSk, zkCreamAddress, zkCreamContract, setStateIndex]
+    [maciContract, setMaciSk, setUntoggleable, zkCreamAddress, zkCreamContract, setStateIndex]
   )
 
   return [txState, stateIndex, macisk, c]

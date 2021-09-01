@@ -3,7 +3,12 @@ import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen, usePostSignUpModalToggle } from '../../state/application/hooks'
+import {
+  useModalOpen,
+  usePostSignUpModalToggle,
+  useToggleable,
+  useToggleToggleable,
+} from '../../state/application/hooks'
 import { ButtonInverse } from '../Button'
 import MultiLevelModal, { MultiLevelModalContent } from '../MultiLevelModal'
 import { PostSignUpData } from '../QrModal'
@@ -22,6 +27,8 @@ export default function ExportButton({ maciAddress }: ExportButtonProps) {
   let history = useHistory()
   const isOpen = useModalOpen(ApplicationModal.POST_SIGNUP)
   const toggleModal = usePostSignUpModalToggle()
+  const toggleable = useToggleable()
+  const setUntoggleable = useToggleToggleable()
 
   function fetchAndToggleModal() {
     const r = JSON.parse(window.localStorage.getItem(maciAddress)!)
@@ -32,9 +39,11 @@ export default function ExportButton({ maciAddress }: ExportButtonProps) {
     }
     setData(d)
     toggleModal()
+    setUntoggleable()
   }
 
   function closeModal() {
+    if (!toggleable) return
     window.localStorage.clear()
     history.push('/')
     toggleModal()

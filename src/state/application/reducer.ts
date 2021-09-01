@@ -1,16 +1,18 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { ApplicationModal, setOpenModal, updateBlockNumber, updateChainId } from './actions'
+import { ApplicationModal, setOpenModal, toggleToggleable, updateBlockNumber, updateChainId } from './actions'
 
 export interface ApplicationState {
   readonly chainId: number | null
   readonly blockNumber: { readonly [chainId: number]: number }
   readonly openModal: ApplicationModal | null
+  readonly toggleable: boolean
 }
 
 const initialState: ApplicationState = {
   chainId: null,
   blockNumber: {},
   openModal: null,
+  toggleable: true, // toggleable === true by default
 }
 
 export default createReducer(initialState, (builder) => {
@@ -29,5 +31,8 @@ export default createReducer(initialState, (builder) => {
     })
     .addCase(setOpenModal, (state, action) => {
       state.openModal = action.payload
+    })
+    .addCase(toggleToggleable, (state) => {
+      state.toggleable = !state.toggleable
     })
 })

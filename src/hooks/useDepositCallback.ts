@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { createDeposit, rbigInt, toHex } from 'libcream'
 
 import { useZkCreamContract } from './useContract'
-import { useNoteModalToggle } from '../state/application/hooks'
+import { useNoteModalToggle, useToggleToggleable } from '../state/application/hooks'
 import { useFetchTokenState } from '../state/token/hooks'
 import { useActiveWeb3React } from './web3'
 import { NoteData } from '../components/QrModal'
@@ -18,6 +18,7 @@ export function useDepositCallback(
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
   const arg: any = { zkCreamAddress, account }
   const fetchTokenState = useFetchTokenState(arg)
+  const setUntoggleable = useToggleToggleable()
 
   const c = useCallback(async (): Promise<void> => {
     setTxState(true)
@@ -35,6 +36,7 @@ export function useDepositCallback(
       })
       .then(() => {
         setPreimage({ note: toHex(deposit.preimage) })
+        setUntoggleable()
         toggleModal()
       })
       .catch((e: Error) => {
@@ -42,7 +44,7 @@ export function useDepositCallback(
         setTxState(false)
         throw e
       })
-  }, [fetchTokenState, toggleModal, zkCreamContract])
+  }, [fetchTokenState, setUntoggleable, toggleModal, zkCreamContract])
 
   const note: NoteData = useMemo(() => preimage, [preimage])
 

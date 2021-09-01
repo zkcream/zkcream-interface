@@ -16,3 +16,4 @@ export enum ApplicationModal {
 export const updateChainId = createAction<{ chainId: number | null }>('application/updateChainId')
 export const updateBlockNumber = createAction<{ chainId: number; blockNumber: number }>('application/updateBlockNumber')
 export const setOpenModal = createAction<ApplicationModal | null>('application/setOpenModal')
+export const toggleToggleable = createAction<boolean>('application/toggleToggleable')

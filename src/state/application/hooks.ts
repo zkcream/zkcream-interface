@@ -3,7 +3,7 @@ import { useActiveWeb3React } from '../../hooks/web3'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { RootState } from '../index'
 
-import { ApplicationModal, setOpenModal } from './actions'
+import { ApplicationModal, setOpenModal, toggleToggleable } from './actions'
 
 /*
  * blockNumber
@@ -24,8 +24,12 @@ export function useModalOpen(modal: ApplicationModal): boolean {
 
 export function useToggleModal(modal: ApplicationModal): () => void {
   const open = useModalOpen(modal)
+  const toggleable = useToggleable()
   const dispatch = useAppDispatch()
-  return useCallback(() => dispatch(setOpenModal(open ? null : modal)), [dispatch, modal, open])
+  return useCallback(
+    () => (toggleable ? dispatch(setOpenModal(open ? null : modal)) : console.error('cannot dismiss')),
+    [dispatch, modal, open, toggleable]
+  )
 }
 
 export function useWalletModalToggle(): () => void {
@@ -66,4 +70,15 @@ export function useDistributeModalToggle(): () => void {
 
 export function useCoordinatorKeyModalToggle(): () => void {
   return useToggleModal(ApplicationModal.COORDINATOR_KEY)
+}
+
+export function useToggleable(): boolean {
+  return useAppSelector((state: RootState) => state.application.toggleable)
+}
+
+/* set modal toggleable/untoggleable to let the user check the ckeckbox */
+export function useToggleToggleable(): () => void {
+  const state = useToggleable()
+  const dispatch = useAppDispatch()
+  return useCallback(() => dispatch(toggleToggleable(state)), [dispatch, state])
 }
