@@ -10,7 +10,15 @@ import SingleModal, { SingleModalContent } from '../../components/SingleModal'
 import Spinner from '../../components/Spinner'
 import { black } from '../../theme'
 
-export default function OwnerActions({ isPublished, isApproved }: { isPublished: boolean; isApproved: boolean }) {
+export default function OwnerActions({
+  isPublished,
+  isApproved,
+  beforeSignUpDeadline,
+}: {
+  isPublished: boolean
+  isApproved: boolean
+  beforeSignUpDeadline: boolean
+}) {
   // toggle deploy modal
   const distributeModalOpen = useModalOpen(ApplicationModal.DISTRIBUTE)
   const toggleModal = useDistributeModalToggle()
@@ -22,7 +30,7 @@ export default function OwnerActions({ isPublished, isApproved }: { isPublished:
       <Text>
         <Trans>You are Owner</Trans>
       </Text>
-      {!isPublished ? (
+      {!isPublished && beforeSignUpDeadline ? (
         <>
           <Trans>Wait coordinator to publish tally hash</Trans>
           <ButtonPrimary onClick={toggleModal}>

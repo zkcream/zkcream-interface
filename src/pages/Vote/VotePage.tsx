@@ -112,7 +112,11 @@ export default function VotePage({
               {isOwner || isCoordinator ? (
                 <>
                   {isOwner ? (
-                    <OwnerActions isPublished={isPublished} isApproved={isApproved} />
+                    <OwnerActions
+                      isPublished={isPublished}
+                      isApproved={isApproved}
+                      beforeSignUpDeadline={electionData.signUpUntil !== null}
+                    />
                   ) : (
                     <CoordinatorActions isPublished={isPublished} isApproved={isApproved} />
                   )}
