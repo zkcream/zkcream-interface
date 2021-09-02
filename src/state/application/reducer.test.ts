@@ -1,5 +1,5 @@
 import { Store, createStore } from 'redux'
-import { ApplicationModal, setOpenModal, updateBlockNumber, updateChainId } from './actions'
+import { ApplicationModal, setOpenModal, toggleToggleable, updateBlockNumber, updateChainId } from './actions'
 import reducer, { ApplicationState } from './reducer'
 
 describe('application reducer', () => {
@@ -11,7 +11,8 @@ describe('application reducer', () => {
       blockNumber: {
         [1]: 3,
       },
-      setOpenModal: null,
+      openModal: null,
+      toggleable: true,
     })
   })
 
@@ -33,7 +34,6 @@ describe('application reducer', () => {
       expect(store.getState().chainId).toEqual(1)
     })
   })
-
   describe('updateBlockNumber', () => {
     it('updates block number', () => {
       store.dispatch(updateBlockNumber({ chainId: 1, blockNumber: 4 }))
@@ -49,6 +49,12 @@ describe('application reducer', () => {
         [1]: 3,
         [3]: 2,
       })
+    })
+  })
+  describe('toggleToggleable()', () => {
+    it('should toggle', () => {
+      store.dispatch(toggleToggleable(false))
+      expect(store.getState().toggleable).toBeFalsy()
     })
   })
 })

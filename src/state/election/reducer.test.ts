@@ -1,6 +1,6 @@
 import { Store, createStore } from 'redux'
-import { setTotalElections, updateCurrentPage } from './actions'
-import reducer, { ElectionState } from './reducer'
+import { setLogs, setTotalElections, updateCurrentPage } from './actions'
+import reducer, { ElectionState, Logs } from './reducer'
 
 describe('election reducer', () => {
   let store: Store<ElectionState>
@@ -9,6 +9,9 @@ describe('election reducer', () => {
     store = createStore(reducer, {
       total: 0,
       currentPage: 0,
+      electionData: undefined,
+      elections: [],
+      logs: [],
     })
   })
 
@@ -22,6 +25,13 @@ describe('election reducer', () => {
     it('set total elections length', () => {
       store.dispatch(setTotalElections(1))
       expect(store.getState().total).toEqual(1)
+    })
+  })
+  describe('setLogs()', () => {
+    it('set logs', () => {
+      const logs: Logs = [['foo', 'bar']]
+      store.dispatch(setLogs(logs))
+      expect(store.getState().logs).toEqual(logs)
     })
   })
 })

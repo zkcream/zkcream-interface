@@ -7,7 +7,7 @@ describe('error reducer', () => {
 
   beforeEach(() => {
     store = createStore(reducer, {
-      setErrorState: null,
+      error: null,
     })
   })
 
