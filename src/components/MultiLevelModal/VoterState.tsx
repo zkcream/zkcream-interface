@@ -32,7 +32,7 @@ export default function VoterState({ toggleModal, setStateIndex, setNonce, setMa
           <Trans>Voter State</Trans>
         </Text>
         <Text>
-          <Trans>Please provide your voting state informations</Trans>
+          <Trans>Please import the state information of the last vote you made</Trans>
         </Text>
       </Box>
       <QrModal

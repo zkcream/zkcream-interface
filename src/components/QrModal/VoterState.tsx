@@ -86,7 +86,7 @@ export default function VoterState({
         <>
           <Box my={20}>
             <Text textAlign={'center'} my={20}>
-              <Trans>Please scan your barcode</Trans>
+              <Trans>Please scan your QR code</Trans>
             </Text>
             {dataReceived ? (
               <Text>

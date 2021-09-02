@@ -68,7 +68,7 @@ export default function ReadRandomStateLeaf({ patterns, nav }: ReadRandomStateLe
       {nav === patterns[0] ? (
         <Box my={20}>
           <Label fontWeight="bold">
-            <Trans>Scan your barcode</Trans>
+            <Trans>Please scan your QR code</Trans>
           </Label>
           {dataReceived ? (
             <LoadingMessageWrapper>

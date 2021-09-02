@@ -47,7 +47,7 @@ export default function ReadCoordinatorKey({ patterns, nav, setMaciSk }: ReadCoo
         {nav === patterns[0] ? (
           <Box my={20}>
             <Label fontWeight="bold">
-              <Trans>Scan your barcode</Trans>
+              <Trans>Please scan your QR code</Trans>
             </Label>
             {maciSkReceived ? (
               <LoadingMessageWrapper>

@@ -123,7 +123,7 @@ export default function WalletModal() {
             <X size={20} />
           </CloseIcon>
           <HeaderRow>
-            <Trans>Connecto to a Wallet</Trans>
+            <Trans>Connect to a Wallet</Trans>
           </HeaderRow>
           <ContentWrapper>{getOptions()}</ContentWrapper>
         </UpperSection>

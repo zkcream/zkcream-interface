@@ -27,9 +27,9 @@ export default function ReadRandomStateLeaf({ toggleModal }: ReadRandomStateLeaf
       <Box mb={20}>
         <Text fontWeight="bold">
           {hasMaciSk ? (
-            <Trans>Read Random state leaf</Trans>
+            <Trans>Please import the random state leaf</Trans>
           ) : (
-            <Trans>Provide Coordinatr key before publish tally</Trans>
+            <Trans>Please imoprt the coordinator's private key before publishing the tally results</Trans>
           )}
         </Text>
       </Box>

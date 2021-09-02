@@ -7,6 +7,354 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: ja-JP\n"
 
+#: src/pages/Vote/styled.tsx
+msgid "Active"
+msgstr "期間中"
+
+#: src/pages/Vote/VotePage.tsx
+msgid "Administration Committees"
+msgstr "管理委員"
+
+#: src/pages/Vote/VotePage.tsx
+msgid "All Elections"
+msgstr "全ての投票"
+
+#: src/pages/Vote/OwnerActions.tsx
+msgid "Approve Tally"
+msgstr "集計を承認"
+
+#: src/components/TokenButtons/index.tsx
+msgid "Approve Token"
+msgstr "トークンを承認"
+
+#: src/components/MultiLevelModal/VoterState.tsx
+msgid "Back to All Elections"
+msgstr "全ての投票へ戻る"
+
+#: src/components/Web3Status/index.tsx
+msgid "Connect to a Wallet"
+msgstr "Connect to a Wallet"
+
 #: src/components/WalletModal/index.tsx
-msgid "Connecto to a Wallet"
+#: src/components/Web3Status/index.tsx
+msgid "Connect to a Wallet"
 msgstr "ウォレットに接続"
+
+#: src/pages/Vote/VotePage.tsx
+msgid "Coordinator"
+msgstr "コーディネーター"
+
+#: src/components/QrModal/ReadCoordiantorKey.tsx
+#: src/components/QrModal/SetCoordiantorKey.tsx
+msgid "Coordinator Private key"
+msgstr "コーディネーター用の秘密鍵"
+
+#: src/components/QrModal/CoordinatorKey.tsx
+msgid "Coordinator Private key:"
+msgstr "コーディネーター用の秘密鍵:"
+
+#: src/components/MultiLevelModal/Deploy/InputForm.tsx
+msgid "Coordinator's public key"
+msgstr "コーディネーター用の公開鍵"
+
+#: src/pages/Vote/index.tsx
+msgid "Create new Election"
+msgstr "新しく投票を作成"
+
+#: src/components/MultiLevelModal/PostProcessMessage.tsx
+#: src/components/QrModal/PostProcessMessage.tsx
+msgid "Current random state leaf"
+msgstr "現在のランダムステートリーフ"
+
+#: src/components/MultiLevelModal/Deploy/InputForm.tsx
+msgid "Deploy"
+msgstr "作成"
+
+#: src/components/MultiLevelModal/SignUp.tsx
+msgid "Deposit Note"
+msgstr "デポジットノート"
+
+#: src/pages/Vote/OwnerActions.tsx
+msgid "Distribute Token"
+msgstr "トークンを配布"
+
+#: src/components/MultiLevelModal/Deploy/InputForm.tsx
+msgid "Election Title"
+msgstr "投票のタイトル"
+
+#: src/components/MultiLevelModal/Deploy/InputForm.tsx
+msgid "Election Type"
+msgstr "投票の種類"
+
+#: src/pages/Vote/index.tsx
+msgid "Elections"
+msgstr "投票"
+
+#: src/components/Web3Status/index.tsx
+msgid "Error"
+msgstr "エラー"
+
+#: src/components/ExportButton/index.tsx
+msgid "Export State"
+msgstr "ステートをエクスポート"
+
+#: src/pages/Vote/styled.tsx
+msgid "Finished"
+msgstr "終了"
+
+#: src/pages/Vote/VotePage.tsx
+msgid "Group owner"
+msgstr "グループオーナー"
+
+#: src/components/QrModal/index.tsx
+msgid "I stored the information in a secure location"
+msgstr "情報を安全な場所に保管しました"
+
+#: src/components/WalletModal/index.tsx
+msgid "Install Metamask"
+msgstr "メタマスクをインストールする"
+
+#: src/components/QrModal/VoterState.tsx
+msgid "MaciSk"
+msgstr "Maciの秘密鍵"
+
+#: src/pages/Vote/VoteActions.tsx
+msgid "New Key"
+msgstr "新しい鍵"
+
+#: src/components/MultiLevelModal/Deploy/InputForm.tsx
+msgid "New keypair"
+msgstr "新規鍵ペア"
+
+#: src/pages/Vote/index.tsx
+msgid "No elections found"
+msgstr "投票はありません"
+
+#: src/components/QrModal/VoterState.tsx
+msgid "Nonce"
+msgstr "ナンス"
+
+#: src/pages/Vote/VotePage.tsx
+msgid "Not published yet"
+msgstr "まだ公開されていません"
+
+#: src/components/QrModal/SignUp.tsx
+msgid "Note text"
+msgstr "ノートのテキスト"
+
+#: src/components/MultiLevelModal/ReadRandomStateLeaf.tsx
+msgid "Please imoprt the coordinator's private key before publishing the tally results"
+msgstr "コーディネーターの秘密鍵を集計結果を公開する前に読み込ませてください"
+
+#: src/components/MultiLevelModal/ReadCoordinatorKey.tsx
+msgid "Please import the key information for the coordinator key"
+msgstr "コーディネーター鍵の情報を読み込ませてください"
+
+#: src/components/MultiLevelModal/ReadRandomStateLeaf.tsx
+msgid "Please import the random state leaf"
+msgstr "ランダムステートリーフを読み込ませてください"
+
+#: src/components/MultiLevelModal/VoterState.tsx
+msgid "Please import the state information of the last vote you made"
+msgstr "あなたが行った最後の投票の状態情報を読み込ませてください"
+
+#: src/components/QrModal/ReadCoordiantorKey.tsx
+#: src/components/QrModal/ReadRandomStateLeaf.tsx
+#: src/components/QrModal/SetCoordiantorKey.tsx
+#: src/components/QrModal/SignUp.tsx
+#: src/components/QrModal/VoterState.tsx
+msgid "Please scan your QR code"
+msgstr "QRコードを読み込ませてください"
+
+#: src/pages/Vote/CoordinatorActions.tsx
+msgid "Process Message"
+msgstr "メッセージを処理する"
+
+#: src/pages/Vote/CoordinatorActions.tsx
+msgid "Publish Tally"
+msgstr "集計結果を公開"
+
+#: src/components/QrModal/ReadRandomStateLeaf.tsx
+msgid "Random state leaf"
+msgstr "ランダムステートリーフ"
+
+#: src/components/MultiLevelModal/ReadRandomStateLeaf.tsx
+msgid "Please import the random state leaf"
+msgstr "ランダムステートリーフを読み込ませてください"
+
+#: src/components/QrModal/ReadCoordiantorKey.tsx
+#: src/components/QrModal/ReadRandomStateLeaf.tsx
+#: src/components/QrModal/SetCoordiantorKey.tsx
+#: src/components/QrModal/SignUp.tsx
+#: src/components/QrModal/VoterState.tsx
+msgid "Reading...."
+msgstr "読み込み中…"
+
+#: src/components/TokenButtons/index.tsx
+msgid "Register"
+msgstr "登録"
+
+#: src/components/SingleModal/Distribute.tsx
+msgid "Send Token"
+msgstr "Send Token"
+
+#: src/components/QrModal/SetCoordiantorKey.tsx
+msgid "Set"
+msgstr "Set"
+
+#: src/components/QrModal/VoterState.tsx
+msgid "Set Voter's State"
+msgstr "Set Voter's State"
+
+#: src/components/MultiLevelModal/Candidates/ForOrAgainst.tsx
+msgid "Set candidate's address"
+msgstr "Set candidate's address"
+
+#: 
+#~ msgid "Set candidates address"
+#~ msgstr "Set candidates address"
+
+#: 
+#~ msgid "Set state"
+#~ msgstr "Set state"
+
+#: src/components/TokenButtons/index.tsx
+msgid "Sign Up"
+msgstr "Sign Up"
+
+#: src/components/CountdownClock/index.tsx
+msgid "Sign up deadline until:"
+msgstr "Sign up deadline until:"
+
+#: src/components/QrModal/VoterState.tsx
+msgid "Sign up index"
+msgstr "Sign up index"
+
+#: src/components/QrModal/ReadCoordiantorKey.tsx
+#: src/components/QrModal/ReadRandomStateLeaf.tsx
+msgid "Submit"
+msgstr "Submit"
+
+#: src/components/QrModal/SignUp.tsx
+msgid "Submit note"
+msgstr "Submit note"
+
+#: src/components/QrModal/ReadRandomStateLeaf.tsx
+#: src/components/QrModal/SignUp.tsx
+#: src/components/QrModal/VoterState.tsx
+msgid "Submitting...."
+msgstr "Submitting...."
+
+#: src/pages/Vote/VotePage.tsx
+msgid "Tally Hash"
+msgstr "Tally Hash"
+
+#: src/pages/Vote/OwnerActions.tsx
+msgid "Tally already approved"
+msgstr "Tally already approved"
+
+#: src/pages/Vote/styled.tsx
+msgid "Undetermined"
+msgstr "Undetermined"
+
+#: src/components/VotePatterns/ForOrAgainst.tsx
+msgid "Vote {0}"
+msgstr "Vote {0}"
+
+#: src/components/MultiLevelModal/VoterState.tsx
+msgid "Voter State"
+msgstr "Voter State"
+
+#: src/components/SingleModal/Distribute.tsx
+msgid "Voter's Address"
+msgstr "Voter's Address"
+
+#: src/components/CountdownClock/index.tsx
+msgid "Voting deadline until:"
+msgstr "Voting deadline until:"
+
+#: src/pages/Vote/OwnerActions.tsx
+msgid "Wait coordinator to publish tally hash"
+msgstr "Wait coordinator to publish tally hash"
+
+#: src/pages/Vote/CoordinatorActions.tsx
+msgid "Wait owner to approve tally"
+msgstr "Wait owner to approve tally"
+
+#: src/pages/Vote/CoordinatorActions.tsx
+msgid "Withdraw"
+msgstr "Withdraw"
+
+#: src/components/Web3Status/index.tsx
+msgid "Wrong network"
+msgstr "Wrong network"
+
+#: src/pages/Vote/CoordinatorActions.tsx
+msgid "You are Coordinator"
+msgstr "You are Coordinator"
+
+#: src/pages/Vote/OwnerActions.tsx
+msgid "You are Owner"
+msgstr "You are Owner"
+
+#: 
+#~ msgid "You are not admin"
+#~ msgstr "You are not admin"
+
+#: 
+#~ msgid "You need to provide voter's state"
+#~ msgstr "You need to provide voter's state"
+
+#: src/components/MultiLevelModal/Note.tsx
+msgid "Your Deposit Note"
+msgstr "Your Deposit Note"
+
+#: 
+#~ msgid "Your Index"
+#~ msgstr "Your Index"
+
+#: src/components/QrModal/Note.tsx
+msgid "Your Note:"
+msgstr "Your Note:"
+
+#: src/components/MultiLevelModal/PostSignUp.tsx
+msgid "Your Vote status"
+msgstr "Your Vote status"
+
+#: 
+#~ msgid "Your coordinator Private key"
+#~ msgstr "Your coordinator Private key"
+
+#: src/components/MultiLevelModal/ReadCoordinatorKey.tsx
+msgid "Your coordinator key"
+msgstr "Your coordinator key"
+
+#: src/components/MultiLevelModal/Deploy/CoordinatorKey.tsx
+msgid "Your coordinator's Private key"
+msgstr "Your coordinator's Private key"
+
+#: src/components/QrModal/PostSignUp.tsx
+msgid "Your maci secret key"
+msgstr "Your maci secret key"
+
+#: src/components/QrModal/PostSignUp.tsx
+msgid "Your nonce"
+msgstr "Your nonce"
+
+#: src/components/QrModal/PostSignUp.tsx
+msgid "Your sign up index"
+msgstr "Your sign up index"
+
+#: src/components/MultiLevelModal/Candidates/ForOrAgainst.tsx
+#: src/components/VoteNav/index.tsx
+#: src/components/VotePatterns/ForOrAgainst.tsx
+msgid "{0}"
+msgstr "{0}"
+
+#: 
+#~ msgid "{selection}"
+#~ msgstr "{selection}"
+
+#: src/components/MultiLevelModal/Deploy/InputForm.tsx
+msgid "{type}"
+msgstr "{type}"

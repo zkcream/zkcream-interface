@@ -14,7 +14,7 @@ export default function ReadCoordinatorKey({ toggleModal }: ReadCoordinatorKeyPr
           <Trans>Your coordinator key</Trans>
         </Text>
         <Text>
-          <Trans>Please provide your coordinator key informations</Trans>
+          <Trans>Please import the key information for the coordinator key</Trans>
         </Text>
       </Box>
       <QrModal toggleModal={toggleModal} content={QrModalContent.ReadCoordinatorKey} />

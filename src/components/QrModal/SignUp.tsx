@@ -108,7 +108,7 @@ export default function SignUp({ toggleModal, patterns, nav, zkCreamAddress, mac
             <>
               <Box my={20}>
                 <Label fontWeight="bold">
-                  <Trans>Scan your barcode</Trans>
+                  <Trans>Please scan your QR code</Trans>
                 </Label>
                 {noteReceived ? (
                   <LoadingMessageWrapper>

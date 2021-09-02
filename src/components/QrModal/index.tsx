@@ -83,7 +83,7 @@ function View({ toggleModal }: QrViewerProps) {
       <Box my={10}>
         <Label>
           <Checkbox checked={toggleable} onChange={setToggleable} />
-          <Trans>I've stored information ast safe place</Trans>
+          <Trans>I stored the information in a secure location</Trans>
         </Label>
       </Box>
       <Box>
