@@ -6,6 +6,8 @@ import Error from '../components/Error'
 import Header from '../components/Header'
 import Web3ReactManager from '../components/Web3ReactManager'
 import { useErrorState } from '../state/error/hooks'
+import { AppVersion } from '../constants/misc'
+import { darken } from 'polished'
 
 const VoteComponent = lazy(() => import('./Vote'))
 const VotePageComponent = lazy(() => import('./Vote/VotePage'))
@@ -38,6 +40,18 @@ const HeaderWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
 `
 
+const FooterWrapper = styled.footer`
+  color: ${({ theme }) => darken(0.2, theme.primary)};
+  font-size: 0.75rem;
+  width: 100%;
+  justify-content: space-between;
+  position: fixed;
+  text-align: center;
+  bottom: 1rem;
+  z-index: 2;
+  ${({ theme }) => theme.flexRowNoWrap}
+`
+
 function App() {
   const error = useErrorState()
 
@@ -58,6 +72,7 @@ function App() {
           </Suspense>
         </Web3ReactManager>
       </BodyWrapper>
+      <FooterWrapper>v.{AppVersion}</FooterWrapper>
     </AppWrapper>
   )
 }
