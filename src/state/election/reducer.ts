@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { setElections, setElectionData, setTotalElections, updateCurrentPage } from './actions'
+import { setElections, setElectionData, setTotalElections, updateCurrentPage, setLogs } from './actions'
 
 export type StateIndex = string | undefined | null
 
@@ -13,6 +13,9 @@ export type StateIndex = string | undefined | null
 //   message: BigInt[iv, BigInt[]] // Message
 //   encPubKey:  BigInt[] // PubKey
 // }
+
+export type Log = string[]
+export type Logs = Log[]
 
 export interface MaciParams {
   maxVoteOptionIndex: number
@@ -58,6 +61,7 @@ export interface ElectionState {
   readonly currentPage: number
   readonly electionData: ElectionData | undefined
   readonly elections: ElectionData[]
+  readonly logs: Logs
 }
 
 const initialState: ElectionState = {
@@ -65,6 +69,7 @@ const initialState: ElectionState = {
   currentPage: 0,
   electionData: undefined,
   elections: [],
+  logs: [],
 }
 
 export default createReducer(initialState, (builder) => {
@@ -79,5 +84,8 @@ export default createReducer(initialState, (builder) => {
   })
   builder.addCase(setElections, (state, action) => {
     state.elections = action.payload
+  })
+  builder.addCase(setLogs, (state, action) => {
+    state.logs = action.payload
   })
 })

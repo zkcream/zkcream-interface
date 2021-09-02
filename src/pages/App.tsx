@@ -49,7 +49,6 @@ const FooterWrapper = styled.footer`
   text-align: center;
   bottom: 1rem;
   z-index: 2;
-  ${({ theme }) => theme.flexRowNoWrap}
 `
 
 function App() {

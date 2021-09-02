@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { ContractFactory } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 
-import { PagingAction, setElectionData, setElections, setTotalElections, updateCurrentPage } from './actions'
+import { PagingAction, setElectionData, setElections, setLogs, setTotalElections, updateCurrentPage } from './actions'
 import { ElectionData } from './reducer'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { useSetError } from '../error/hooks'
-import { ErrorType } from '../error/actions'
 import { RootState } from '../index'
 
 import {
@@ -16,7 +14,8 @@ import {
   useZkCreamVerifierContractFactory,
 } from '../../hooks/useContract'
 import { useActiveWeb3React } from '../../hooks/web3'
-import { fetchContractDetails, get } from '../../utils/api'
+import { useDeployedLogs } from '../../hooks/useDeployedLogs'
+import { useFetchElectionData } from '../../hooks/useFetchElectionData'
 
 export enum ElectionState {
   ACTIVE,
@@ -25,10 +24,10 @@ export enum ElectionState {
 
 export function useDataFromEventLogs() {
   const { library } = useActiveWeb3React()
-  const [electionDataState, setElectionDataState] = useState<ElectionData[]>()
-  const setError = useSetError()
+  const logs = useLogs()
+  const getLogs = useDeployedLogs()
+  const fetchElectionData = useFetchElectionData()
   const elections = useElections()
-  const setElections = useSetElections()
 
   useEffect(() => {
     /* early return for no library */
@@ -36,40 +35,18 @@ export function useDataFromEventLogs() {
   }, [library])
 
   useEffect(() => {
-    if (elections?.length) {
-      setElectionDataState(elections)
-      return
+    if (logs.length === 0) {
+      getLogs()
     }
-  }, [elections])
+  }, [getLogs, logs])
 
   useEffect(() => {
-    if (!electionDataState && !elections?.length) {
-      // console.log('fetch called')
-      fetchFromFactory()
+    if (logs.length > 0) {
+      fetchElectionData(logs)
     }
+  }, [fetchElectionData, logs])
 
-    async function fetchFromFactory() {
-      let logs: any
-      try {
-        logs = (await get('factory/logs')).data
-      } catch (e) {
-        e.message === 'Network Error' ? setError(ErrorType.NETWORK_ERROR) : setError(ErrorType.UNKNOWN_ERROR)
-        return
-      }
-      const electionData: ElectionData[] = await Promise.all(
-        logs!.map(async (log: any) => {
-          return await fetchContractDetails(log)
-        })
-      )
-      setElectionDataState(electionData.reverse())
-    }
-  }, [elections, electionDataState, setError])
-
-  useEffect(() => {
-    setElections(electionDataState!)
-  }, [electionDataState, setElections])
-
-  return electionDataState
+  return elections
 }
 
 // get event logs for all deployed zkcream contract
@@ -81,7 +58,6 @@ export function useAllElectionData(): ElectionData[] | [] {
 export function useLimitedElectionData(limit: number = 5) {
   const current = useCurrentPage()
   const allElectionData = useAllElectionData()
-  useSetTotalElections(allElectionData.length)
   return allElectionData.slice(current * limit, current * limit + 5)
 }
 
@@ -102,6 +78,15 @@ export function useElectionState(): ElectionData | undefined {
 
 export function useElections(): ElectionData[] {
   return useAppSelector((state: RootState) => state.election.elections)
+}
+
+export function useLogs() {
+  return useAppSelector((state: RootState) => state.election.logs)
+}
+
+export function useSetLogs() {
+  const dispatch = useAppDispatch()
+  return useCallback((logs) => dispatch(setLogs(logs)), [dispatch])
 }
 
 // deploy all modules for `useDeployCallback()` function
@@ -173,9 +158,9 @@ export function useTotalElections(): number {
   return useAppSelector((state: RootState) => state.election.total)
 }
 
-export function useSetTotalElections(count: number) {
+export function useSetTotalElections() {
   const dispatch = useAppDispatch()
-  dispatch(setTotalElections(count))
+  return useCallback((count: number) => dispatch(setTotalElections(count)), [dispatch])
 }
 
 /*
