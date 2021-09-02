@@ -31,10 +31,6 @@ msgstr "トークンを承認"
 msgid "Back to All Elections"
 msgstr "全ての投票へ戻る"
 
-#: src/components/Web3Status/index.tsx
-msgid "Connect to a Wallet"
-msgstr "Connect to a Wallet"
-
 #: src/components/WalletModal/index.tsx
 #: src/components/Web3Status/index.tsx
 msgid "Connect to a Wallet"
@@ -46,11 +42,11 @@ msgstr "コーディネーター"
 
 #: src/components/QrModal/ReadCoordiantorKey.tsx
 #: src/components/QrModal/SetCoordiantorKey.tsx
-msgid "Coordinator Private key"
+msgid "Coordinator's private key"
 msgstr "コーディネーター用の秘密鍵"
 
 #: src/components/QrModal/CoordinatorKey.tsx
-msgid "Coordinator Private key:"
+msgid "Coordinator's private key:"
 msgstr "コーディネーター用の秘密鍵:"
 
 #: src/components/MultiLevelModal/Deploy/InputForm.tsx
@@ -114,9 +110,13 @@ msgstr "情報を安全な場所に保管しました"
 msgid "Install Metamask"
 msgstr "メタマスクをインストールする"
 
+#: src/components/QrModal/SetCoordiantorKey.tsx
+msgid "Load"
+msgstr "ロードする"
+
 #: src/components/QrModal/VoterState.tsx
 msgid "MaciSk"
-msgstr "Maciの秘密鍵"
+msgstr "Maci秘密鍵"
 
 #: src/pages/Vote/VoteActions.tsx
 msgid "New Key"
@@ -178,10 +178,6 @@ msgstr "集計結果を公開"
 msgid "Random state leaf"
 msgstr "ランダムステートリーフ"
 
-#: src/components/MultiLevelModal/ReadRandomStateLeaf.tsx
-msgid "Please import the random state leaf"
-msgstr "ランダムステートリーフを読み込ませてください"
-
 #: src/components/QrModal/ReadCoordiantorKey.tsx
 #: src/components/QrModal/ReadRandomStateLeaf.tsx
 #: src/components/QrModal/SetCoordiantorKey.tsx
@@ -196,164 +192,129 @@ msgstr "登録"
 
 #: src/components/SingleModal/Distribute.tsx
 msgid "Send Token"
-msgstr "Send Token"
-
-#: src/components/QrModal/SetCoordiantorKey.tsx
-msgid "Set"
-msgstr "Set"
+msgstr "トークンを送信"
 
 #: src/components/QrModal/VoterState.tsx
 msgid "Set Voter's State"
-msgstr "Set Voter's State"
+msgstr "投票者のステートを設定"
 
 #: src/components/MultiLevelModal/Candidates/ForOrAgainst.tsx
 msgid "Set candidate's address"
-msgstr "Set candidate's address"
-
-#: 
-#~ msgid "Set candidates address"
-#~ msgstr "Set candidates address"
-
-#: 
-#~ msgid "Set state"
-#~ msgstr "Set state"
+msgstr "投票先・候補者のアドレス"
 
 #: src/components/TokenButtons/index.tsx
 msgid "Sign Up"
-msgstr "Sign Up"
+msgstr "サインアップ"
 
 #: src/components/CountdownClock/index.tsx
 msgid "Sign up deadline until:"
-msgstr "Sign up deadline until:"
+msgstr "サインアップの締め切りまで:"
 
 #: src/components/QrModal/VoterState.tsx
 msgid "Sign up index"
-msgstr "Sign up index"
+msgstr "サインアップインデックス"
 
 #: src/components/QrModal/ReadCoordiantorKey.tsx
 #: src/components/QrModal/ReadRandomStateLeaf.tsx
 msgid "Submit"
-msgstr "Submit"
+msgstr "送信"
 
 #: src/components/QrModal/SignUp.tsx
 msgid "Submit note"
-msgstr "Submit note"
+msgstr "ノートを送信"
 
 #: src/components/QrModal/ReadRandomStateLeaf.tsx
 #: src/components/QrModal/SignUp.tsx
 #: src/components/QrModal/VoterState.tsx
 msgid "Submitting...."
-msgstr "Submitting...."
+msgstr "送信中...."
 
 #: src/pages/Vote/VotePage.tsx
 msgid "Tally Hash"
-msgstr "Tally Hash"
+msgstr "集計のハッシュ"
 
 #: src/pages/Vote/OwnerActions.tsx
 msgid "Tally already approved"
-msgstr "Tally already approved"
+msgstr "集計は認証済みです"
 
 #: src/pages/Vote/styled.tsx
 msgid "Undetermined"
-msgstr "Undetermined"
+msgstr "未確定"
 
 #: src/components/VotePatterns/ForOrAgainst.tsx
 msgid "Vote {0}"
-msgstr "Vote {0}"
+msgstr "{0}へ投票"
 
 #: src/components/MultiLevelModal/VoterState.tsx
 msgid "Voter State"
-msgstr "Voter State"
+msgstr "投票者のステート"
 
 #: src/components/SingleModal/Distribute.tsx
 msgid "Voter's Address"
-msgstr "Voter's Address"
+msgstr "投票者のアドレス"
 
 #: src/components/CountdownClock/index.tsx
 msgid "Voting deadline until:"
-msgstr "Voting deadline until:"
+msgstr "投票の締め切りまで:"
 
 #: src/pages/Vote/OwnerActions.tsx
 msgid "Wait coordinator to publish tally hash"
-msgstr "Wait coordinator to publish tally hash"
+msgstr "コーディネーターが集計のハッシュを公開するまでお待ちください"
 
 #: src/pages/Vote/CoordinatorActions.tsx
 msgid "Wait owner to approve tally"
-msgstr "Wait owner to approve tally"
+msgstr "オーナーが集計を承認するまでお待ちください"
 
 #: src/pages/Vote/CoordinatorActions.tsx
 msgid "Withdraw"
-msgstr "Withdraw"
+msgstr "引き出す"
 
 #: src/components/Web3Status/index.tsx
 msgid "Wrong network"
-msgstr "Wrong network"
+msgstr "ネットワークが違います"
 
 #: src/pages/Vote/CoordinatorActions.tsx
 msgid "You are Coordinator"
-msgstr "You are Coordinator"
+msgstr "あなたはコーディネーターです"
 
 #: src/pages/Vote/OwnerActions.tsx
 msgid "You are Owner"
-msgstr "You are Owner"
-
-#: 
-#~ msgid "You are not admin"
-#~ msgstr "You are not admin"
-
-#: 
-#~ msgid "You need to provide voter's state"
-#~ msgstr "You need to provide voter's state"
+msgstr "あなたはオーナーです"
 
 #: src/components/MultiLevelModal/Note.tsx
 msgid "Your Deposit Note"
-msgstr "Your Deposit Note"
-
-#: 
-#~ msgid "Your Index"
-#~ msgstr "Your Index"
+msgstr "あなたのデポジットノート"
 
 #: src/components/QrModal/Note.tsx
 msgid "Your Note:"
-msgstr "Your Note:"
+msgstr "あなたのノート:"
 
 #: src/components/MultiLevelModal/PostSignUp.tsx
 msgid "Your Vote status"
-msgstr "Your Vote status"
-
-#: 
-#~ msgid "Your coordinator Private key"
-#~ msgstr "Your coordinator Private key"
+msgstr "あなたの投票ステータス"
 
 #: src/components/MultiLevelModal/ReadCoordinatorKey.tsx
-msgid "Your coordinator key"
-msgstr "Your coordinator key"
-
 #: src/components/MultiLevelModal/Deploy/CoordinatorKey.tsx
 msgid "Your coordinator's Private key"
-msgstr "Your coordinator's Private key"
+msgstr "あなたのコーディネーター秘密鍵"
 
 #: src/components/QrModal/PostSignUp.tsx
 msgid "Your maci secret key"
-msgstr "Your maci secret key"
+msgstr "あなたのMaci（投票用）秘密鍵"
 
 #: src/components/QrModal/PostSignUp.tsx
 msgid "Your nonce"
-msgstr "Your nonce"
+msgstr "あなたの現在のナンス"
 
 #: src/components/QrModal/PostSignUp.tsx
 msgid "Your sign up index"
-msgstr "Your sign up index"
+msgstr "あなたのサインアップインデックス"
 
 #: src/components/MultiLevelModal/Candidates/ForOrAgainst.tsx
 #: src/components/VoteNav/index.tsx
 #: src/components/VotePatterns/ForOrAgainst.tsx
 msgid "{0}"
 msgstr "{0}"
-
-#: 
-#~ msgid "{selection}"
-#~ msgstr "{selection}"
 
 #: src/components/MultiLevelModal/Deploy/InputForm.tsx
 msgid "{type}"

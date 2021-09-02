@@ -64,13 +64,13 @@ export default function ReadCoordinatorKey({ patterns, nav, setMaciSk }: ReadCoo
           <>
             <Box my={10}>
               <Label fontWeight="bold">
-                <Trans>Coordinator Private key</Trans>
+                <Trans>Coordinator's private key</Trans>
               </Label>
               <FormInput {...bindCoordinaotrPrivateKey} />
             </Box>
             <Box my={20}>
               <ButtonPrimary onClick={set}>
-                <Trans>Set</Trans>
+                <Trans>Load</Trans>
               </ButtonPrimary>
             </Box>
           </>

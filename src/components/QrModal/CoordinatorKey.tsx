@@ -37,7 +37,7 @@ export default function CoordinatorKey({ patterns, nav, data }: CoordinatorKeyPr
         <>
           <Box my={10}>
             <Text>
-              <Trans>Coordinator Private key:</Trans>
+              <Trans>Coordinator's private key:</Trans>
             </Text>
           </Box>
           <MaciSkText>

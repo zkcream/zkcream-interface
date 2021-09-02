@@ -105,7 +105,7 @@ export default function ReadCoordinatorKey({ patterns, nav }: ReadCoordinatorKey
             <>
               <Box my={10}>
                 <Label fontWeight="bold">
-                  <Trans>Coordinator Private key</Trans>
+                  <Trans>Coordinator's private key</Trans>
                 </Label>
                 <FormInput {...bindCoordinaotrPrivateKey} />
               </Box>

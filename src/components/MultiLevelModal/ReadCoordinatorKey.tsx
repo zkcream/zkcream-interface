@@ -11,7 +11,7 @@ export default function ReadCoordinatorKey({ toggleModal }: ReadCoordinatorKeyPr
     <Box>
       <Box mb={20}>
         <Text fontWeight="bold">
-          <Trans>Your coordinator key</Trans>
+          <Trans>Your coordinator's Private key</Trans>
         </Text>
         <Text>
           <Trans>Please import the key information for the coordinator key</Trans>
