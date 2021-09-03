@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { darken } from 'polished'
 import { useState } from 'react'
 import { Box, Text } from 'rebass'

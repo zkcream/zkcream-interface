@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Trans } from '@lingui/macro'
 
 export enum MessageAction {
   SELECT,
