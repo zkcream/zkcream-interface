@@ -36,6 +36,10 @@ msgstr "トークンを承認"
 msgid "Back to All Elections"
 msgstr "全ての投票へ戻る"
 
+#: src/components/QrModal/index.tsx
+msgid "Clear Data"
+msgstr "データをクリア"
+
 #: src/components/WalletModal/index.tsx
 #: src/components/Web3Status/index.tsx
 msgid "Connect to a Wallet"

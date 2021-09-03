@@ -88,7 +88,9 @@ function View({ toggleModal }: QrViewerProps) {
       </Box>
       <Box>
         <ButtonPrimary disabled={!toggleable} onClick={toggleModal}>
-          <Text>Clear Data</Text>
+          <Text>
+            <Trans>Clear Data</Trans>
+          </Text>
         </ButtonPrimary>
       </Box>
     </>
