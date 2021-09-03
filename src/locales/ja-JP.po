@@ -15,6 +15,11 @@ msgstr "期間中"
 msgid "Administration Committees"
 msgstr "管理委員"
 
+#: src/components/VotePatterns/ForOrAgainst.tsx
+#: src/components/VotePatterns/ForOrAgainst.tsx
+msgid "Against"
+msgstr "反対"
+
 #: src/pages/Vote/VotePage.tsx
 msgid "All Elections"
 msgstr "全ての投票"
@@ -98,6 +103,15 @@ msgstr "ステートをエクスポート"
 msgid "Finished"
 msgstr "終了"
 
+#: src/components/VotePatterns/ForOrAgainst.tsx
+#: src/components/VotePatterns/ForOrAgainst.tsx
+msgid "For"
+msgstr "賛成"
+
+#: src/components/MultiLevelModal/Deploy/InputForm.tsx
+msgid "For or Against"
+msgstr "賛成か反対"
+
 #: src/pages/Vote/VotePage.tsx
 msgid "Group owner"
 msgstr "グループオーナー"
@@ -117,6 +131,10 @@ msgstr "ロードする"
 #: src/components/QrModal/VoterState.tsx
 msgid "MaciSk"
 msgstr "Maci秘密鍵"
+
+#: src/components/MultiLevelModal/Deploy/InputForm.tsx
+msgid "Multiple candidate"
+msgstr "複数候補者を選択"
 
 #: src/pages/Vote/VoteActions.tsx
 msgid "New Key"
@@ -141,6 +159,10 @@ msgstr "まだ公開されていません"
 #: src/components/QrModal/SignUp.tsx
 msgid "Note text"
 msgstr "ノートのテキスト"
+
+#: src/components/MultiLevelModal/Deploy/InputForm.tsx
+msgid "One from many"
+msgstr "一人のみを選択"
 
 #: src/components/MultiLevelModal/ReadRandomStateLeaf.tsx
 msgid "Please imoprt the coordinator's private key before publishing the tally results"
@@ -241,10 +263,6 @@ msgstr "集計は認証済みです"
 msgid "Undetermined"
 msgstr "未確定"
 
-#: src/components/VotePatterns/ForOrAgainst.tsx
-msgid "Vote {0}"
-msgstr "{0}へ投票"
-
 #: src/components/MultiLevelModal/VoterState.tsx
 msgid "Voter State"
 msgstr "投票者のステート"
@@ -311,11 +329,9 @@ msgid "Your sign up index"
 msgstr "あなたのサインアップインデックス"
 
 #: src/components/MultiLevelModal/Candidates/ForOrAgainst.tsx
-#: src/components/VoteNav/index.tsx
-#: src/components/VotePatterns/ForOrAgainst.tsx
-msgid "{0}"
-msgstr "{0}"
+msgid "against"
+msgstr "反対"
 
-#: src/components/MultiLevelModal/Deploy/InputForm.tsx
-msgid "{type}"
-msgstr "{type}"
+#: src/components/MultiLevelModal/Candidates/ForOrAgainst.tsx
+msgid "for"
+msgstr "賛成"

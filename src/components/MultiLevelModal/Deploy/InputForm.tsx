@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { Label, Radio } from '@rebass/forms'
 import { useWeb3React } from '@web3-react/core'
 import { genKeypair } from 'maci-crypto'
@@ -24,9 +24,9 @@ const RadioRabel = styled(Label)`
 
 type SelectionType = string[]
 const types: SelectionType = [
-  'One from many', // Pick ONLY one from multiple candidates (candidates >= 2)
-  'Multiple candidate', // Pick multiple candidates (candidates >= 2)
-  'For or Against', // Pick ONLY one from two candidates(for or against) (candidates == 2)
+  t`One from many`, // Pick ONLY one from multiple candidates (candidates >= 2)
+  t`Multiple candidate`, // Pick multiple candidates (candidates >= 2)
+  t`For or Against`, // Pick ONLY one from two candidates(for or against) (candidates == 2)
 ]
 
 interface ElectionForm {
@@ -126,7 +126,7 @@ export default function InputForm({ setMaciSk, setShowMaciSk }: InputFormProps) 
                     checked={true}
                     disabled={i.toString() !== electionType ? true : false}
                   />
-                  <Trans>{type}</Trans>
+                  {type}
                 </RadioRabel>
               ) : null}
             </div>

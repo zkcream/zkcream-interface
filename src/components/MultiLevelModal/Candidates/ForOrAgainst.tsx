@@ -1,6 +1,6 @@
 import { Box, Text } from 'rebass'
 import { Label } from '@rebass/forms'
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 
 import { FormInput } from '../../../theme'
 
@@ -14,16 +14,14 @@ const FieldEditor = ({ value, onChange, id }: { value: string; onChange: any; id
 }
 
 function FormEditor({ values, setValues }: { values: any; setValues: any }) {
-  const types = ['for', 'against']
+  const types = [t`for`, t`against`]
   const handleFieldChange = (fieldId: any, value: {}) => {
     setValues({ ...values, [fieldId]: value })
   }
 
   const fields = types.map((type: string) => (
     <Box pb={3} key={type}>
-      <Label fontWeight="bold">
-        <Trans>{type.charAt(0).toUpperCase() + type.slice(1)}</Trans>
-      </Label>
+      <Label fontWeight="bold">{type.charAt(0).toUpperCase() + type.slice(1)}</Label>
       <FieldEditor id={type} onChange={handleFieldChange} value={values[type]} />
     </Box>
   ))

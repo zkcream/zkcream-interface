@@ -1,7 +1,8 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { darken } from 'polished'
 import { useState } from 'react'
-import { Box } from 'rebass'
+import { Box, Text } from 'rebass'
+
 import styled from 'styled-components'
 
 import { usePublishMessageCallback } from '../../hooks/usePublishMessageCallback'
@@ -78,7 +79,7 @@ export default function ForOrAgainst({
               {publishTxState && i === index ? (
                 <Spinner color={black} height={16} width={16} />
               ) : (
-                <Trans>Vote {i === 0 ? 'For' : 'Against'}</Trans>
+                <Text>{i === 0 ? t`For` : t`Against`}</Text>
               )}
             </ButtonPrimary>
           )
@@ -86,7 +87,7 @@ export default function ForOrAgainst({
           return (
             <ResultBox key={i} width={1 / 2} winner={tokenCounts![i] > tokenCounts![i + 1]}>
               <TitleWrapper>
-                <Trans>{i === 0 ? 'For' : 'Against'}</Trans>
+                <Text>{i === 0 ? t`For` : t`Against`}</Text>
               </TitleWrapper>
               <ResultWrapper>
                 <ResultText>{tokenCounts![i]}</ResultText>

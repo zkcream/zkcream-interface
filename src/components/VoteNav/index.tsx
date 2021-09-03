@@ -75,9 +75,7 @@ export function VoteNav({ radioState, handleChange }: VoteNavProps) {
             id={action[1] as string}
             checked={radioState === action[0]}
           />
-          <RadioButtonLabel htmlFor={action[1] as string}>
-            <Trans>{action[1]}</Trans>
-          </RadioButtonLabel>
+          <RadioButtonLabel htmlFor={action[1] as string}>{action[1]}</RadioButtonLabel>
         </RadioItem>
       ))}
     </RadioButtonGroup>
