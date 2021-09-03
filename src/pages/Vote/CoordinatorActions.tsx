@@ -1,4 +1,3 @@
-import React from 'react'
 import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
@@ -13,6 +12,9 @@ import { useWithdrawCallback } from '../../hooks/useWithdrawCallback'
 import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiLevelModal'
 import Spinner from '../../components/Spinner'
 import { black } from '../../theme'
+import { useState } from 'react'
+import { ErrorType } from '../../state/error/actions'
+import Error from '../../components/Error'
 
 export default function CoordinatorActions({ isPublished, isApproved }: { isPublished: boolean; isApproved: boolean }) {
   /* modals */
@@ -21,6 +23,7 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
   const toggleRandomStateLeafModal = useRandomStateLeafModalToggle()
   const toggleCoordinatorKeyModal = useCoordinatorKeyModalToggle()
 
+  const [error, setError] = useState<ErrorType | null>(null)
   const [withdrawTxState, withdraw] = useWithdrawCallback()
 
   return (
@@ -49,9 +52,19 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
           </ButtonPrimary>
         </>
       ) : null}
-      <ButtonPrimary disabled={!isApproved || withdrawTxState ? true : false} onClick={withdraw}>
-        {withdrawTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Withdraw</Trans>}
-      </ButtonPrimary>
+      <>
+        {error ? <Error error={error} /> : null}
+        <ButtonPrimary
+          disabled={!isApproved || withdrawTxState ? true : false}
+          onClick={() =>
+            withdraw()
+              .then()
+              .catch((e: any) => setError(ErrorType.TX_ERROR))
+          }
+        >
+          {withdrawTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Withdraw</Trans>}
+        </ButtonPrimary>
+      </>
     </>
   )
 }
