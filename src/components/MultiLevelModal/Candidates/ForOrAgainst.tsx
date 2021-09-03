@@ -15,14 +15,15 @@ const FieldEditor = ({ value, onChange, id }: { value: string; onChange: any; id
 
 function FormEditor({ values, setValues }: { values: any; setValues: any }) {
   const types = [t`for`, t`against`]
+  const types_en = ['for', 'against'] // for id
   const handleFieldChange = (fieldId: any, value: {}) => {
     setValues({ ...values, [fieldId]: value })
   }
 
-  const fields = types.map((type: string) => (
+  const fields = types.map((type: string, index: number) => (
     <Box pb={3} key={type}>
       <Label fontWeight="bold">{type.charAt(0).toUpperCase() + type.slice(1)}</Label>
-      <FieldEditor id={type} onChange={handleFieldChange} value={values[type]} />
+      <FieldEditor id={types_en[index]} onChange={handleFieldChange} value={values[type]} />
     </Box>
   ))
 
