@@ -11,7 +11,7 @@ interface CountdownClockProps {
 }
 
 const ClockWrapper = styled(Box)`
-  width: 240px;
+  width: 290px;
   color: ${({ theme }) => theme.greyText};
 `
 
@@ -44,7 +44,7 @@ export default function CountdownClock({ beforeSignUpDeadline, limit }: Countdow
   return (
     <ClockWrapper>
       <Box>
-        <Text fontSize={[1]} textAlign={'right'}>
+        <Text fontSize={['12px']} textAlign={'right'}>
           {beforeSignUpDeadline ? <Trans>Sign up deadline until:</Trans> : <Trans>Voting deadline until:</Trans>}
         </Text>
       </Box>

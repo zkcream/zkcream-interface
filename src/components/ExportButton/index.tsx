@@ -16,6 +16,7 @@ import { PostSignUpData } from '../QrModal'
 const ExportButtonStyle = styled(ButtonInverse)`
   background: none;
   margin-left: 0.5rem;
+  font-size: 0.75rem;
 `
 
 interface ExportButtonProps {

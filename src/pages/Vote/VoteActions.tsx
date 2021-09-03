@@ -68,7 +68,7 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
                   )
                 }
               >
-                {publishTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>New Key</Trans>}
+                {publishTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Create New Key</Trans>}
               </ButtonPrimary>
             </AutoColumn>
           )}

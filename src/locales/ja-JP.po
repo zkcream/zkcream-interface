@@ -62,6 +62,10 @@ msgstr "コーディネーター用の秘密鍵:"
 msgid "Coordinator's public key"
 msgstr "コーディネーター用の公開鍵"
 
+#: src/pages/Vote/VoteActions.tsx
+msgid "Create New Key"
+msgstr "新しく鍵を作成"
+
 #: src/pages/Vote/index.tsx
 msgid "Create new Election"
 msgstr "新しく投票を作成"
@@ -101,7 +105,7 @@ msgstr "エラー"
 
 #: src/components/ExportButton/index.tsx
 msgid "Export State"
-msgstr "ステートをエクスポート"
+msgstr "エクスポート"
 
 #: src/pages/Vote/styled.tsx
 msgid "Finished"
@@ -140,7 +144,7 @@ msgstr "Maci秘密鍵"
 msgid "Multiple candidate"
 msgstr "複数候補者を選択"
 
-#: src/pages/Vote/VoteActions.tsx
+#: src/components/VoteNav/index.tsx
 msgid "New Key"
 msgstr "新しい鍵"
 
@@ -215,6 +219,10 @@ msgstr "読み込み中…"
 #: src/components/TokenButtons/index.tsx
 msgid "Register"
 msgstr "登録"
+
+#: src/components/VoteNav/index.tsx
+msgid "Select"
+msgstr "投票"
 
 #: src/components/SingleModal/Distribute.tsx
 msgid "Send Token"

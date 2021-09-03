@@ -1,4 +1,4 @@
-import React from 'react'
+import { t } from '@lingui/macro'
 import styled from 'styled-components'
 
 export enum MessageAction {
@@ -7,8 +7,8 @@ export enum MessageAction {
 }
 
 export const ActionNames = [
-  [MessageAction.SELECT, 'Select'],
-  [MessageAction.NEWKEY, 'New Key'],
+  [MessageAction.SELECT, t`Select`],
+  [MessageAction.NEWKEY, t`New Key`],
 ]
 
 interface VoteNavProps {
