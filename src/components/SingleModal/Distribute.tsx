@@ -5,7 +5,6 @@ import { Trans } from '@lingui/macro'
 import { useSendTokenCallback } from '../../hooks/useSendTokenCallback'
 import { useElectionState } from '../../state/election/hooks'
 import { ElectionData } from '../../state/election/reducer'
-import { useAddressInput } from '../../utils/inputs'
 import Spinner from '../Spinner'
 import { ButtonInverse, ButtonPrimary } from '../Button'
 import { black, FormInput } from '../../theme'
@@ -83,7 +82,7 @@ export default function Distribute({ toggleModal }: DistributeProps) {
       return electionData?.owner === address || electionData?.coordinator === address
     }
 
-    addressList.map((address) => {
+    addressList.forEach((address) => {
       isAddress(address)
         ? !isOwnerOrCoordinator(address)
           ? !isDuplicated(addressList)
@@ -92,7 +91,7 @@ export default function Distribute({ toggleModal }: DistributeProps) {
           : setValid(false)
         : setValid(false)
     })
-  }, [addressList])
+  }, [addressList, electionData?.coordinator, electionData?.owner])
 
   return (
     <Box>
