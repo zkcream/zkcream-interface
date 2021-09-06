@@ -21,8 +21,10 @@ export function useWithdrawCallback(): [state: boolean, callback: () => Promise<
         await zkCreamContract
           .withdraw(i)
           .then(async (r: any) => {
-            await r.wait()
-            console.log('withdrawn')
+            const w = await r.wait()
+            if (w.status) {
+              console.log('token withdrawn')
+            }
           })
           .catch((e: Error) => {
             setTxState(false)

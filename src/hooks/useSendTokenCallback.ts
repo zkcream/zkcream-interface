@@ -4,25 +4,27 @@ import { useVotingTokenContract } from './useContract'
 
 export function useSendTokenCallback(
   votingTokenAddress: string
-): [state: boolean, callback: (voterAddress: string) => Promise<void>] {
+): [state: boolean, callback: (addressList: string[]) => Promise<void>] {
   const [txState, setTxState] = useState<boolean>(false)
   const votingTokenContract = useVotingTokenContract(votingTokenAddress)
 
   const c = useCallback(
-    async (voterAddress: string): Promise<void> => {
+    async (addressList: string[]): Promise<void> => {
       setTxState(true)
-      return await votingTokenContract
-        .giveToken(voterAddress)
-        .then(async (r: any) => {
-          const w = await r.wait()
-          if (w.status) {
+      for (let i = 0; i < addressList.length; i++) {
+        await votingTokenContract
+          .giveToken(addressList[i])
+          .then(async (r: any) => {
+            const w = await r.wait()
+            if (w.status) {
+              console.log('token sent to: ', addressList[i])
+            }
+          })
+          .catch((e: Error) => {
             setTxState(false)
-          }
-        })
-        .catch((e: Error) => {
-          setTxState(false)
-          throw new TxError('giveToken contract tx failed')
-        })
+            throw new TxError('giveToken contract tx failed')
+          })
+      }
     },
     [votingTokenContract]
   )
