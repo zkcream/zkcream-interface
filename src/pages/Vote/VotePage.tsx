@@ -62,8 +62,6 @@ export default function VotePage({
   const isApproved: boolean = electionData?.approved !== false
   const tokenState: TokenType = useTokenType()
 
-  console.log(electionData)
-
   const arg: any = { zkCreamAddress, account }
   const fetchTokenState = useFetchTokenState(arg)
 
