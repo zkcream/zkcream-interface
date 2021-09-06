@@ -14,6 +14,7 @@ import { useModalOpen, useDeployModalToggle } from '../../state/application/hook
 import { ElectionState, useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
 import { ElectionData } from '../../state/election/reducer'
 import { ElectionStatus } from './styled'
+import Spinner from '../../components/Spinner'
 
 const PageWrapper = styled(AutoColumn)`
   color: ${({ theme }) => theme.white};
@@ -70,6 +71,14 @@ const EmptyElections = styled.div`
   align-items: center;
 `
 
+const SpinnerWrapper = styled.div`
+  padding: 0.75rem 1rem;
+  display: grid;
+  grid-template-columns: 480px 1fr 20px;
+  text-align: center;
+  width: 100%;
+`
+
 export default function Vote() {
   // should return (empty or non empty) array
   const electionsData: ElectionData[] = useLimitedElectionData()
@@ -92,9 +101,17 @@ export default function Vote() {
           </ButtonPrimary>
         </WrapSmall>
         {electionsData?.length === 0 && (
-          <EmptyElections>
-            <Trans>No elections found</Trans>
-          </EmptyElections>
+          <>
+            {totalElectionNum > 0 ? (
+              <SpinnerWrapper>
+                <Spinner />
+              </SpinnerWrapper>
+            ) : (
+              <EmptyElections>
+                <Trans>No elections found</Trans>
+              </EmptyElections>
+            )}
+          </>
         )}
         {electionsData?.map((e: ElectionData, i) => {
           return (
