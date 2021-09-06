@@ -62,6 +62,8 @@ export default function VotePage({
   const isApproved: boolean = electionData?.approved !== false
   const tokenState: TokenType = useTokenType()
 
+  console.log(electionData)
+
   const arg: any = { zkCreamAddress, account }
   const fetchTokenState = useFetchTokenState(arg)
 
@@ -118,7 +120,11 @@ export default function VotePage({
                       beforeSignUpDeadline={electionData.signUpUntil !== null}
                     />
                   ) : (
-                    <CoordinatorActions isPublished={isPublished} isApproved={isApproved} />
+                    <CoordinatorActions
+                      isPublished={isPublished}
+                      isApproved={isApproved}
+                      hasUnprocessedMessages={electionData.hasUnprocessedMessages}
+                    />
                   )}
                 </>
               ) : (

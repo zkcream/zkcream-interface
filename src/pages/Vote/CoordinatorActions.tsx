@@ -16,7 +16,15 @@ import { useState } from 'react'
 import { ErrorType } from '../../state/error/actions'
 import Error from '../../components/Error'
 
-export default function CoordinatorActions({ isPublished, isApproved }: { isPublished: boolean; isApproved: boolean }) {
+export default function CoordinatorActions({
+  isPublished,
+  isApproved,
+  hasUnprocessedMessages,
+}: {
+  isPublished: boolean
+  isApproved: boolean
+  hasUnprocessedMessages: boolean
+}) {
   /* modals */
   const randomStateLeafModalOpen = useModalOpen(ApplicationModal.RANDOM_STATELEAF)
   const coordinatorKeyModalOpen = useModalOpen(ApplicationModal.COORDINATOR_KEY)
@@ -44,10 +52,10 @@ export default function CoordinatorActions({ isPublished, isApproved }: { isPubl
       {isPublished && !isApproved ? <Trans>Wait owner to approve tally</Trans> : null}
       {!isPublished ? (
         <>
-          <ButtonPrimary onClick={toggleCoordinatorKeyModal}>
+          <ButtonPrimary onClick={toggleCoordinatorKeyModal} disabled={!hasUnprocessedMessages}>
             <Trans>Process Message</Trans>
           </ButtonPrimary>
-          <ButtonPrimary onClick={toggleRandomStateLeafModal}>
+          <ButtonPrimary onClick={toggleRandomStateLeafModal} disabled={hasUnprocessedMessages}>
             <Trans>Publish Tally</Trans>
           </ButtonPrimary>
         </>

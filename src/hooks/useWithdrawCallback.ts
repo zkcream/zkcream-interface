@@ -18,14 +18,11 @@ export function useWithdrawCallback(): [state: boolean, callback: () => Promise<
     for (let i = 0; i < recipients.length && resultsArr[i] !== 0; i++) {
       const counts = resultsArr[i]
       for (let j = 0; j < counts; j++) {
-        return await zkCreamContract
+        await zkCreamContract
           .withdraw(i)
           .then(async (r: any) => {
             await r.wait()
             console.log('withdrawn')
-          })
-          .then(() => {
-            setTxState(false)
           })
           .catch((e: Error) => {
             setTxState(false)
