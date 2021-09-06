@@ -54,6 +54,8 @@ export interface ElectionData {
   tokenCounts: number[]
   signUpUntil: DateProps | null
   votingUntil: DateProps | null
+  totalVotes: number
+  hasUnprocessedMessages: boolean
 }
 
 export interface ElectionState {

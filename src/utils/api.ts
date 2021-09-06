@@ -44,6 +44,8 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
   const now = new Date().getTime()
   const signUpUntil = signUpDeadline - now > 0 ? calcDifference(signUpDeadline - now) : null
   const votingUntil = signUpDeadline - now > 0 ? calcDifference(votingDeadline - now) : null
+  const totalVotes = maciParams.totalVotes
+  const hasUnprocessedMessages = maciParams.hasUnprocessedMessages
 
   /* TODO implement differetn election patterns */
   return {
@@ -63,6 +65,8 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
     tokenCounts,
     signUpUntil,
     votingUntil,
+    totalVotes,
+    hasUnprocessedMessages,
   }
 }
 
