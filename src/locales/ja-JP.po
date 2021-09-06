@@ -26,7 +26,7 @@ msgstr "反対"
 
 #: src/pages/Vote/VotePage.tsx
 msgid "All Elections"
-msgstr "全ての投票"
+msgstr "一覧へ"
 
 #: src/pages/Vote/OwnerActions.tsx
 msgid "Approve Tally"
@@ -38,7 +38,7 @@ msgstr "トークンを承認"
 
 #: src/components/MultiLevelModal/VoterState.tsx
 msgid "Back to All Elections"
-msgstr "全ての投票へ戻る"
+msgstr "一覧へ戻る"
 
 #: src/components/QrModal/index.tsx
 msgid "Clear Data"
@@ -72,7 +72,7 @@ msgstr "新しく鍵を作成"
 
 #: src/pages/Vote/index.tsx
 msgid "Create new Election"
-msgstr "新しく投票を作成"
+msgstr "新規作成"
 
 #: src/components/MultiLevelModal/PostProcessMessage.tsx
 #: src/components/QrModal/PostProcessMessage.tsx
@@ -81,7 +81,7 @@ msgstr "現在のランダムステートリーフ"
 
 #: src/components/MultiLevelModal/Deploy/InputForm.tsx
 msgid "Deploy"
-msgstr "作成"
+msgstr "登録"
 
 #: src/components/MultiLevelModal/SignUp.tsx
 msgid "Deposit Note"
@@ -93,7 +93,7 @@ msgstr "トークンを配布"
 
 #: src/components/MultiLevelModal/Deploy/InputForm.tsx
 msgid "Election Title"
-msgstr "投票のタイトル"
+msgstr "タイトル"
 
 #: src/components/MultiLevelModal/Deploy/InputForm.tsx
 msgid "Election Type"
@@ -101,7 +101,7 @@ msgstr "投票の種類"
 
 #: src/pages/Vote/index.tsx
 msgid "Elections"
-msgstr "投票"
+msgstr "投票一覧"
 
 #: src/components/Web3Status/index.tsx
 msgid "Error"
@@ -122,7 +122,7 @@ msgstr "賛成"
 
 #: src/components/MultiLevelModal/Deploy/InputForm.tsx
 msgid "For or Against"
-msgstr "賛成か反対"
+msgstr "賛成 / 反対"
 
 #: src/pages/Vote/VotePage.tsx
 msgid "Group owner"
@@ -154,7 +154,7 @@ msgstr "新しい鍵"
 
 #: src/components/MultiLevelModal/Deploy/InputForm.tsx
 msgid "New keypair"
-msgstr "新規鍵ペア"
+msgstr "新規鍵発行"
 
 #: src/pages/Vote/index.tsx
 msgid "No elections found"
@@ -293,7 +293,7 @@ msgstr "投票の締め切りまで:"
 
 #: src/pages/Vote/OwnerActions.tsx
 msgid "Wait coordinator to publish tally hash"
-msgstr "コーディネーターが集計のハッシュを公開するまでお待ちください"
+msgstr "コーディネーターの集計完了までお待ちください"
 
 #: src/pages/Vote/CoordinatorActions.tsx
 msgid "Wait owner to approve tally"
