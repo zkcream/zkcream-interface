@@ -12,15 +12,15 @@ import { RowFixed } from '../Row'
 import Spinner from '../Spinner'
 
 const ResultBox = styled(Box)<{
-  winner?: boolean
+  index?: number
 }>`
   border: 2px solid;
-  border-color: ${({ theme, winner }) => (winner ? theme.green : darken(0.6, theme.white))};
+  border-color: ${({ theme, index }) => (index === 0 ? theme.green : darken(0.1, theme.red))};
   border-radius: 20px;
   display: flex;
   justify-content: flex-start;
   padding: 20px;
-  color: ${({ theme, winner }) => (winner ? theme.green : darken(0.6, theme.white))};
+  color: ${({ theme, index }) => (index === 0 ? theme.green : darken(0.1, theme.red))};
 `
 
 const TitleWrapper = styled(Box)`
@@ -85,7 +85,7 @@ export default function ForOrAgainst({
           )
         } else {
           return (
-            <ResultBox key={i} width={1 / 2} winner={tokenCounts![i] > tokenCounts![i + 1]}>
+            <ResultBox key={i} width={1 / 2} index={i}>
               <TitleWrapper>
                 <Text>{i === 0 ? t`For` : t`Against`}</Text>
               </TitleWrapper>
