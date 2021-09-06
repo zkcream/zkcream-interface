@@ -30,12 +30,20 @@ export default function OwnerActions({
       <Text>
         <Trans>You are Owner</Trans>
       </Text>
-      {!isPublished && beforeSignUpDeadline ? (
+      {!isPublished ? (
         <>
-          <Trans>Wait coordinator to publish tally hash</Trans>
-          <ButtonPrimary onClick={toggleModal}>
-            <Trans>Distribute Token</Trans>
-          </ButtonPrimary>
+          {beforeSignUpDeadline ? (
+            <>
+              <Trans>Distribute voting tokens to voters</Trans>
+              <ButtonPrimary onClick={toggleModal}>
+                <Trans>Distribute Token</Trans>
+              </ButtonPrimary>
+            </>  
+          ) : (
+            <>
+              <Trans>Wait coordinator to publish tally hash</Trans>
+            </>
+          )}
         </>
       ) : null}
       {isApproved ? (

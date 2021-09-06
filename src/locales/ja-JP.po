@@ -91,6 +91,10 @@ msgstr "デポジットノート"
 msgid "Distribute Token"
 msgstr "トークンを配布"
 
+#: src/pages/Vote/OwnerActions.tsx
+msgid "Distribute voting tokens to voters"
+msgstr "投票者に投票トークンを配布してください"
+
 #: src/components/MultiLevelModal/Deploy/InputForm.tsx
 msgid "Election Title"
 msgstr "タイトル"
