@@ -11,6 +11,10 @@ msgstr ""
 msgid "Active"
 msgstr "期間中"
 
+#: src/components/SingleModal/Distribute.tsx
+msgid "Add Address"
+msgstr "アドレス追加"
+
 #: src/pages/Vote/VotePage.tsx
 msgid "Administration Committees"
 msgstr "管理委員"
