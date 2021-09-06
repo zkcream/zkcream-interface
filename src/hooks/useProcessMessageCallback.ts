@@ -26,9 +26,9 @@ export function useProcessMessageCallback(): [
   const c = useCallback(
     async (maciSk: string) => {
       setTxState(true)
-      if (!maciSk.startsWith('macisk') || maciSk.length !== 71) {
+      if (!maciSk.startsWith('macisk')) {
         setTxState(false)
-        throw new FormatError('maciSk need to start with macisk or 71-bit length')
+        throw new FormatError('maciSk need to start with macisk')
       }
 
       const privKey: PrivKey = PrivKey.unserialize(maciSk)
