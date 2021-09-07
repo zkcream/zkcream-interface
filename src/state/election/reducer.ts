@@ -30,11 +30,11 @@ export interface MaciParams {
   votingDurationSeconds: number
 }
 
-export interface DateProps {
-  d: number
-  h: number
-  m: number
-  s: number
+export interface TimeLeft {
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
 }
 
 export interface ElectionData {
@@ -52,8 +52,9 @@ export interface ElectionData {
   approved: boolean | undefined
   maciParams: MaciParams
   tokenCounts: number[]
-  signUpUntil: DateProps | null
-  votingUntil: DateProps | null
+  signUpTimestamp: number // since react toolkit cannot store non-serializable value
+  signUpUntil: TimeLeft | null
+  votingUntil: TimeLeft | null
   totalVotes: number
   hasUnprocessedMessages: boolean
 }

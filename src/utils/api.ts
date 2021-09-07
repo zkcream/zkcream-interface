@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
-import { DateProps, ElectionData } from '../state/election/reducer'
+import { DateTime } from 'luxon'
+import { ElectionData } from '../state/election/reducer'
 
 /* api settngs */
 const API_HOST = process.env.REACT_APP_API_HOST
@@ -36,14 +37,33 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
     }
   }
 
-  const start = parseInt(maciParams.signUpTimestamp.hex, 16)
+  const now = DateTime.now()
+
+  const signUpTimestamp = parseInt(maciParams.signUpTimestamp.hex, 16)
   const signUpEnd = parseInt(maciParams.signUpDurationSeconds.hex, 16)
-  const votingEnd = parseInt(maciParams.votingDurationSeconds.hex, 16)
-  const signUpDeadline = (start + signUpEnd) * 1000
-  const votingDeadline = (start + signUpEnd + votingEnd) * 1000
-  const now = new Date().getTime()
-  const signUpUntil = signUpDeadline - now > 0 ? calcDifference(signUpDeadline - now) : null
-  const votingUntil = signUpDeadline - now > 0 ? calcDifference(votingDeadline - now) : null
+  const signUpDeadline = DateTime.fromSeconds(signUpTimestamp + signUpEnd)
+  const s = signUpDeadline > now ? signUpDeadline.diff(now, ['days', 'hours', 'minutes', 'seconds']) : null
+  const signUpUntil = s
+    ? {
+        days: s!.days,
+        hours: s!.hours,
+        minutes: s!.minutes,
+        seconds: s!.seconds,
+      }
+    : s
+
+  const votingTimestamp = parseInt(maciParams.votingDurationSeconds.hex, 16)
+  const votingDeadline = DateTime.fromSeconds(signUpTimestamp + signUpEnd + votingTimestamp)
+  const v = votingDeadline > now ? votingDeadline.diff(now, ['days', 'hours', 'minutes', 'seconds']) : null
+  const votingUntil = v
+    ? {
+        days: v!.days,
+        hours: v!.hours,
+        minutes: v!.minutes,
+        seconds: v!.seconds,
+      }
+    : v
+
   const totalVotes = maciParams.totalVotes
   const hasUnprocessedMessages = maciParams.hasUnprocessedMessages
 
@@ -63,24 +83,10 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
     approved: decodedLog.approved,
     maciParams,
     tokenCounts,
+    signUpTimestamp,
     signUpUntil,
     votingUntil,
     totalVotes,
     hasUnprocessedMessages,
   }
-}
-
-function calcDifference(diff: number): DateProps {
-  const d = Math.floor(diff / 1000 / 60 / 60 / 24)
-  diff -= d * 1000 * 60 * 60 * 24
-
-  const h = Math.floor(diff / 1000 / 60 / 60)
-  diff -= h * 1000 * 60 * 60
-
-  const m = Math.floor(diff / 1000 / 60)
-  diff -= m * 1000 * 60
-
-  const s = Math.floor(diff / 1000)
-
-  return { d, h, m, s }
 }

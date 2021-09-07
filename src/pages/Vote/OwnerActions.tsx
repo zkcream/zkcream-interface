@@ -38,7 +38,7 @@ export default function OwnerActions({
               <ButtonPrimary onClick={toggleModal}>
                 <Trans>Distribute Token</Trans>
               </ButtonPrimary>
-            </>  
+            </>
           ) : (
             <>
               <Trans>Wait coordinator to publish tally hash</Trans>

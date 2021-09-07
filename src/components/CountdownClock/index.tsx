@@ -3,11 +3,11 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import { Box, Text } from 'rebass'
 import styled from 'styled-components'
-import { DateProps } from '../../state/election/reducer'
+import { TimeLeft } from '../../state/election/reducer'
 
 interface CountdownClockProps {
-  beforeSignUpDeadline: boolean
-  limit: DateProps
+  beforeDeadlineOf: string | null
+  limit: TimeLeft | null
 }
 
 const ClockWrapper = styled(Box)`
@@ -15,9 +15,9 @@ const ClockWrapper = styled(Box)`
   color: ${({ theme }) => theme.greyText};
 `
 
-export default function CountdownClock({ beforeSignUpDeadline, limit }: CountdownClockProps) {
-  const { d = 0, h = 0, m = 0, s = 60 } = limit
-  const [[day, hour, min, sec], setTime] = useState([d, h, m, s])
+export default function CountdownClock({ beforeDeadlineOf, limit }: CountdownClockProps) {
+  const { days = 0, hours = 0, minutes = 0, seconds = 60 } = limit!
+  const [[day, hour, min, sec], setTime] = useState([days, hours, minutes, seconds])
 
   function reset() {
     setTime([day, hour, min, sec])
@@ -45,12 +45,18 @@ export default function CountdownClock({ beforeSignUpDeadline, limit }: Countdow
     <ClockWrapper>
       <Box>
         <Text fontSize={['12px']} textAlign={'right'}>
-          {beforeSignUpDeadline ? <Trans>Sign up deadline until:</Trans> : <Trans>Voting deadline until:</Trans>}
+          {beforeDeadlineOf === 'signUp' ? (
+            <Trans>Sign up deadline until:</Trans>
+          ) : (
+            <Trans>Voting deadline until:</Trans>
+          )}
         </Text>
       </Box>
       <Box>
         <Text fontWeight={600} textAlign={'right'}>
-          {`${day.toString()} day ${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}:${sec
+          {`${day.toString()} day ${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}:${Math.round(
+            sec
+          )
             .toString()
             .padStart(2, '0')}`}
         </Text>

@@ -65,6 +65,8 @@ export default function VotePage({
   const arg: any = { zkCreamAddress, account }
   const fetchTokenState = useFetchTokenState(arg)
 
+  const beforeDeadlineOf = electionData?.signUpUntil ? 'signUp' : electionData?.votingUntil ? 'voting' : null
+
   useEffect(() => {
     setElectionData()
   }, [setElectionData])
@@ -86,9 +88,9 @@ export default function VotePage({
                   <ArrowLeft size={20} />
                   <Trans>All Elections</Trans>
                 </ArrowWrapper>
-                {electionData.signUpUntil && electionData.votingUntil ? (
+                {beforeDeadlineOf ? (
                   <CountdownClock
-                    beforeSignUpDeadline={electionData.signUpUntil !== null}
+                    beforeDeadlineOf={beforeDeadlineOf}
                     limit={electionData.signUpUntil ? electionData.signUpUntil : electionData.votingUntil}
                   />
                 ) : null}
