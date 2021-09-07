@@ -22,7 +22,7 @@ function FormEditor({ values, setValues }: { values: any; setValues: any }) {
 
   const fields = types.map((type: string, index: number) => (
     <Box pb={3} key={type}>
-      <Label fontWeight="bold">{type.charAt(0).toUpperCase() + type.slice(1)}</Label>
+      <Label>{type.charAt(0).toUpperCase() + type.slice(1)}</Label>
       <FieldEditor id={types_en[index]} onChange={handleFieldChange} value={values[type]} />
     </Box>
   ))
