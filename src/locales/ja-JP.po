@@ -37,7 +37,6 @@ msgid "Approve Token"
 msgstr "トークンを承認"
 
 #: src/pages/Vote/styled.tsx
-#: src/pages/Vote/styled.tsx
 msgid "Awaiting"
 msgstr "集計待ち"
 
