@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { setElections, setElectionData, setTotalElections, updateCurrentPage, setLogs } from './actions'
+import { setElections, setElectionData, setTotalElections, updateCurrentPage, setLogs, VotingState } from './actions'
 
 export type StateIndex = string | undefined | null
 
@@ -57,6 +57,7 @@ export interface ElectionData {
   votingUntil: TimeLeft | null
   totalVotes: number
   hasUnprocessedMessages: boolean
+  votingState: VotingState
 }
 
 export interface ElectionState {

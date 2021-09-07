@@ -36,9 +36,18 @@ msgstr "集計を承認"
 msgid "Approve Token"
 msgstr "トークンを承認"
 
+#: src/pages/Vote/styled.tsx
+#: src/pages/Vote/styled.tsx
+msgid "Awaiting"
+msgstr "集計待ち"
+
 #: src/components/MultiLevelModal/VoterState.tsx
 msgid "Back to All Elections"
 msgstr "一覧へ戻る"
+
+#: src/pages/Vote/styled.tsx
+msgid "Calculating"
+msgstr "集計待ち"
 
 #: src/components/QrModal/index.tsx
 msgid "Clear Data"

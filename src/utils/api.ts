@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { DateTime } from 'luxon'
+import { VotingState } from '../state/election/actions'
 import { ElectionData } from '../state/election/reducer'
 
 /* api settngs */
@@ -67,6 +68,15 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
   const totalVotes = maciParams.totalVotes
   const hasUnprocessedMessages = maciParams.hasUnprocessedMessages
 
+  const votingState =
+    s && v
+      ? VotingState.ACTIVE
+      : decodedLog.approved
+      ? VotingState.FINISHED
+      : decodedLog.tallyHash
+      ? VotingState.AWAITING
+      : VotingState.CALCULATING
+
   /* TODO implement differetn election patterns */
   return {
     title: decodedLog.title,
@@ -88,5 +98,6 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
     votingUntil,
     totalVotes,
     hasUnprocessedMessages,
+    votingState,
   }
 }

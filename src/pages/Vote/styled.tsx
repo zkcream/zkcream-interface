@@ -16,7 +16,11 @@ const handleColorType = (status: VotingState, theme: DefaultTheme) => {
 function StatusText({ status }: { status: VotingState }) {
   switch (status) {
     case VotingState.ACTIVE:
-      return <Trans>Active</Trans>
+      return <Trans>Awaiting</Trans>
+    case VotingState.CALCULATING:
+      return <Trans>Calculating</Trans>
+    case VotingState.AWAITING:
+      return <Trans>Awaiting</Trans>
     case VotingState.FINISHED:
       return <Trans>Finished</Trans>
     default:

@@ -9,6 +9,8 @@ export enum PagingAction {
 
 export enum VotingState {
   ACTIVE,
+  CALCULATING,
+  AWAITING,
   FINISHED,
 }
 

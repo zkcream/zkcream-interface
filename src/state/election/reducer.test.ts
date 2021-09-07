@@ -1,5 +1,5 @@
 import { Store, createStore } from 'redux'
-import { setLogs, setTotalElections, updateCurrentPage } from './actions'
+import { setLogs, setTotalElections, updateCurrentPage, VotingState } from './actions'
 import reducer, { ElectionState, Logs } from './reducer'
 
 describe('election reducer', () => {
