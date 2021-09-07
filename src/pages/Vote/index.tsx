@@ -11,7 +11,8 @@ import Paging from '../../components/Paging'
 import { RowBetween } from '../../components/Row'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useDeployModalToggle } from '../../state/application/hooks'
-import { ElectionState, useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
+import { VotingState } from '../../state/election/actions'
+import { useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
 import { ElectionData } from '../../state/election/reducer'
 import { ElectionStatus } from './styled'
 import Spinner from '../../components/Spinner'
@@ -117,7 +118,7 @@ export default function Vote() {
           return (
             <Election as={Link} to={'/vote/' + e.zkCreamAddress} key={i}>
               <ElectionTitle>{e.title}</ElectionTitle>
-              <ElectionStatus status={e.approved ? ElectionState.FINISHED : ElectionState.ACTIVE} />
+              <ElectionStatus status={e.approved ? VotingState.FINISHED : VotingState.ACTIVE} />
             </Election>
           )
         })}

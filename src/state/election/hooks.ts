@@ -17,11 +17,6 @@ import { useActiveWeb3React } from '../../hooks/web3'
 import { useDeployedLogs } from '../../hooks/useDeployedLogs'
 import { useFetchElectionData } from '../../hooks/useFetchElectionData'
 
-export enum ElectionState {
-  ACTIVE,
-  FINISHED,
-}
-
 export function useDataFromEventLogs() {
   const { library } = useActiveWeb3React()
   const logs = useLogs()

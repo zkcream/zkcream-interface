@@ -7,6 +7,11 @@ export enum PagingAction {
   NEXT,
 }
 
+export enum VotingState {
+  ACTIVE,
+  FINISHED,
+}
+
 export const setTotalElections = createAction<number>('election/setTotalElections')
 export const updateCurrentPage = createAction<number>('election/updateCurrentPage')
 export const setElectionData = createAction<ElectionData | undefined>('election/setElectionData')

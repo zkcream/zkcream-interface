@@ -1,30 +1,30 @@
 import { Trans } from '@lingui/macro'
 import styled, { DefaultTheme } from 'styled-components'
-import { ElectionState } from '../../state/election/hooks'
+import { VotingState } from '../../state/election/actions'
 
-const handleColorType = (status: ElectionState, theme: DefaultTheme) => {
+const handleColorType = (status: VotingState, theme: DefaultTheme) => {
   switch (status) {
-    case ElectionState.ACTIVE:
+    case VotingState.ACTIVE:
       return theme.blue
-    case ElectionState.FINISHED:
+    case VotingState.FINISHED:
       return theme.green
     default:
       return theme.greyText
   }
 }
 
-function StatusText({ status }: { status: ElectionState }) {
+function StatusText({ status }: { status: VotingState }) {
   switch (status) {
-    case ElectionState.ACTIVE:
+    case VotingState.ACTIVE:
       return <Trans>Active</Trans>
-    case ElectionState.FINISHED:
+    case VotingState.FINISHED:
       return <Trans>Finished</Trans>
     default:
       return <Trans>Undetermined</Trans>
   }
 }
 
-const StyledElectionContainer = styled.span<{ status: ElectionState }>`
+const StyledElectionContainer = styled.span<{ status: VotingState }>`
   font-size: 0.825rem;
   font-weight: 600;
   padding: 0.5rem;
@@ -35,7 +35,7 @@ const StyledElectionContainer = styled.span<{ status: ElectionState }>`
   justify-self: flex-end;
 `
 
-export function ElectionStatus({ status }: { status: ElectionState }) {
+export function ElectionStatus({ status }: { status: VotingState }) {
   return (
     <StyledElectionContainer status={status}>
       <StatusText status={status} />
