@@ -40,6 +40,7 @@ export function colors(): Colors {
     // other
     blue: '#0088ff',
     green: '#00ff44',
+    orange: '#FF6719',
     red: '#FF120D',
 
     // backgrounds

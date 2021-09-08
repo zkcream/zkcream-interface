@@ -11,7 +11,6 @@ import Paging from '../../components/Paging'
 import { RowBetween } from '../../components/Row'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useDeployModalToggle } from '../../state/application/hooks'
-import { VotingState } from '../../state/election/actions'
 import { useLimitedElectionData, useTotalElections } from '../../state/election/hooks'
 import { ElectionData } from '../../state/election/reducer'
 import { ElectionStatus } from './styled'
@@ -85,6 +84,8 @@ export default function Vote() {
   const electionsData: ElectionData[] = useLimitedElectionData()
   const totalElectionNum = useTotalElections()
 
+  console.log(electionsData)
+
   // toggle deploy modal
   const deployModalOpen = useModalOpen(ApplicationModal.DEPLOY)
   const toggleModal = useDeployModalToggle()
@@ -118,7 +119,7 @@ export default function Vote() {
           return (
             <Election as={Link} to={'/vote/' + e.zkCreamAddress} key={i}>
               <ElectionTitle>{e.title}</ElectionTitle>
-              <ElectionStatus status={e.approved ? VotingState.FINISHED : VotingState.ACTIVE} />
+              <ElectionStatus status={e.votingState} />
             </Election>
           )
         })}
