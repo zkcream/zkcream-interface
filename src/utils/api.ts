@@ -49,7 +49,7 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
         days: s!.days,
         hours: s!.hours,
         minutes: s!.minutes,
-        seconds: s!.seconds,
+        seconds: Math.round(s!.seconds), 
       }
     : s
 
@@ -61,7 +61,7 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
         days: v!.days,
         hours: v!.hours,
         minutes: v!.minutes,
-        seconds: v!.seconds,
+        seconds: Math.round(v!.seconds),
       }
     : v
 
