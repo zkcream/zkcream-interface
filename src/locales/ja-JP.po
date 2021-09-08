@@ -154,7 +154,7 @@ msgstr "ロードする"
 
 #: src/components/QrModal/VoterState.tsx
 msgid "MaciSk"
-msgstr "Maci秘密鍵"
+msgstr "投票キー"
 
 #: src/components/MultiLevelModal/Deploy/InputForm.tsx
 msgid "Multiple candidate"
@@ -202,7 +202,7 @@ msgstr "ランダムステートリーフを読み込ませてください"
 
 #: src/components/MultiLevelModal/VoterState.tsx
 msgid "Please import the state information of the last vote you made"
-msgstr "あなたが行った最後の投票の状態情報を読み込ませてください"
+msgstr "投票者情報を入力してください"
 
 #: src/components/QrModal/ReadCoordiantorKey.tsx
 #: src/components/QrModal/ReadRandomStateLeaf.tsx
@@ -246,7 +246,7 @@ msgstr "トークンを送信"
 
 #: src/components/QrModal/VoterState.tsx
 msgid "Set Voter's State"
-msgstr "投票者のステートを設定"
+msgstr "確定"
 
 #: src/components/MultiLevelModal/Candidates/ForOrAgainst.tsx
 msgid "Set candidate's address"
@@ -262,7 +262,7 @@ msgstr "サインアップの締め切りまで:"
 
 #: src/components/QrModal/VoterState.tsx
 msgid "Sign up index"
-msgstr "サインアップインデックス"
+msgstr "投票者番号"
 
 #: src/components/QrModal/ReadCoordiantorKey.tsx
 #: src/components/QrModal/ReadRandomStateLeaf.tsx
@@ -293,7 +293,7 @@ msgstr "未確定"
 
 #: src/components/MultiLevelModal/VoterState.tsx
 msgid "Voter State"
-msgstr "投票者のステート"
+msgstr "投票者情報"
 
 #: src/components/SingleModal/Distribute.tsx
 msgid "Voter's Address"
@@ -354,7 +354,7 @@ msgstr "あなたの現在のナンス"
 
 #: src/components/QrModal/PostSignUp.tsx
 msgid "Your sign up index"
-msgstr "あなたのサインアップインデックス"
+msgstr "あなたの投票者番号"
 
 #: src/components/MultiLevelModal/Candidates/ForOrAgainst.tsx
 msgid "against"
