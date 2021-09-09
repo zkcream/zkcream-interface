@@ -38,7 +38,7 @@ msgstr "トークンを承認"
 
 #: src/pages/Vote/styled.tsx
 msgid "Awaiting"
-msgstr "集計待ち"
+msgstr "承認待ち"
 
 #: src/components/MultiLevelModal/VoterState.tsx
 msgid "Back to All Elections"

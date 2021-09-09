@@ -10,20 +10,22 @@ import { Keypair, PrivKey, StateLeaf } from 'maci-domainobjs'
 
 import { useMaciContract, useZkCreamContract } from './useContract'
 import { genMaciStateFromContract } from '../utils/genMaciStateFromContract'
-import { useElectionState } from '../state/election/hooks'
+import { useElectionState, useUpdateElectionState } from '../state/election/hooks'
 import { post } from '../utils/api'
 import { useLocalStorage } from './useLocalStorage'
 import { useRandomStateLeafModalToggle } from '../state/application/hooks'
 import { TxError } from '../utils/error'
+import { ElectionData } from '../state/election/reducer'
 
 const ethProvider: string = process.env.REACT_APP_URL!
 
 export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero: string) => Promise<void>] {
   const [txState, setTxState] = useState<boolean>(false)
-  const { maciAddress, zkCreamAddress, maciParams }: any = useElectionState()
-  const maciContract = useMaciContract(maciAddress)
-  const zkCreamContract = useZkCreamContract(zkCreamAddress)
-  const { publishMessageLogs, signUpLogs }: any = maciParams
+  const election: ElectionData | undefined = useElectionState()
+  const updateElectionState = useUpdateElectionState()
+  const maciContract = useMaciContract(election!.maciAddress)
+  const zkCreamContract = useZkCreamContract(election!.zkCreamAddress)
+  const { publishMessageLogs, signUpLogs }: any = election!.maciParams
   const [macisk] = useLocalStorage('macisk', '')
   const toggleModal = useRandomStateLeafModalToggle()
 
@@ -73,7 +75,7 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
           signUpLogs,
           publishMessageLogs
         )
-      } catch (e) {
+      } catch (e: any) {
         setTxState(false)
         throw new TxError(e.message)
       }
@@ -294,6 +296,11 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
           }
         })
         .then(() => {
+          // update internal electionState
+          const newState: any = { ...election, tallyHash: tallyHash.data.path }
+          updateElectionState(newState)
+        })
+        .then(() => {
           toggleModal()
         })
         .catch((e: Error) => {
@@ -301,7 +308,7 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
           throw new TxError(e.message)
         })
     },
-    [maciContract, macisk, publishMessageLogs, signUpLogs, toggleModal, zkCreamContract]
+    [election, maciContract, macisk, publishMessageLogs, signUpLogs, toggleModal, updateElectionState, zkCreamContract]
   )
 
   return [txState, c]

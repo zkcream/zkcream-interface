@@ -4,7 +4,8 @@ import { Keypair, PrivKey, PubKey, StateLeaf } from 'maci-domainobjs'
 
 import { useMaciContract } from './useContract'
 import { genMaciStateFromContract } from '../utils/genMaciStateFromContract'
-import { useElectionState } from '../state/election/hooks'
+import { useElectionState, useUpdateElectionState } from '../state/election/hooks'
+import { ElectionData, MaciParams } from '../state/election/reducer'
 import { post } from '../utils/api'
 import { RandomStateLeaf } from '../components/QrModal'
 import { FormatError, TxError } from '../utils/error'
@@ -17,9 +18,10 @@ export function useProcessMessageCallback(): [
 ] {
   const [txState, setTxState] = useState<boolean>(false)
   const [randomStateLeaf, setRandomStateLeaf] = useState<RandomStateLeaf>({ randomStateLeaf: '' })
-  const { maciAddress, maciParams }: any = useElectionState()
-  const maciContract = useMaciContract(maciAddress)
-  const { publishMessageLogs, signUpLogs }: any = maciParams
+  const election: ElectionData | undefined = useElectionState()
+  const updateElectionState = useUpdateElectionState()
+  const maciContract = useMaciContract(election!.maciAddress)
+  const { publishMessageLogs, signUpLogs }: MaciParams = election!.maciParams
 
   const setUntoggleable = useToggleToggleable()
 
@@ -58,7 +60,7 @@ export function useProcessMessageCallback(): [
           signUpLogs,
           publishMessageLogs
         )
-      } catch (e) {
+      } catch (e: any) {
         setTxState(false)
         throw new TxError(e.message)
       }
@@ -146,12 +148,17 @@ export function useProcessMessageCallback(): [
         if (!(await maciContract.hasUnprocessedMessages())) {
           setRandomStateLeaf({ randomStateLeaf: rndStateLeaf.serialize() })
           setUntoggleable()
+
+          // update internal electionState
+          const newState: any = { ...election, hasUnprocessedMessages: false }
+          updateElectionState(newState)
+
           break
         }
       }
       setTxState(false)
     },
-    [maciContract, publishMessageLogs, setUntoggleable, signUpLogs]
+    [election, maciContract, publishMessageLogs, setUntoggleable, signUpLogs, updateElectionState]
   )
 
   return [txState, randomStateLeaf, c]

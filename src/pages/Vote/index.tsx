@@ -84,8 +84,6 @@ export default function Vote() {
   const electionsData: ElectionData[] = useLimitedElectionData()
   const totalElectionNum = useTotalElections()
 
-  console.log(electionsData)
-
   // toggle deploy modal
   const deployModalOpen = useModalOpen(ApplicationModal.DEPLOY)
   const toggleModal = useDeployModalToggle()

@@ -58,13 +58,18 @@ export function useLimitedElectionData(limit: number = 5) {
 
 // set election data of passed zkcream contract address
 export function useSetElectionData(address: string): () => void {
-  const election = useElections()
+  const elections = useElections()
   const dispatch = useAppDispatch()
   const electionData = useMemo(() => {
-    return election?.find((e) => e.zkCreamAddress === address)
-  }, [address, election])
+    return elections?.find((e) => e.zkCreamAddress === address)
+  }, [address, elections])
 
   return () => dispatch(setElectionData(electionData))
+}
+
+export function useUpdateElectionState(): (newState: ElectionData) => void {
+  const dispatch = useAppDispatch()
+  return useCallback((newState) => dispatch(setElectionData(newState)), [dispatch])
 }
 
 export function useElectionState(): ElectionData | undefined {
