@@ -65,11 +65,7 @@ export function useSetElectionData(address: string): () => void {
   }, [address, elections])
 
   return () => dispatch(setElectionData(electionData))
-}
 
-export function useUpdateElectionState(): (newState: ElectionData) => void {
-  const dispatch = useAppDispatch()
-  return useCallback((newState) => dispatch(setElectionData(newState)), [dispatch])
 }
 
 export function useElectionState(): ElectionData | undefined {

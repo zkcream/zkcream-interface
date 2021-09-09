@@ -4,7 +4,7 @@ import { Keypair, PrivKey, PubKey, StateLeaf } from 'maci-domainobjs'
 
 import { useMaciContract } from './useContract'
 import { genMaciStateFromContract } from '../utils/genMaciStateFromContract'
-import { useElectionState, useUpdateElectionState } from '../state/election/hooks'
+import { useElectionState } from '../state/election/hooks'
 import { ElectionData, MaciParams } from '../state/election/reducer'
 import { post } from '../utils/api'
 import { RandomStateLeaf } from '../components/QrModal'
@@ -19,7 +19,6 @@ export function useProcessMessageCallback(): [
   const [txState, setTxState] = useState<boolean>(false)
   const [randomStateLeaf, setRandomStateLeaf] = useState<RandomStateLeaf>({ randomStateLeaf: '' })
   const election: ElectionData | undefined = useElectionState()
-  const updateElectionState = useUpdateElectionState()
   const maciContract = useMaciContract(election!.maciAddress)
   const { publishMessageLogs, signUpLogs }: MaciParams = election!.maciParams
 
@@ -149,16 +148,12 @@ export function useProcessMessageCallback(): [
           setRandomStateLeaf({ randomStateLeaf: rndStateLeaf.serialize() })
           setUntoggleable()
 
-          // update internal electionState
-          const newState: any = { ...election, hasUnprocessedMessages: false }
-          updateElectionState(newState)
-
           break
         }
       }
       setTxState(false)
     },
-    [election, maciContract, publishMessageLogs, setUntoggleable, signUpLogs, updateElectionState]
+    [maciContract, publishMessageLogs, setUntoggleable, signUpLogs]
   )
 
   return [txState, randomStateLeaf, c]
