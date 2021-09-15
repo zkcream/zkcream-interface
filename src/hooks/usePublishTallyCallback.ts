@@ -273,7 +273,7 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
         }
       }
 
-      // console.log(tallyFileData)
+      console.log(tallyFileData)
 
       // receive ipfs hash
       let tallyHash: any

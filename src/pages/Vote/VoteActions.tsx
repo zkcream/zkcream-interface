@@ -64,7 +64,8 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
                 disabled={publishTxState}
                 onClick={() =>
                   publishMessage(null, parseInt(stateIndex!), parseInt(nonce!), maciSk, setMaciSk).then(() =>
-                    setNonce(parseInt(nonce) + 1)
+                    // since new key command does not need to increment nonce
+                    setNonce(parseInt(nonce)) 
                   )
                 }
               >
