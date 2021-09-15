@@ -1,7 +1,7 @@
 {
   "name": "@zkcream/interface",
   "description": "zkCREAM web3 interface",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "private": true,
   "dependencies": {
     "@ethersproject/abi": "^5.4.0",
@@ -81,18 +81,11 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version"
+  ],
   "devDependencies": {
     "ganache": "^6.4.4"
   }

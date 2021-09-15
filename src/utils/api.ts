@@ -69,7 +69,7 @@ export async function fetchContractDetails(log: string[]): Promise<ElectionData>
   const hasUnprocessedMessages = maciParams.hasUnprocessedMessages
 
   const votingState =
-    s && v
+    s || v
       ? VotingState.ACTIVE
       : decodedLog.approved
       ? VotingState.FINISHED
