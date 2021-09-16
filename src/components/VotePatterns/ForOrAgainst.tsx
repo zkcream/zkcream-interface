@@ -70,7 +70,8 @@ export default function ForOrAgainst({
               onClick={() => {
                 setIndex(i)
                 publishMessage(i, parseInt(stateIndex!), parseInt(nonce!), maciSk!, undefined).then(() => {
-                  setNonce((parseInt(nonce!) + 1).toString())
+                  // TEMP fixed nonce
+                  // setNonce((parseInt(nonce!) + 1).toString())
                   setIndex(undefined)
                 })
               }}

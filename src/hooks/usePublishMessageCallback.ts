@@ -65,7 +65,7 @@ export function usePublishMessageCallback(): [
           retrievedPubKey,
           null,
           null,
-          Number(nonce - 1) // new key command does not need to increment nonce
+          Number(nonce)
         )
         setMaciSk(newUserKeyPair.privKey.serialize())
         await maciContract
