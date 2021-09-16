@@ -1,4 +1,5 @@
 import { t } from '@lingui/macro'
+import { darken } from 'polished'
 import styled from 'styled-components'
 
 export enum MessageAction {
@@ -50,6 +51,13 @@ const RadioInput = styled.input`
       color: ${({ theme }) => theme.white};
     }
   }
+  &:disabled {
+    + label {
+      cursor: no-drop;
+      background: ${({ theme }) => darken(0.03, theme.darkBackgraound)};
+      color: ${({ theme }) => darken(0.6, theme.white)};
+    }
+  }
 `
 
 const RadioButtonLabel = styled.label`
@@ -73,6 +81,7 @@ export function VoteNav({ radioState, handleChange }: VoteNavProps) {
             value={index}
             id={action[1] as string}
             checked={radioState === action[0]}
+            disabled={index === 1 ? true : false}
           />
           <RadioButtonLabel htmlFor={action[1] as string}>{action[1]}</RadioButtonLabel>
         </RadioItem>

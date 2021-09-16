@@ -29,7 +29,8 @@ export default function VoterState({
   const [dataReceived, setDataReceived] = useState<boolean>(false)
   const [error, setError] = useState<ErrorType | null>(null)
   const { value: _stateIndex, bind: bindStateIndex, reset: resetStateIndex } = useInput('')
-  const { value: _nonce, bind: bindNonce, reset: resetNonce } = useInput('')
+  // TEMP: fixed nonce
+  const { value: _nonce } = useInput('1')
   const { value: _macisk, bind: bindMaciSk, reset: resetMaciSk } = useInput('')
 
   function setState() {
@@ -39,7 +40,6 @@ export default function VoterState({
       setMaciSk(_macisk)
 
       resetStateIndex()
-      resetNonce()
       resetMaciSk()
 
       // TODO validate and reload
@@ -121,7 +121,7 @@ export default function VoterState({
                 <Label fontWeight="bold">
                   <Trans>Nonce</Trans>
                 </Label>
-                <FormInput {...bindNonce} />
+                <FormInput disabled={true} value={1} />
               </Box>
             </Box>
           )}
