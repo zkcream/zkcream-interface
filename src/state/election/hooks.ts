@@ -65,7 +65,6 @@ export function useSetElectionData(address: string): () => void {
   }, [address, elections])
 
   return () => dispatch(setElectionData(electionData))
-
 }
 
 export function useElectionState(): ElectionData | undefined {

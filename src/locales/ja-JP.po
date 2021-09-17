@@ -331,6 +331,10 @@ msgstr "あなたはオーナーです"
 msgid "Your Deposit Note"
 msgstr "あなたのデポジットノート"
 
+#: src/components/TokenButtons/index.tsx
+msgid "You need to sign up with a different account than the one you made the deposit with."
+msgstr "デポジットしたアカウントとは別のアカウントでサインアップをする必要があります。"
+
 #: src/components/QrModal/Note.tsx
 msgid "Your Note:"
 msgstr "あなたのノート:"

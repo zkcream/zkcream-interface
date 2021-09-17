@@ -1,7 +1,7 @@
 {
   "name": "@zkcream/interface",
   "description": "zkCREAM web3 interface",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "private": true,
   "dependencies": {
     "@ethersproject/abi": "^5.4.0",
