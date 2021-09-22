@@ -14,6 +14,8 @@ const PARAMS = {
   zero_value: process.env.REACT_APP_ZERO_VALUE,
 }
 
+const HOST = process.env.REACT_APP_API_HOST !== 'http://localhost:3000' ? process.env.REACT_APP_API_HOST : ''
+
 export function useSignUpCallback(
   zkCreamAddress: string,
   maciAddress: string
@@ -43,7 +45,7 @@ export function useSignUpCallback(
         throw new TxError('Generate deposit failed')
       }
 
-      const { root, merkleProof } = await generateMerkleProof(deposit, zkCreamAddress, PARAMS)
+      const { root, merkleProof } = await generateMerkleProof(deposit, zkCreamAddress, PARAMS, HOST)
 
       const input = {
         root,
