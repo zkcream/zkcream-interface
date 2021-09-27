@@ -341,7 +341,7 @@ msgstr "あなたのノート:"
 
 #: src/components/MultiLevelModal/PostSignUp.tsx
 msgid "Your Vote status"
-msgstr "あなたの投票ステータス"
+msgstr "あなたの投票者情報"
 
 #: src/components/MultiLevelModal/ReadCoordinatorKey.tsx
 #: src/components/MultiLevelModal/Deploy/CoordinatorKey.tsx
