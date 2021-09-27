@@ -30,7 +30,7 @@ msgstr "一覧へ"
 
 #: src/pages/Vote/OwnerActions.tsx
 msgid "Approve Tally"
-msgstr "集計を承認"
+msgstr "集計結果の承認"
 
 #: src/components/TokenButtons/index.tsx
 msgid "Approve Token"
@@ -214,11 +214,11 @@ msgstr "QRコードを読み込ませてください"
 
 #: src/pages/Vote/CoordinatorActions.tsx
 msgid "Process Message"
-msgstr "メッセージを処理する"
+msgstr "有効票の処理"
 
 #: src/pages/Vote/CoordinatorActions.tsx
 msgid "Publish Tally"
-msgstr "集計結果を公開"
+msgstr "集計"
 
 #: src/components/QrModal/ReadRandomStateLeaf.tsx
 msgid "Random state leaf"
@@ -313,7 +313,7 @@ msgstr "オーナーが集計を承認するまでお待ちください"
 
 #: src/pages/Vote/CoordinatorActions.tsx
 msgid "Withdraw"
-msgstr "引き出す"
+msgstr "投票結果の公開"
 
 #: src/components/Web3Status/index.tsx
 msgid "Wrong network"
