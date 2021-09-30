@@ -58,7 +58,7 @@ export default function Header() {
 
   return (
     <HeaderFrame>
-      <Title as={Link} to={'/'} onClick={resetToTopPage}>
+      <Title as={Link} to={'/'} onClick={resetToTopPage} replace>
         zkCREAM
       </Title>
       <HeaderElement>
