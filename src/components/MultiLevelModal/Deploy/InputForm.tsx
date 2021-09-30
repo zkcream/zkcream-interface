@@ -6,6 +6,7 @@ import { PrivKey, PubKey } from 'maci-domainobjs'
 import { useState } from 'react'
 import { Box, Flex } from 'rebass'
 import styled from 'styled-components'
+import { useDeployedLogs } from '../../../hooks/useDeployedLogs'
 import { useToggleToggleable } from '../../../state/application/hooks'
 import { useElections, useSetElections } from '../../../state/election/hooks'
 import { ElectionData } from '../../../state/election/reducer'
@@ -51,6 +52,7 @@ export default function InputForm({ setMaciSk, setShowMaciSk }: InputFormProps) 
   const elections = useElections()
   const setElections = useSetElections()
   const setUntoggleable = useToggleToggleable()
+  const getLogs = useDeployedLogs()
 
   async function deploy(setShowMaciSk: React.Dispatch<React.SetStateAction<boolean>>) {
     setTxState('Deploying...')
@@ -76,6 +78,7 @@ export default function InputForm({ setMaciSk, setShowMaciSk }: InputFormProps) 
     const temp = Object.assign([], elections)
     temp.unshift(newContractData)
     setElections(temp)
+    getLogs() // to update logs asynchronously
     setTxState('Deploy')
     setUntoggleable()
     setShowMaciSk(true)
