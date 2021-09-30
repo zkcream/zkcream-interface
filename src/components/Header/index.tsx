@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
+import { useResetToTopPage } from '../../state/election/hooks'
 
 import Web3Status from '../Web3Status'
 
@@ -53,9 +54,11 @@ const Title = styled.a`
 `
 
 export default function Header() {
+  const resetToTopPage = useResetToTopPage()
+
   return (
     <HeaderFrame>
-      <Title as={Link} to={'/'}>
+      <Title as={Link} to={'/'} onClick={resetToTopPage}>
         zkCREAM
       </Title>
       <HeaderElement>

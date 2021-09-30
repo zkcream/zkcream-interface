@@ -173,6 +173,11 @@ export function useCurrentPage(): number {
   return useAppSelector((state: RootState) => state.election.currentPage)
 }
 
+export function useResetToTopPage(): () => void {
+  const dispatch = useAppDispatch()
+  return useCallback(() => dispatch(updateCurrentPage(0)), [dispatch])
+}
+
 export function useUpdateCurrentPage(action: PagingAction): () => void {
   const current = useCurrentPage()
   const dispatch = useAppDispatch()
