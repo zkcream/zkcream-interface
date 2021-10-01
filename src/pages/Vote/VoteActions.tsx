@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Trans } from '@lingui/macro'
+import { Text } from 'rebass'
 
 import { ButtonPrimary } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
@@ -12,15 +13,15 @@ import { useVoterStateModalToggle, useModalOpen } from '../../state/application/
 import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiLevelModal'
 import Spinner from '../../components/Spinner'
 import { black } from '../../theme'
+import { VotingState } from '../../state/election/actions'
 
 export interface VoteActionsProps {
   recipients: string[]
   electionType: string
-  isPublished?: boolean | undefined
-  isApproved?: boolean | undefined
+  votingState?: VotingState
 }
 
-export default function VoteActions({ recipients, electionType, isApproved }: VoteActionsProps) {
+export default function VoteActions({ recipients, electionType, votingState }: VoteActionsProps) {
   const [radioState, setRadioState] = useState<MessageAction>(MessageAction.SELECT)
   const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
   const [nonce, setNonce] = useLocalStorage('nonce', '1')
@@ -37,7 +38,7 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
 
   return (
     <>
-      {!isApproved ? (
+      {votingState && votingState < 1 ? (
         <>
           <MultiLevelModal
             isOpen={!parseInt(stateIndex) || voterStateModalOpen}
@@ -73,7 +74,19 @@ export default function VoteActions({ recipients, electionType, isApproved }: Vo
             </AutoColumn>
           )}
         </>
-      ) : null}
+      ) : (
+        <>
+        {votingState === 1 ? (
+          <>
+            <Text>
+              <Trans>
+                The voting period has ended
+              </Trans>
+            </Text>
+          </>
+        ): null}
+        </>
+      )}
     </>
   )
 }

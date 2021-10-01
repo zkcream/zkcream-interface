@@ -133,8 +133,7 @@ export default function VotePage({
                     <VoteActions
                       recipients={electionData.recipients}
                       electionType={electionData.electionType}
-                      isPublished={isPublished}
-                      isApproved={isApproved}
+                      votingState={electionData.votingState}
                     />
                   ) : (
                     <TokenButtons
