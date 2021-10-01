@@ -69,13 +69,13 @@ export default function VotePage({
 
   useEffect(() => {
     setElectionData()
-  }, [setElectionData])
+  }, [electionData, setElectionData])
 
   useEffect(() => {
-    if (!isOwner && !isCoordinator) {
+    if (electionData && !isOwner && !isCoordinator) {
       fetchTokenState()
     }
-  }, [fetchTokenState, isCoordinator, isOwner])
+  }, [electionData, fetchTokenState, isCoordinator, isOwner])
 
   return (
     <PageWrapper gap="lg" justify="center">

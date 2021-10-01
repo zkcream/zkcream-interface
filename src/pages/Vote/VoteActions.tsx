@@ -38,7 +38,7 @@ export default function VoteActions({ recipients, electionType, votingState }: V
 
   return (
     <>
-      {votingState && votingState < 1 ? (
+      {votingState === 0 ? (
         <>
           <MultiLevelModal
             isOpen={!parseInt(stateIndex) || voterStateModalOpen}
@@ -75,17 +75,9 @@ export default function VoteActions({ recipients, electionType, votingState }: V
           )}
         </>
       ) : (
-        <>
-        {votingState === 1 ? (
-          <>
-            <Text>
-              <Trans>
-                The voting period has ended
-              </Trans>
-            </Text>
-          </>
-        ): null}
-        </>
+        <Text>
+          <Trans>The voting period has ended</Trans>
+        </Text>
       )}
     </>
   )

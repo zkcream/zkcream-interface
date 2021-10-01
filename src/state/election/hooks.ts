@@ -2,7 +2,16 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { ContractFactory } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 
-import { PagingAction, setElectionData, setElections, setLogs, setTotalElections, updateCurrentPage } from './actions'
+import {
+  PagingAction,
+  setElectionData,
+  setElections,
+  setLogs,
+  setTotalElections,
+  UpdatePayloads,
+  updateCurrentPage,
+  updateElectionData,
+} from './actions'
 import { ElectionData } from './reducer'
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { RootState } from '../index'
@@ -164,6 +173,14 @@ export function useSetTotalElections() {
 export function useSetElections(): (elections: ElectionData[]) => void {
   const dispatch = useAppDispatch()
   return useCallback((elections) => dispatch(setElections(elections)), [dispatch])
+}
+
+/*
+ * update election state
+ */
+export function useUpdateElectionData(payloads: UpdatePayloads): () => void {
+  const dispatch = useAppDispatch()
+  return useCallback(() => dispatch(updateElectionData(payloads)), [dispatch, payloads])
 }
 
 /*

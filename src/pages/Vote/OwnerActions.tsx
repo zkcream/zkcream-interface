@@ -51,7 +51,7 @@ export default function OwnerActions({
       ) : (
         <>
           {isPublished ? (
-            <ButtonPrimary onClick={approveTally} disabled={approveTxState}>
+            <ButtonPrimary onClick={approveTally} disabled={approveTxState || isApproved}>
               {approveTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Approve Tally</Trans>}
             </ButtonPrimary>
           ) : null}

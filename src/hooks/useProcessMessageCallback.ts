@@ -4,12 +4,13 @@ import { Keypair, PrivKey, PubKey, StateLeaf } from 'maci-domainobjs'
 
 import { useMaciContract } from './useContract'
 import { genMaciStateFromContract } from '../utils/genMaciStateFromContract'
-import { useElectionState } from '../state/election/hooks'
+import { useElectionState, useUpdateElectionData } from '../state/election/hooks'
 import { ElectionData, MaciParams } from '../state/election/reducer'
 import { post } from '../utils/api'
 import { RandomStateLeaf } from '../components/QrModal'
 import { FormatError, TxError } from '../utils/error'
 import { useToggleToggleable } from '../state/application/hooks'
+import { Target } from '../state/election/actions'
 
 export function useProcessMessageCallback(): [
   state: boolean,
@@ -21,6 +22,10 @@ export function useProcessMessageCallback(): [
   const election: ElectionData | undefined = useElectionState()
   const maciContract = useMaciContract(election!.maciAddress)
   const { publishMessageLogs, signUpLogs }: MaciParams = election!.maciParams
+  const updateElectionData = useUpdateElectionData({
+    target: Target.HAS_UNPROCESSED_MESSAGES,
+    zkcreamAddress: election!.zkCreamAddress,
+  })
 
   const setUntoggleable = useToggleToggleable()
 
@@ -151,9 +156,10 @@ export function useProcessMessageCallback(): [
           break
         }
       }
+      updateElectionData()
       setTxState(false)
     },
-    [maciContract, publishMessageLogs, setUntoggleable, signUpLogs]
+    [maciContract, publishMessageLogs, setUntoggleable, signUpLogs, updateElectionData]
   )
 
   return [txState, randomStateLeaf, c]
