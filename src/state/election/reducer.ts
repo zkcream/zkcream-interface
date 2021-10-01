@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { setElections, setElectionData, setTotalElections, updateCurrentPage, setLogs, VotingState } from './actions'
+import { setElections, setElectionData, setTotalElections, updateCurrentPage, setLogs, VotingState, updateElectionData, Target } from './actions'
 
 export type StateIndex = string | undefined | null
 
@@ -85,6 +85,16 @@ export default createReducer(initialState, (builder) => {
   })
   builder.addCase(setElectionData, (state, action) => {
     state.electionData = action.payload
+  })
+  builder.addCase(updateElectionData, (state, action) => {
+    switch(action.payload) {
+      case Target.HAS_UNPROCESSED_MESSAGES :
+        state.electionData!.hasUnprocessedMessages = false
+        break
+      case Target.APPROVED :
+        state.electionData!.approved = true
+        break
+    }
   })
   builder.addCase(setElections, (state, action) => {
     state.elections = action.payload
