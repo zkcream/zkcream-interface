@@ -33,6 +33,7 @@ export default function CoordinatorActions({
 
   const [error, setError] = useState<ErrorType | null>(null)
   const [withdrawTxState, withdraw] = useWithdrawCallback()
+  const [withdrawn, setWithdrawn] = useState<boolean>(false)
 
   return (
     <>
@@ -63,10 +64,10 @@ export default function CoordinatorActions({
       <>
         {error ? <Error error={error} /> : null}
         <ButtonPrimary
-          disabled={!isApproved || withdrawTxState ? true : false}
+          disabled={!isApproved || withdrawTxState ? true : false || withdrawn}
           onClick={() =>
             withdraw()
-              .then()
+              .then(() => setWithdrawn(true))
               .catch((e: any) => setError(ErrorType.TX_ERROR))
           }
         >

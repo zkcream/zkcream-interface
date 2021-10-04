@@ -1,14 +1,16 @@
 import { useCallback, useState } from 'react'
 
 import { useZkCreamContract } from './useContract'
-import { useElectionState } from '../state/election/hooks'
-import { get } from '../utils/api'
+import { useElectionState, useUpdateElectionData } from '../state/election/hooks'
+import { fetchVotingTokenCounts, get } from '../utils/api'
 import { TxError } from '../utils/error'
+import { Target } from '../state/election/actions'
 
 export function useWithdrawCallback(): [state: boolean, callback: () => Promise<void>] {
   const [txState, setTxState] = useState<boolean>(false)
   const { zkCreamAddress, tallyHash, recipients }: any = useElectionState()
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
+  const updateElectionData = useUpdateElectionData()
 
   const c = useCallback(async (): Promise<void> => {
     setTxState(true)
@@ -32,8 +34,21 @@ export function useWithdrawCallback(): [state: boolean, callback: () => Promise<
           })
       }
     }
+
+    await fetchVotingTokenCounts(zkCreamAddress, recipients)
+      .then((tc: number[]) => {
+        updateElectionData({
+          target: Target.WITHDRAWN,
+          zkcreamAddress: zkCreamAddress,
+          tokenCounts: tc,
+        })
+      })
+      .catch((e: Error) => {
+        setTxState(false)
+        throw new TxError('fetch voting token counts failed')
+      })
     setTxState(false)
-  }, [recipients.length, tallyHash, zkCreamContract])
+  }, [recipients, tallyHash, updateElectionData, zkCreamAddress, zkCreamContract])
 
   return [txState, c]
 }

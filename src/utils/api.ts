@@ -20,21 +20,34 @@ export async function post(path: string, data: any): Promise<AxiosResponse<any>>
   return await axios.post(url, data)
 }
 
-/* fetch holding token status */
+/* fetch holding token status for voter */
 export async function fetchTokenStatus(address: string, account: string): Promise<any> {
   return (await get('zkcream/' + address + '/' + account)).data
+}
+
+/* fetch holding token counts for recipients (= voting counts) */
+export async function fetchVotingTokenCounts(zkCreamAddress: string, recipients: string[]): Promise<number[]> {
+  const counts: number[] = []
+
+  for (let i = 0; i < recipients.length; i++) {
+    const r = (await get('zkcream/tally/' + zkCreamAddress + '/' + recipients[i])).data
+    counts.push(r)
+  }
+
+  return counts
 }
 
 /* get contract information form event log */
 export async function fetchContractDetails(log: string[]): Promise<ElectionData> {
   const decodedLog = (await get('zkcream/' + log[0])).data
   const maciParams = (await get('maci/params/' + decodedLog.maciAddress)).data
-  const tokenCounts: number[] = []
+  let tokenCounts: number[] = []
 
   if (decodedLog.approved) {
+    tokenCounts = await fetchVotingTokenCounts(log[0], decodedLog.recipients)
+  } else {
     for (let i = 0; i < decodedLog.recipients.length; i++) {
-      const r = (await get('zkcream/tally/' + log[0] + '/' + decodedLog.recipients[i])).data
-      tokenCounts.push(r)
+      tokenCounts.push(0)
     }
   }
 

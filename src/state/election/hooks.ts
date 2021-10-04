@@ -178,9 +178,9 @@ export function useSetElections(): (elections: ElectionData[]) => void {
 /*
  * update election state
  */
-export function useUpdateElectionData(payloads: UpdatePayloads): () => void {
+export function useUpdateElectionData(): (payloads: UpdatePayloads) => void {
   const dispatch = useAppDispatch()
-  return useCallback(() => dispatch(updateElectionData(payloads)), [dispatch, payloads])
+  return useCallback((payloads) => dispatch(updateElectionData(payloads)), [dispatch])
 }
 
 /*

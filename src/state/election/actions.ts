@@ -18,12 +18,14 @@ export enum Target {
   HAS_UNPROCESSED_MESSAGES,
   PUBLISHED,
   APPROVED,
+  WITHDRAWN,
 }
 
 export interface UpdatePayloads {
   target: Target
   zkcreamAddress: string
   tallyHash?: string
+  tokenCounts?: number[]
 }
 
 export const setTotalElections = createAction<number>('election/setTotalElections')

@@ -9,7 +9,7 @@ export function useApproveTallyCallback(): [state: boolean, callback: () => Prom
   const [txState, setTxState] = useState<boolean>(false)
   const { zkCreamAddress }: any = useElectionState()
   const zkCreamContract = useZkCreamContract(zkCreamAddress)
-  const updateElectionData = useUpdateElectionData({ target: Target.APPROVED, zkcreamAddress: zkCreamAddress })
+  const updateElectionData = useUpdateElectionData()
 
   const c = useCallback(async () => {
     setTxState(true)
@@ -22,13 +22,13 @@ export function useApproveTallyCallback(): [state: boolean, callback: () => Prom
         }
       })
       .then(() => {
-        updateElectionData()
+        updateElectionData({ target: Target.APPROVED, zkcreamAddress: zkCreamAddress })
       })
       .catch((e: Error) => {
         setTxState(false)
         throw new TxError(e.message)
       })
-  }, [updateElectionData, zkCreamContract])
+  }, [updateElectionData, zkCreamAddress, zkCreamContract])
 
   return [txState, c]
 }

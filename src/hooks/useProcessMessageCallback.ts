@@ -22,10 +22,7 @@ export function useProcessMessageCallback(): [
   const election: ElectionData | undefined = useElectionState()
   const maciContract = useMaciContract(election!.maciAddress)
   const { publishMessageLogs, signUpLogs }: MaciParams = election!.maciParams
-  const updateElectionData = useUpdateElectionData({
-    target: Target.HAS_UNPROCESSED_MESSAGES,
-    zkcreamAddress: election!.zkCreamAddress,
-  })
+  const updateElectionData = useUpdateElectionData()
 
   const setUntoggleable = useToggleToggleable()
 
@@ -156,10 +153,13 @@ export function useProcessMessageCallback(): [
           break
         }
       }
-      updateElectionData()
+      updateElectionData({
+        target: Target.HAS_UNPROCESSED_MESSAGES,
+        zkcreamAddress: election!.zkCreamAddress,
+      })
       setTxState(false)
     },
-    [maciContract, publishMessageLogs, setUntoggleable, signUpLogs, updateElectionData]
+    [election, maciContract, publishMessageLogs, setUntoggleable, signUpLogs, updateElectionData]
   )
 
   return [txState, randomStateLeaf, c]

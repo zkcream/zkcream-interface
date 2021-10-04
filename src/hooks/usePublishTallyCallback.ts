@@ -22,18 +22,13 @@ const ethProvider: string = process.env.REACT_APP_URL!
 
 export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero: string) => Promise<void>] {
   const [txState, setTxState] = useState<boolean>(false)
-  const [tallyHash, setTallyHash] = useState<string>('')
   const election: ElectionData | undefined = useElectionState()
   const maciContract = useMaciContract(election!.maciAddress)
   const zkCreamContract = useZkCreamContract(election!.zkCreamAddress)
   const { publishMessageLogs, signUpLogs }: any = election!.maciParams
   const [macisk] = useLocalStorage('macisk', '')
   const toggleModal = useRandomStateLeafModalToggle()
-  const updateElectionData = useUpdateElectionData({
-    target: Target.PUBLISHED,
-    zkcreamAddress: election!.zkCreamAddress,
-    tallyHash: tallyHash,
-  })
+  const updateElectionData = useUpdateElectionData()
 
   const c = useCallback(
     async (leaf_zero: string) => {
@@ -297,7 +292,6 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
         .then(async (r: any) => {
           const w = await r.wait()
           if (w.status) {
-            setTallyHash(tallyHash.data.path)
             setTxState(false)
             console.log('tally published :', tallyHash.data.path)
           }
@@ -306,14 +300,18 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
           toggleModal()
         })
         .then(() => {
-          updateElectionData()
+          updateElectionData({
+            target: Target.PUBLISHED,
+            zkcreamAddress: election!.zkCreamAddress,
+            tallyHash: tallyHash.data.path,
+          })
         })
         .catch((e: Error) => {
           setTxState(false)
           throw new TxError(e.message)
         })
     },
-    [maciContract, macisk, publishMessageLogs, signUpLogs, toggleModal, updateElectionData, zkCreamContract]
+    [election, maciContract, macisk, publishMessageLogs, signUpLogs, toggleModal, updateElectionData, zkCreamContract]
   )
 
   return [txState, c]

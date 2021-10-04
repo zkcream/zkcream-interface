@@ -8,7 +8,6 @@ import {
   updateCurrentPage,
   updateElectionData,
   UpdatePayloads,
-  VotingState,
 } from './actions'
 import reducer, { ElectionData, ElectionState, Logs } from './reducer'
 
@@ -37,7 +36,7 @@ const electionData: ElectionData = {
     signUpDurationSeconds: 1,
     votingDurationSeconds: 1,
   },
-  tokenCounts: [1, 1],
+  tokenCounts: [0, 0],
   signUpTimestamp: 1,
   signUpUntil: null,
   votingUntil: null,
@@ -113,6 +112,15 @@ describe('election reducer', () => {
       store.dispatch(updateElectionData(c))
       store.dispatch(setElectionData(store.getState().elections[0]))
       expect(store.getState().electionData?.approved).toBeTruthy()
+
+      const d: UpdatePayloads = {
+        target: Target.WITHDRAWN,
+        zkcreamAddress: electionData.zkCreamAddress,
+        tokenCounts: [1, 1],
+      }
+      store.dispatch(updateElectionData(d))
+      store.dispatch(setElectionData(store.getState().elections[0]))
+      expect(store.getState().electionData?.tokenCounts).toEqual(d.tokenCounts)
     })
   })
 })

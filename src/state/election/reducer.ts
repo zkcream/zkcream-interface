@@ -107,6 +107,8 @@ export default createReducer(initialState, (builder) => {
       case Target.APPROVED:
         electionData!.approved = true
         break
+      case Target.WITHDRAWN:
+        electionData!.tokenCounts = action.payload.tokenCounts as number[]
     }
   })
   builder.addCase(setElections, (state, action) => {
