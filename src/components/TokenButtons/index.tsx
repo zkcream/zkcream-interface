@@ -15,6 +15,8 @@ import { useTokenStatus } from '../../state/token/hooks'
 import { TokenType } from '../../state/token/reducer'
 import { black } from '../../theme'
 import MultiLevelModal, { MultiLevelModalContent } from '../MultiLevelModal'
+import { useElectionState } from '../../state/election/hooks'
+import { ElectionData } from '../../state/election/reducer'
 
 const WarningWrapper = styled.div`
   background-color: ${({ theme }) => lighten(0.25, theme.red)};
@@ -28,13 +30,18 @@ const WarningWrapper = styled.div`
 
 interface TokenButtonsProps {
   tokenState: TokenType
-  zkCreamAddress: string
-  maciAddress: string
-  votingTokenAddress: string
 }
 
-export function TokenButtons({ tokenState, zkCreamAddress, maciAddress, votingTokenAddress }: TokenButtonsProps) {
+export function TokenButtons({ tokenState }: TokenButtonsProps) {
+  const electionData: ElectionData | undefined = useElectionState()
+  const {
+    zkCreamAddress,
+    maciAddress,
+    votingTokenAddress
+  } = electionData!
+
   const isApproved = useTokenStatus()
+  
   const noteModalOpen = useModalOpen(ApplicationModal.NOTE)
   const signUpModalOpen = useModalOpen(ApplicationModal.SIGNUP)
   const toggleNoteModal = useNoteModalToggle()

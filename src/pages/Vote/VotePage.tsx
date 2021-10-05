@@ -136,12 +136,21 @@ export default function VotePage({
                       votingState={electionData.votingState}
                     />
                   ) : (
-                    <TokenButtons
-                      tokenState={tokenState}
-                      zkCreamAddress={zkCreamAddress}
-                      maciAddress={electionData.maciAddress}
-                      votingTokenAddress={electionData.votingTokenAddress}
-                    />
+                    <>
+                      {
+                         beforeDeadlineOf === 'signUp' ? (
+                          <>
+                            <TokenButtons
+                              tokenState={tokenState}
+                            />
+                          </>
+                        ) : (
+                          <Text>
+                            <Trans>The sign up period has ended</Trans>
+                          </Text>
+                        )
+                      }
+                    </>
                   )}
                 </>
               )}
