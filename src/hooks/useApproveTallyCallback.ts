@@ -22,7 +22,7 @@ export function useApproveTallyCallback(): [state: boolean, callback: () => Prom
         }
       })
       .then(() => {
-        updateElectionData({ target: Target.APPROVED, zkcreamAddress: zkCreamAddress })
+        updateElectionData({ target: Target.APPROVED, zkCreamAddress: zkCreamAddress })
       })
       .catch((e: Error) => {
         setTxState(false)

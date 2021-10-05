@@ -96,7 +96,7 @@ export default createReducer(initialState, (builder) => {
     state.electionData = action.payload
   })
   builder.addCase(updateElectionData, (state, action) => {
-    const electionData = state.elections?.find((e) => e.zkCreamAddress === action.payload.zkcreamAddress)
+    const electionData = state.elections?.find((e) => e.zkCreamAddress === action.payload.zkCreamAddress)
     switch (action.payload.target) {
       case Target.HAS_UNPROCESSED_MESSAGES:
         electionData!.hasUnprocessedMessages = false

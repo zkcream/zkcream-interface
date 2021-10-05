@@ -87,7 +87,7 @@ describe('election reducer', () => {
 
       const a: UpdatePayloads = {
         target: Target.HAS_UNPROCESSED_MESSAGES,
-        zkcreamAddress: electionData.zkCreamAddress,
+        zkCreamAddress: electionData.zkCreamAddress,
       }
 
       store.dispatch(updateElectionData(a))
@@ -96,7 +96,7 @@ describe('election reducer', () => {
 
       const b: UpdatePayloads = {
         target: Target.PUBLISHED,
-        zkcreamAddress: electionData.zkCreamAddress,
+        zkCreamAddress: electionData.zkCreamAddress,
         tallyHash: 'bar',
       }
 
@@ -106,7 +106,7 @@ describe('election reducer', () => {
 
       const c: UpdatePayloads = {
         target: Target.APPROVED,
-        zkcreamAddress: electionData.zkCreamAddress,
+        zkCreamAddress: electionData.zkCreamAddress,
       }
 
       store.dispatch(updateElectionData(c))
@@ -115,7 +115,7 @@ describe('election reducer', () => {
 
       const d: UpdatePayloads = {
         target: Target.WITHDRAWN,
-        zkcreamAddress: electionData.zkCreamAddress,
+        zkCreamAddress: electionData.zkCreamAddress,
         tokenCounts: [1, 1],
       }
       store.dispatch(updateElectionData(d))

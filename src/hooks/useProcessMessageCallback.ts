@@ -155,7 +155,7 @@ export function useProcessMessageCallback(): [
       }
       updateElectionData({
         target: Target.HAS_UNPROCESSED_MESSAGES,
-        zkcreamAddress: election!.zkCreamAddress,
+        zkCreamAddress: election!.zkCreamAddress,
       })
       setTxState(false)
     },

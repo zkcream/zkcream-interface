@@ -130,26 +130,16 @@ export default function VotePage({
               ) : (
                 <>
                   {tokenState & TokenType.SIGNUP ? (
-                    <VoteActions
-                      recipients={electionData.recipients}
-                      electionType={electionData.electionType}
-                      votingState={electionData.votingState}
-                    />
+                    <VoteActions votingState={electionData.votingState} />
                   ) : (
                     <>
-                      {
-                         beforeDeadlineOf === 'signUp' ? (
-                          <>
-                            <TokenButtons
-                              tokenState={tokenState}
-                            />
-                          </>
-                        ) : (
-                          <Text>
-                            <Trans>The sign up period has ended</Trans>
-                          </Text>
-                        )
-                      }
+                      {beforeDeadlineOf === 'signUp' ? (
+                        <TokenButtons tokenState={tokenState} />
+                      ) : (
+                        <Text>
+                          <Trans>The sign up period has ended</Trans>
+                        </Text>
+                      )}
                     </>
                   )}
                 </>

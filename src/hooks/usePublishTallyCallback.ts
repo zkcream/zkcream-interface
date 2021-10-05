@@ -302,7 +302,7 @@ export function usePublishTallyCallback(): [state: boolean, callback: (leaf_zero
         .then(() => {
           updateElectionData({
             target: Target.PUBLISHED,
-            zkcreamAddress: election!.zkCreamAddress,
+            zkCreamAddress: election!.zkCreamAddress,
             tallyHash: tallyHash.data.path,
           })
         })

@@ -23,7 +23,7 @@ export enum Target {
 
 export interface UpdatePayloads {
   target: Target
-  zkcreamAddress: string
+  zkCreamAddress: string
   tallyHash?: string
   tokenCounts?: number[]
 }

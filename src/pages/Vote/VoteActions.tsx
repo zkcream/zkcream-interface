@@ -14,14 +14,16 @@ import MultiLevelModal, { MultiLevelModalContent } from '../../components/MultiL
 import Spinner from '../../components/Spinner'
 import { black } from '../../theme'
 import { VotingState } from '../../state/election/actions'
+import { useElectionState } from '../../state/election/hooks'
+import { ElectionData } from '../../state/election/reducer'
 
 export interface VoteActionsProps {
-  recipients: string[]
-  electionType: string
   votingState?: VotingState
 }
 
-export default function VoteActions({ recipients, electionType, votingState }: VoteActionsProps) {
+export default function VoteActions({ votingState }: VoteActionsProps) {
+  const electionData: ElectionData | undefined = useElectionState()
+  const { recipients, electionType } = electionData!
   const [radioState, setRadioState] = useState<MessageAction>(MessageAction.SELECT)
   const [stateIndex, setStateIndex] = useLocalStorage('stateIndex', '0')
   const [nonce, setNonce] = useLocalStorage('nonce', '1')
@@ -75,9 +77,13 @@ export default function VoteActions({ recipients, electionType, votingState }: V
           )}
         </>
       ) : (
-        <Text>
-          <Trans>The voting period has ended</Trans>
-        </Text>
+        <>
+          {votingState! < 3 ? (
+            <Text>
+              <Trans>The voting period has ended</Trans>
+            </Text>
+          ) : null}
+        </>
       )}
     </>
   )

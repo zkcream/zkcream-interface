@@ -34,14 +34,10 @@ interface TokenButtonsProps {
 
 export function TokenButtons({ tokenState }: TokenButtonsProps) {
   const electionData: ElectionData | undefined = useElectionState()
-  const {
-    zkCreamAddress,
-    maciAddress,
-    votingTokenAddress
-  } = electionData!
+  const { zkCreamAddress, maciAddress, votingTokenAddress } = electionData!
 
   const isApproved = useTokenStatus()
-  
+
   const noteModalOpen = useModalOpen(ApplicationModal.NOTE)
   const signUpModalOpen = useModalOpen(ApplicationModal.SIGNUP)
   const toggleNoteModal = useNoteModalToggle()

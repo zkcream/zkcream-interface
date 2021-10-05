@@ -39,7 +39,7 @@ export function useWithdrawCallback(): [state: boolean, callback: () => Promise<
       .then((tc: number[]) => {
         updateElectionData({
           target: Target.WITHDRAWN,
-          zkcreamAddress: zkCreamAddress,
+          zkCreamAddress: zkCreamAddress,
           tokenCounts: tc,
         })
       })

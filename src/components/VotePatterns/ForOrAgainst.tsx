@@ -54,16 +54,13 @@ export default function ForOrAgainst({
   setNonce,
   maciSk,
 }: ForOrAgainstProps) {
-  /* TEMP flags */
-  const isBeforeVotingDeadline = true
-
   const [index, setIndex] = useState<number | undefined>(undefined)
   const [publishTxState, publishMessage] = usePublishMessageCallback()
 
   return (
     <RowFixed style={{ width: '100%', gap: '12px' }}>
       {recipients.map((recipient, i) => {
-        if (isBeforeVotingDeadline && !isApproved) {
+        if (!isApproved) {
           return (
             <ButtonPrimary
               disabled={publishTxState}
