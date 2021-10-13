@@ -3,7 +3,11 @@ import { useElectionState } from '../state/election/hooks'
 import { useTransferEvents } from './useTransferEvents'
 import { useActiveWeb3React } from './web3'
 
-export function useAddressExists(): [exists: boolean | undefined, c: () => Promise<void>, s: React.Dispatch<React.SetStateAction<boolean | undefined>>] {
+export function useAddressExists(): [
+  exists: boolean | undefined,
+  c: () => Promise<void>,
+  s: React.Dispatch<React.SetStateAction<boolean | undefined>>
+] {
   const { account, library } = useActiveWeb3React()
   const [exists, setExists] = useState<boolean | undefined>(false)
   const { votingTokenAddress }: any = useElectionState()

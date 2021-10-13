@@ -72,7 +72,10 @@ export function TokenButtons({ tokenState }: TokenButtonsProps) {
           <ButtonPrimary onClick={approveToken} disabled={isApproved || approveTxState ? true : false}>
             {approveTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Approve Token</Trans>}
           </ButtonPrimary>
-          <ButtonPrimary onClick={() => deposit().then(() => setExists(true))} disabled={!isApproved || depositTxState ? true : false}>
+          <ButtonPrimary
+            onClick={() => deposit().then(() => setExists(true))}
+            disabled={!isApproved || depositTxState ? true : false}
+          >
             {depositTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Register</Trans>}
           </ButtonPrimary>
         </>

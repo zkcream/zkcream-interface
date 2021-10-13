@@ -12,5 +12,4 @@ services:
   #   build: ./geth
   #   ports:
   #     - "8545:8545"
-  #     - "8546:8546"
   #   restart: always

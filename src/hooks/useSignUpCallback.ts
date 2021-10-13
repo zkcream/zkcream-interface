@@ -75,9 +75,6 @@ export function useSignUpCallback(
       const args = [toHex(input.root), toHex(input.nullifierHash)]
       return await zkCreamContract
         .signUpMaci(userKeyPair?.pubKey.asContractParam(), formattedProof.data, ...args)
-        .then(async (r: any) => {
-          await r.wait()
-        })
         .then(async () => {
           await maciContract.on('SignUp', (_: any, _stateIndex: any) => {
             // store _stateIndex to local storage as string type
