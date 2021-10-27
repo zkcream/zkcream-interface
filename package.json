@@ -64,14 +64,12 @@
   },
   "scripts": {
     "build": "yarn i18n && react-scripts build",
-    "docker": "cd docker && docker-compose up -d",
     "eject": "react-scripts eject",
     "format": "npx prettier './src/**/*.{js,ts,tsx}' --write",
     "ganache": "./scripts/runGanache.sh",
     "i18n": "yarn i18n:extract && yarn i18n:compile",
     "i18n:extract": "lingui extract --locale en-US",
     "i18n:compile": "lingui compile",
-    "local": "yarn docker && yarn ganache",
     "start": "react-scripts start",
     "test": "react-scripts test"
   },
