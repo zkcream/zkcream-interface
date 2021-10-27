@@ -55,7 +55,7 @@ export default function VotePage({
   /* get election details */
   const setElectionData = useSetElectionData(address)
   const electionData: ElectionData | undefined = useElectionState()
-  const zkCreamAddress = address
+  const zkCreamAddress = electionData?.zkCreamAddress
   const isOwner: boolean = account === electionData?.owner
   const isCoordinator: boolean = account === electionData?.coordinator
   const isPublished: boolean = electionData?.tallyHash !== undefined

@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 import { Text } from 'rebass'
 import { Trans } from '@lingui/macro'
 
@@ -9,6 +9,7 @@ import { useApproveTallyCallback } from '../../hooks/useApproveTallyCallback'
 import SingleModal, { SingleModalContent } from '../../components/SingleModal'
 import Spinner from '../../components/Spinner'
 import { black } from '../../theme'
+import { useVerifyTally } from '../../hooks/useVerifyTally'
 
 export default function OwnerActions({
   isPublished,
@@ -22,7 +23,9 @@ export default function OwnerActions({
   // toggle deploy modal
   const distributeModalOpen = useModalOpen(ApplicationModal.DISTRIBUTE)
   const toggleModal = useDistributeModalToggle()
+  const [verifyTxState, verifyTally] = useVerifyTally()
   const [approveTxState, approveTally] = useApproveTallyCallback()
+  const [verified, setVerifiedState] = useState<boolean>(false)
 
   return (
     <>
@@ -51,9 +54,14 @@ export default function OwnerActions({
       ) : (
         <>
           {isPublished ? (
-            <ButtonPrimary onClick={approveTally} disabled={approveTxState || isApproved}>
-              {approveTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Approve Tally</Trans>}
-            </ButtonPrimary>
+            <>
+              <ButtonPrimary onClick={() => verifyTally(setVerifiedState)} disabled={verified}>
+                {verifyTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Verify Tally</Trans>}
+              </ButtonPrimary>
+              <ButtonPrimary onClick={approveTally} disabled={approveTxState || isApproved || !verified}>
+                {approveTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Approve Tally</Trans>}
+              </ButtonPrimary>
+            </>
           ) : null}
         </>
       )}
