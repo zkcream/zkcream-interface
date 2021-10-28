@@ -9,6 +9,7 @@ import { useApproveTallyCallback } from '../../hooks/useApproveTallyCallback'
 import SingleModal, { SingleModalContent } from '../../components/SingleModal'
 import Spinner from '../../components/Spinner'
 import { black } from '../../theme'
+import { useVerifyTally } from '../../hooks/useVerifyTally'
 
 export default function OwnerActions({
   isPublished,
@@ -22,6 +23,7 @@ export default function OwnerActions({
   // toggle deploy modal
   const distributeModalOpen = useModalOpen(ApplicationModal.DISTRIBUTE)
   const toggleModal = useDistributeModalToggle()
+  const [verifyTxState, verifyTally] = useVerifyTally()
   const [approveTxState, approveTally] = useApproveTallyCallback()
 
   return (
@@ -51,9 +53,14 @@ export default function OwnerActions({
       ) : (
         <>
           {isPublished ? (
-            <ButtonPrimary onClick={approveTally} disabled={approveTxState || isApproved}>
-              {approveTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Approve Tally</Trans>}
-            </ButtonPrimary>
+            <>
+              <ButtonPrimary onClick={verifyTally}>
+                {verifyTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Verify Tally</Trans>}
+              </ButtonPrimary>
+              <ButtonPrimary onClick={approveTally} disabled={approveTxState || isApproved}>
+                {approveTxState ? <Spinner color={black} height={16} width={16} /> : <Trans>Approve Tally</Trans>}
+              </ButtonPrimary>
+            </>
           ) : null}
         </>
       )}
