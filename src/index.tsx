@@ -37,7 +37,6 @@ async function init() {
       alert("Failed to authenticate app!!")
       return
     }
-    localStorage.setItem('token', token)
     window.location.reload()
   }
 }
