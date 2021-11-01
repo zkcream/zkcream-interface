@@ -1,4 +1,3 @@
-import React from 'react'
 import { darken, lighten } from 'polished'
 import styled from 'styled-components'
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components/macro'
@@ -21,6 +21,8 @@ import { useFetchTokenState, useTokenType } from '../../state/token/hooks'
 import { StyledInternalLink } from '../../theme'
 import ExportButton from '../../components/ExportButton'
 import CountdownClock from '../../components/CountdownClock'
+import VerifyTallyButton from '../../components/VerifyTallyButton'
+import { darken, lighten } from 'polished'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
@@ -45,6 +47,16 @@ const ArrowWrapper = styled(StyledInternalLink)`
   width: 100%;
 `
 
+const MessageWrapper = styled.div`
+  background-color: ${({ theme }) => lighten(0.25, theme.green)};
+  border-radius: 0.25rem;
+  color: ${({ theme }) => darken(0.2, theme.green)};
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+`
+
 export default function VotePage({
   match: {
     params: { address },
@@ -64,6 +76,7 @@ export default function VotePage({
 
   const arg: any = { zkCreamAddress, account }
   const fetchTokenState = useFetchTokenState(arg)
+  const [verified, setVerifiedState] = useState<boolean>(false)
 
   const beforeDeadlineOf = electionData?.signUpUntil ? 'signUp' : electionData?.votingUntil ? 'voting' : null
 
@@ -98,6 +111,11 @@ export default function VotePage({
                   <ExportButton maciAddress={electionData.maciAddress} />
                 ) : null}
               </Flex>
+              {verified ? (
+                <MessageWrapper>
+                  <Trans>The published tally was accurate.</Trans>
+                </MessageWrapper>
+              ) : null}
               <Text fontSize={[5]} fontWeight="bold" mt={4} mb={2}>
                 {electionData.title}
               </Text>
@@ -130,15 +148,26 @@ export default function VotePage({
               ) : (
                 <>
                   {tokenState & TokenType.SIGNUP ? (
-                    <VoteActions votingState={electionData.votingState} />
+                    <>
+                      <VoteActions votingState={electionData.votingState} />
+                      {isPublished ? (
+                        <VerifyTallyButton verified={verified} setVerifiedState={setVerifiedState} />
+                      ) : null}
+                    </>
                   ) : (
                     <>
                       {beforeDeadlineOf === 'signUp' ? (
                         <TokenButtons tokenState={tokenState} />
                       ) : (
-                        <Text>
-                          <Trans>The sign up period has ended</Trans>
-                        </Text>
+                        <>
+                          {isPublished ? (
+                            <VerifyTallyButton verified={verified} setVerifiedState={setVerifiedState} />
+                          ) : (
+                            <Text>
+                              <Trans>The sign up period has ended</Trans>
+                            </Text>
+                          )}
+                        </>
                       )}
                     </>
                   )}
