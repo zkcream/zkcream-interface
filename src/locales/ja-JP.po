@@ -299,6 +299,10 @@ msgstr "投票可能期間は終了しました"
 msgid "Undetermined"
 msgstr "未確定"
 
+#: src/components/VerifyTallyButton/index.tsx
+msgid "Verify Tally"
+msgstr "集計を検証"
+
 #: src/components/MultiLevelModal/VoterState.tsx
 msgid "Voter State"
 msgstr "投票者情報"
