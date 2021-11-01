@@ -1,7 +1,7 @@
 import axios from 'axios'
 import querystring from 'querystring'
 import detectEthereumProvider from '@metamask/detect-provider'
-import { DataToSign, EthSigPrefix } from '../constants/misc'
+import { DataToSign } from '../constants/misc'
 import { ethers } from 'ethers'
 
 axios.defaults.withCredentials = true
@@ -37,7 +37,7 @@ async function getSignature(): Promise<any> {
   const provider = await detectEthereumProvider({ mustBeMetaMask: true })
   if (provider && window.ethereum?.isMetaMask) {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const msgHash = ethers.utils.hashMessage(EthSigPrefix + String(DataToSign.length) + DataToSign)
+    const msgHash = ethers.utils.hashMessage(DataToSign)
     const signer = provider.getSigner()
     const sig = await signer.signMessage(msgHash)
     const address = await signer.getAddress()
