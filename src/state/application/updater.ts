@@ -5,6 +5,8 @@ import { supportedChainId } from '../../utils/supportedChainId'
 import { useAppDispatch } from '../hooks'
 import { updateBlockNumber, updateChainId } from './actions'
 
+
+
 export default function Updater(): null {
   const { library, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()

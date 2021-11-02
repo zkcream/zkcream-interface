@@ -13,7 +13,7 @@ import { GlobalStyle, theme, ThemedGlobalStyle } from './theme'
 import { ThemeProvider } from 'styled-components'
 import getLibrary from './utils/getLibrary'
 import ApplicationUpdater from './state/application/updater'
-import { getToken, verify } from './utils/user'
+import Initializer from './state/application/initlizer'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -24,24 +24,11 @@ if (!!window.ethereum) {
 function Updaters() {
   return (
     <>
+      <Initializer />
       <ApplicationUpdater />
     </>
   )
 }
-
-async function init() {
-  const verified = await verify()
-  if (!verified) {
-    const token = await getToken()
-    if (token === null) {
-      alert("Failed to authenticate app!!")
-      return
-    }
-    window.location.reload()
-  }
-}
-
-init()
 
 ReactDOM.render(
   <StrictMode>

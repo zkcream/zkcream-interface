@@ -5,6 +5,7 @@ export enum ErrorType {
   UNKNOWN_ERROR,
   FORMAT_ERROR,
   TX_ERROR,
+  SIG_ERROR,
 }
 
 export const setErrorState = createAction<ErrorType | null>('error/setErrorState')
