@@ -3,7 +3,6 @@ import { getToken, verify } from "../../utils/user"
 import { ErrorType } from "../error/actions";
 import { useSetError } from "../error/hooks";
 
-
 export default function Initializer(): null {
   const setError = useSetError()
 
