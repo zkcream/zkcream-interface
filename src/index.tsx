@@ -13,6 +13,7 @@ import { GlobalStyle, theme, ThemedGlobalStyle } from './theme'
 import { ThemeProvider } from 'styled-components'
 import getLibrary from './utils/getLibrary'
 import ApplicationUpdater from './state/application/updater'
+import Initializer from './state/application/initlizer'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -23,6 +24,7 @@ if (!!window.ethereum) {
 function Updaters() {
   return (
     <>
+      <Initializer />
       <ApplicationUpdater />
     </>
   )
